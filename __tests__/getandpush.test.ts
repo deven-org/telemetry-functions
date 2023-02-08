@@ -1,8 +1,6 @@
-import { handler, createDataObject } from "../netlify/functions/getandpush";
+import { handler, createDataObject } from "../netlify/functions/metrics";
 import { HandlerEvent, HandlerContext } from "@netlify/functions";
 import { ERRORS } from "../src/shared/config";
-import { dataByAction } from "../src/features/dataByAction";
-import { EventBody } from "../src/interface";
 import { Octokit } from "@octokit/rest";
 import { Base64 } from "js-base64";
 
@@ -16,7 +14,7 @@ let dataByActionResponse: any = {
   message: "test-message",
 };
 
-jest.mock("../src/features/dataByAction", () => ({
+jest.mock("../src/features/dataByAction/index.ts", () => ({
   __esModule: true,
   dataByAction: jest.fn().mockImplementation(() => dataByActionResponse),
 }));
@@ -32,15 +30,6 @@ jest.mock("@octokit/rest", () => {
     },
   };
 });
-process.env.REPO_NAME = "telemetry-data";
-process.env.REPO_OWNER = "deven-org";
-process.env.REPO_PATH = "raw-data";
-process.env.TARGET_BRANCH = "main";
-process.env.GITHUB_ACCESS_TOKEN = "token";
-process.env.COMMITTER_NAME = "committer_name";
-process.env.COMMITTER_EMAIL = "committer_name";
-process.env.AUTHOR_NAME = "name";
-process.env.AUTHOR_EMAIL = "email";
 
 describe("Getandpush", () => {
   describe("handler", () => {
@@ -56,7 +45,7 @@ describe("Getandpush", () => {
 
     it("returns status code 500 with invalidEvent error message", async () => {
       const error = await handler({} as HandlerEvent, {} as HandlerContext);
-      expect(error).toStrictEqual({
+      expect(error).toEqual({
         body: ERRORS.invalidEvent,
         statusCode: 500,
       });
@@ -69,7 +58,7 @@ describe("Getandpush", () => {
         basicEventObj as HandlerEvent,
         {} as HandlerContext
       );
-      expect(error).toStrictEqual({
+      expect(error).toEqual({
         body: ERRORS.invalidLocalEnvVar,
         statusCode: 500,
       });

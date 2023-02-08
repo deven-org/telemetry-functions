@@ -30,7 +30,10 @@
     "lint": "eslint --fix --max-warnings 0 **/*.ts",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:dev": "jest --watch"
+    "test:dev": "jest --watch",
+    "doc:install": "deven-documentation-skeleton install",
+    "doc:check": "deven-documentation-skeleton check",
+    "doc:update": "deven-documentation-skeleton update"
   },
   "dependencies": {
     "@netlify/functions": "^1.4.0",
@@ -42,11 +45,13 @@
   "devDependencies": {
     "@types/jest": "^29.4.1",
     "@types/node": "^18.13.0",
+    "deven-documentation-skeleton": "^2.0.0",
+    "moment": "^2.29.4",
+    "netlify": "^13.1.2",
     "netlify-cli": "^13.0.1",
     "ramda": "^0.28.0",
     "semver": "^7.3.8",
-    "ts-jest": "^29.0.5",
-    "moment": "^2.29.4",
-    "netlify": "^13.1.2"
+    "signale": "^1.4.0",
+    "ts-jest": "^29.0.5"
   }
 }
