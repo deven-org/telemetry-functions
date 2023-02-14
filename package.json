@@ -1,0 +1,32 @@
+{
+  "name": "@deven-org/telemetry-functions",
+  "version": "0.0.0",
+  "description": "@deven-org/telemetry-functions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deven-org/telemetry-functions.git"
+  },
+  "publishConfig": {
+    "@deven-org:registry": "https://npm.pkg.github.com"
+  },
+  "keywords": [
+    "deven",
+    "telemetry",
+    "functions",
+    "serverless"
+  ],
+  "homepage": "https://github.com/deven-org/telemetry-functions",
+  "engines": {
+    "node": ">= 14"
+  },
+  "author": "Deven Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deven-org/telemetry-functions/issues"
+  },
+  "dependencies": {
+    "@netlify/functions": "^1.4.0",
+    "@octokit/rest": "^19.0.7",
+    "js-base64": "^3.7.5"
+  }
+}
