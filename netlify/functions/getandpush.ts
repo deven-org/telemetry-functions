@@ -46,13 +46,16 @@ const handler: Handler = async (event: HandlerEvent) => {
     const fileContent = Base64.encode(String(event.body));
     console.info(`✅ The content has been encoded as base64`);
 
+    const fileContentAsJson = JSON.parse(String(event.body));
     // Build the git object
     const gitObject = {
       owner: process.env.REPO_OWNER as string,
       repo: process.env.REPO_NAME as string,
-      path: `${process.env.REPO_PATH}/${Date.now()}.json`,
+      path: `${process.env.REPO_PATH}/${
+        fileContentAsJson.repository.full_name
+      }/${Date.now()}.json`,
       branch: process.env.TARGET_BRANCH,
-      message: "auto: add new file",
+      message: `auto(data): ${fileContentAsJson.repository.full_name} - ${fileContentAsJson.action}"`,
       content: fileContent,
       committer: {
         name: process.env.COMMITER_NAME as string,
