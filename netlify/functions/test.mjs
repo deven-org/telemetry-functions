@@ -29,7 +29,6 @@ const handler = async (event) => {
     const data = await restClient.request(
       ...GithubRestQueries.createWebhook(
         "deven-org",
-        "telemetry-functions",
         "web",
         ["push"],
         "https://deven-telemetry-functions.netlify.app/.netlify/functions/getandpush"

@@ -12,11 +12,10 @@ export const getRepository = (owner, repo) => ({
   },
 });
 
-export const createWebhook = (owner, repo, name, events, url) => [
-  "POST /repos/{owner}/{repo}/hooks",
+export const createWebhook = (org, name, events, url) => [
+  "POST /orgs/{org}/hooks",
   {
-    owner,
-    repo,
+    org,
     name,
     active: true,
     events,
