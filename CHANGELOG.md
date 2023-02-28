@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/deven-org/telemetry-functions/compare/v1.0.0...v1.1.0) (2023-02-28)
+
+
+### Features
+
+* **functions:** remove log and release version ([e7db333](https://github.com/deven-org/telemetry-functions/commit/e7db333ff30b8e107e683c23f1916edfc11f9e72))
+* **functions:** write JSON files instead of base64 ([bb15f54](https://github.com/deven-org/telemetry-functions/commit/bb15f54f6ef7b0c21cb1b65ed741759bfc08ed60))
+
 ## 1.0.0 (2023-02-28)
 
 
