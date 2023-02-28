@@ -4,7 +4,7 @@ import {
   GithubClient,
   GithubGraphqlQueries,
   GithubRestQueries,
-} from "../../src/lib";
+} from "../../src/lib/github";
 
 loglevel.setLevel("info");
 
