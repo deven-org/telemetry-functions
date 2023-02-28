@@ -30,6 +30,13 @@ const handler = async (event) => {
       json: JSON.parse(String(event.body)),
     };
 
+    if (content.json.repository.full_name.includes("telemetry-data")) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify("skipping telemetry data repository"),
+      };
+    }
+
     const gh = github.client(process.env.GITHUB_ACCESS_TOKEN);
     const ghrepo = gh.repo(
       `${process.env.REPO_OWNER}/${process.env.REPO_NAME}`
