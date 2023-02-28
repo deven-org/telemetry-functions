@@ -28,6 +28,7 @@
     "@netlify/functions": "^1.4.0",
     "@octokit/graphql": "^5.0.5",
     "@octokit/rest": "^19.0.7",
+    "@octokit/types": "^9.0.0",
     "js-base64": "^3.7.5",
     "loglevel": "^1.8.1"
   },
