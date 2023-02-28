@@ -42,11 +42,9 @@ const handler = async (event) => {
     ghrepo.createContents(
       path,
       message,
-      content.base64,
+      JSON.stringify(content.json),
       process.env.TARGET_BRANCH,
-      (a) => {
-        console.log(a);
-      }
+      () => {}
     );
   } catch (e) {
     let errorMessage = e instanceof Error ? e.message : e;
