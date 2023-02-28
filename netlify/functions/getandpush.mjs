@@ -44,7 +44,9 @@ const handler = async (event) => {
       message,
       JSON.stringify(content.json),
       process.env.TARGET_BRANCH,
-      () => {}
+      () => {
+        console.log(`✅ Content has been created at ${path}.`);
+      }
     );
   } catch (e) {
     let errorMessage = e instanceof Error ? e.message : e;
