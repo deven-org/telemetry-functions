@@ -51,9 +51,7 @@ const handler = async (event) => {
       message,
       content.base64,
       process.env.TARGET_BRANCH,
-      (a) => {
-        console.log(a);
-      }
+      () => {}
     );
   } catch (e) {
     let errorMessage = e instanceof Error ? e.message : e;
