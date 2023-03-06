@@ -44,7 +44,8 @@ const handler = async (event) => {
       message,
       JSON.stringify(content.json),
       process.env.TARGET_BRANCH,
-      () => {
+      (err) => {
+        console.log(err);
         console.log(`✅ Content has been created at ${path}.`);
       }
     );
