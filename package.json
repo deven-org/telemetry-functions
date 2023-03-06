@@ -31,9 +31,11 @@
     "@octokit/types": "^9.0.0",
     "js-base64": "^3.7.5",
     "loglevel": "^1.8.1",
+    "netlify": "^13.1.2",
     "octonode": "^0.10.2"
   },
   "devDependencies": {
-    "@types/node": "^18.13.0"
+    "@types/node": "^18.13.0",
+    "netlify-cli": "^13.0.1"
   }
 }

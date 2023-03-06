@@ -1,36 +1,27 @@
 import { Base64 } from "js-base64";
-import * as github from "octonode";
-import { ERRORS, MANDATORY_ENV_VARS } from "../../config";
+import { ERRORS } from "../../src/shared/config";
+import { isHandlerEvent, areMandatoryEnvVarsSet } from "../../src/shared/utils";
+import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
+import { dataByAction, EventBody } from "../../src/dataByEvent";
+import {
+  GetResponseTypeFromEndpointMethod,
+  GetResponseDataTypeFromEndpointMethod,
+} from "@octokit/types";
 
-const isValidEvent = (arg) => arg && arg.body && typeof arg.body === "string";
-const areMandatoryEnvVarsSet = () => {
-  const invalidVars = [];
-  MANDATORY_ENV_VARS.forEach((p) => {
-    if (!process.env.hasOwnProperty(p) || !p) {
-      console.error(ERRORS.localEnvVarNotSet.replace("{p}", p));
-    }
-  });
-  return invalidVars.length === 0;
-};
-
-const handler = async (event) => {
+const handler: Handler = async (event: HandlerEvent) => {
   try {
-    if (!isValidEvent(event)) {
+    if (!isHandlerEvent(event)) {
       throw new Error(ERRORS.invalidEvent);
     }
-
     if (!areMandatoryEnvVarsSet()) {
-      throw new Error(
-        ERRORS.localEnvVarNotSet.replace("{p}", areMandatoryEnvVarsSet())
-      );
+      throw new Error(ERRORS.invalidLocalEnvVar);
     }
 
-    const content = {
-      base64: Base64.encode(String(event.body)),
-      json: JSON.parse(String(event.body)),
-    };
+    const eventBody: EventBody = JSON.parse(String(event.body));
+    const data = dataByAction(eventBody);
 
-    const gh = github.client(process.env.GITHUB_ACCESS_TOKEN);
+    console.log(data);
+    /*const gh = github.client(process.env.GITHUB_ACCESS_TOKEN);
     const ghrepo = gh.repo(
       `${process.env.REPO_OWNER}/${process.env.REPO_NAME}`
     );
@@ -47,7 +38,7 @@ const handler = async (event) => {
       () => {
         console.log(`✅ Content has been created at ${path}.`);
       }
-    );
+    );*/
   } catch (e) {
     let errorMessage = e instanceof Error ? e.message : e;
     console.error(`❌ ${errorMessage}`);
