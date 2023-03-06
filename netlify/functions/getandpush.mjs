@@ -52,7 +52,7 @@ const handler = async (event) => {
     console.log("message", message);
 
     console.log(
-      ghrepo.createContentsAsync(
+      await ghrepo.createContentsAsync(
         path,
         message,
         JSON.stringify(content.json),
