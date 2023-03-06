@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/deven-org/telemetry-functions/compare/v1.1.0...v1.2.0) (2023-03-06)
+
+
+### Features
+
+* **functions:** write JSON files instead of base64 ([3471b10](https://github.com/deven-org/telemetry-functions/commit/3471b101c5f5db7af44dcfc516fc298883678012))
+
+
+### Bug Fixes
+
+* show push error ([64ce354](https://github.com/deven-org/telemetry-functions/commit/64ce354dc5588a7e3ca9336d6f0223616c96ed26))
+* show push error ([ea31bd2](https://github.com/deven-org/telemetry-functions/commit/ea31bd20fe32c935a0bcbd1d8f145dfa16ed4c55))
+* show push error ([64f2eb3](https://github.com/deven-org/telemetry-functions/commit/64f2eb39f4a6c81f9d5d86419586c713cbe37321))
+* show push error ([aca964f](https://github.com/deven-org/telemetry-functions/commit/aca964f6ab0a9547b47c174ffe4309fa664bbd6c))
+* show push error ([21fecfb](https://github.com/deven-org/telemetry-functions/commit/21fecfb4f09770e9d978d7f30e343ad093dccc77))
+
 ## [1.1.0](https://github.com/deven-org/telemetry-functions/compare/v1.0.0...v1.1.0) (2023-02-28)
 
 
