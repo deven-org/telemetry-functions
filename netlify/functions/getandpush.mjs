@@ -15,6 +15,7 @@ const areMandatoryEnvVarsSet = () => {
 
 const handler = async (event) => {
   try {
+    console.log("Start...");
     if (!isValidEvent(event)) {
       throw new Error(ERRORS.invalidEvent);
     }
@@ -30,6 +31,8 @@ const handler = async (event) => {
       json: JSON.parse(String(event.body)),
     };
 
+    console.log("Content is ready..");
+
     const gh = github.client(process.env.GITHUB_ACCESS_TOKEN);
     const ghrepo = gh.repo(
       `${process.env.REPO_OWNER}/${process.env.REPO_NAME}`
@@ -37,8 +40,17 @@ const handler = async (event) => {
     const path = `${process.env.REPO_PATH}/${
       content.json.repository.full_name
     }/${Date.now()}.json`;
+
+    console.log("path", path);
+
     const action = content.json.action ? `- ${content.json.action}` : null;
+
+    console.log("action", action);
+
     const message = `auto(data): ${content.json.repository.full_name} ${action}`;
+
+    console.log("message", message);
+
     ghrepo.createContents(
       path,
       message,
