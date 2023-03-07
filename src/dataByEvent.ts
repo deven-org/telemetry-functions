@@ -24,6 +24,10 @@ export interface EventBody {
   };
 }
 
+const getPath = (owner, repo, date) => `${owner}/${repo}/${date}}.json`;
+const getMessage = (owner, repo, action) =>
+  `auto(data): ${owner}/${repo} - ${action}`;
+
 export type Content = CommonData | CompletedData;
 
 export const dataByAction = (eventBody: EventBody): Data => {
@@ -35,5 +39,9 @@ export const dataByAction = (eventBody: EventBody): Data => {
       break;
   }
 
-  return { path: "", message: "", content: data };
+  return {
+    path: getPath(data.owner, data.repo, Date.now()),
+    message: getMessage(data.owner, data.repo, eventBody.action),
+    content: data,
+  };
 };

@@ -19,12 +19,35 @@ process.env.COMMITER_EMAIL = "commiter_name";
 process.env.AUTHOR_NAME = "name";
 process.env.AUTHOR_EMAIL = "email";
 
+const eventBody = {
+  action: "action",
+  repository: {
+    full_name: "full_name/test",
+  },
+};
+
+const mockDate = 1676473416417;
+const spy = jest.spyOn(global.Date, "now").mockImplementation(() => mockDate);
+
 describe("dataByEvent", () => {
   describe("dataByAction", () => {
     beforeEach(() => {});
 
     afterEach(() => {});
 
-    it("returns status code 500 with invalidEvent error message", async () => {});
+    it("returns a filename and a commit message for an event", async () => {
+      const data = dataByAction(eventBody);
+      expect(data).toStrictEqual({
+        path: `full_name/test/${mockDate}.json`,
+        message: `auto(data): full_name/test - ${eventBody.action}`,
+        content: {
+          action: eventBody.action,
+          repo: "test",
+          owner: "full_name",
+        },
+      });
+    });
+
+    it("......", async () => {});
   });
 });
