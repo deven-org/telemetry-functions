@@ -7,6 +7,7 @@ import {
   GetResponseTypeFromEndpointMethod,
   GetResponseDataTypeFromEndpointMethod,
 } from "@octokit/types";
+import { Octokit } from "@octokit/rest";
 
 const handler: Handler = async (event: HandlerEvent) => {
   try {
@@ -20,31 +21,31 @@ const handler: Handler = async (event: HandlerEvent) => {
     const eventBody: EventBody = JSON.parse(String(event.body));
     const data = dataByAction(eventBody);
 
-    console.log(data);
-    /*const gh = github.client(process.env.GITHUB_ACCESS_TOKEN);
-    const ghrepo = gh.repo(
-      `${process.env.REPO_OWNER}/${process.env.REPO_NAME}`
+    const octokit = new Octokit({
+      auth: process.env.GITHUB_ACCESS_TOKEN,
+    });
+
+    await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+      owner: process.env.REPO_OWNER as string,
+      repo: process.env.REPO_NAME as string,
+      path: data.path,
+      message: data.message,
+      committer: {
+        name: process.env.COMMITER_NAME as string,
+        email: process.env.COMMITER_EMAIL as string,
+      },
+      content: Base64.encode(JSON.stringify(data.content)),
+    });
+
+    console.log(
+      `✅ File "${data.path}" has been created with message: "${data.message}".`
     );
-    const path = `${process.env.REPO_PATH}/${
-      content.json.repository.full_name
-    }/${Date.now()}.json`;
-    const action = content.json.action ? `- ${content.json.action}` : null;
-    const message = `auto(data): ${content.json.repository.full_name} ${action}`;
-    ghrepo.createContents(
-      path,
-      message,
-      JSON.stringify(content.json),
-      process.env.TARGET_BRANCH,
-      () => {
-        console.log(`✅ Content has been created at ${path}.`);
-      }
-    );*/
   } catch (e) {
     let errorMessage = e instanceof Error ? e.message : e;
     console.error(`❌ ${errorMessage}`);
     return {
       statusCode: 500,
-      body: JSON.stringify(errorMessage),
+      body: `${errorMessage}`,
     };
   }
 

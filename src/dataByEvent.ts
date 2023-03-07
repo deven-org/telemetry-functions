@@ -1,5 +1,11 @@
 import { extractCommonData, appendByCompleted } from "./data-extractors";
 
+export interface Data {
+  path: string;
+  message: string;
+  content: Content;
+}
+
 export interface CommonData {
   action: string;
   repo: string;
@@ -18,10 +24,10 @@ export interface EventBody {
   };
 }
 
-type Data = CommonData | CompletedData;
+export type Content = CommonData | CompletedData;
 
 export const dataByAction = (eventBody: EventBody): Data => {
-  let data: Data = extractCommonData(eventBody);
+  let data: Content = extractCommonData(eventBody);
 
   switch (eventBody.action) {
     case "completed":
@@ -29,5 +35,5 @@ export const dataByAction = (eventBody: EventBody): Data => {
       break;
   }
 
-  return data;
+  return { path: "", message: "", content: data };
 };
