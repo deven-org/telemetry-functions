@@ -31,7 +31,9 @@ function getEventBody(event): Promise<EventBody> {
 }
 
 function createDataObject(eventBody: EventBody): Promise<Data> {
-  return new Promise((res) => res(dataByAction(eventBody)));
+  return new Promise((res, rej) => {
+    // validateDataObject(dataByAction(eventBody)) ? res(data) : rej(ERRORS.invalidDataObject)
+  });
 }
 
 function pushDataDoGithub(data: Data): Promise<any> {

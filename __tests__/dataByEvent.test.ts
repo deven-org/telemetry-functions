@@ -20,7 +20,7 @@ process.env.AUTHOR_NAME = "name";
 process.env.AUTHOR_EMAIL = "email";
 
 const eventBody = {
-  action: "action",
+  action: "default",
   repository: {
     full_name: "full_name/test",
   },
@@ -48,6 +48,32 @@ describe("dataByEvent", () => {
       });
     });
 
-    it("......", async () => {});
+    it("returns number of commits", async () => {
+      const data = dataByAction({ ...eventBody, action: "completed" });
+      expect(data).toStrictEqual({
+        path: `full_name/test/${mockDate}.json`,
+        message: `auto(data): full_name/test - ${data.content.action}`,
+        content: {
+          action: data.content.action,
+          repo: "test",
+          commits: 0,
+          owner: "full_name",
+        },
+      });
+    });
+
+    it.only("returns my name", async () => {
+      const data = dataByAction({ ...eventBody, action: "raffa" });
+      expect(data).toStrictEqual({
+        path: `full_name/test/${mockDate}.json`,
+        message: `auto(data): full_name/test - ${data.content.action}`,
+        content: {
+          action: data.content.action,
+          repo: "test",
+          owner: "full_name",
+          name: "raffaele",
+        },
+      });
+    });
   });
 });

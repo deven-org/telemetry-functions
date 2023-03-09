@@ -66,9 +66,19 @@ describe("Getandpush", () => {
       process.env.GITHUB_ACCESS_TOKEN = "token";
     });
     it("calls dataByAction with the payload", async () => {
-      await handler(basicEventObj as HandlerEvent, {} as HandlerContext);
+      const response = await handler(
+        basicEventObj as HandlerEvent,
+        {} as HandlerContext
+      );
       expect(dataByAction).toHaveBeenCalledWith(JSON.parse(basicEventObj.body));
     });
+    /* it("ross", async () => {
+      const response = await handler(
+        basicEventObj as HandlerEvent,
+        {} as HandlerContext
+      );
+      expect(response).toStrictEqual({});
+    }); */
     it("call the Octokit request with the right parameters", async () => {
       const octokit = new Octokit({
         auth: process.env.GITHUB_ACCESS_TOKEN,

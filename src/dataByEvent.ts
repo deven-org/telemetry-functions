@@ -1,5 +1,6 @@
 import { extractCommonData, appendByCompleted } from "./data-extractors";
 import { getPath } from "./shared/utils";
+import R from "ramda";
 
 export interface Data {
   path: string;
@@ -30,18 +31,29 @@ const getMessage = (owner, repo, action) =>
 
 export type Content = CommonData | CompletedData;
 
-export const dataByAction = (eventBody: EventBody): Data => {
-  let data: Content = extractCommonData(eventBody);
+const isCompleted = R.propEq("action", "completed");
+const isRaffa = R.propEq("action", "raffa");
 
-  switch (eventBody.action) {
-    case "completed":
-      data = appendByCompleted(data, eventBody);
-      break;
-  }
-
+export const appendByRaffa = (data): CompletedData => {
   return {
-    path: getPath([data.owner, data.repo, `${Date.now()}.json`]),
-    message: getMessage(data.owner, data.repo, eventBody.action),
-    content: data,
+    ...data,
+    action: "raffa",
+    name: "raffaele",
   };
 };
+
+const appendByAction = (data: CommonData) =>
+  R.cond([
+    [isCompleted, appendByCompleted],
+    [isRaffa, appendByRaffa],
+    [R.T, R.always(data)],
+  ])(data);
+
+const createReturnObject = (data: Content): Data => ({
+  path: getPath([data.owner, data.repo, `${Date.now()}.json`]),
+  message: getMessage(data.owner, data.repo, data.action),
+  content: data,
+});
+
+export const dataByAction = (eventBody: EventBody): Data =>
+  R.pipe(extractCommonData, appendByAction, createReturnObject)(eventBody);
