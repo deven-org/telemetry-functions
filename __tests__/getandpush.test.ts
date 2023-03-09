@@ -46,7 +46,6 @@ describe("Getandpush", () => {
 
     it("returns status code 500 with invalidEvent error message", async () => {
       const error = await handler({} as HandlerEvent, {} as HandlerContext);
-      expect(console.error).toHaveBeenCalledWith(`❌ ${ERRORS.invalidEvent}`);
       expect(error).toStrictEqual({
         body: ERRORS.invalidEvent,
         statusCode: 500,
@@ -58,9 +57,6 @@ describe("Getandpush", () => {
       const error = await handler(
         basicEventObj as HandlerEvent,
         {} as HandlerContext
-      );
-      expect(console.error).toHaveBeenCalledWith(
-        `${ERRORS.localEnvVarNotSet.replace("{p}", "GITHUB_ACCESS_TOKEN")}`
       );
       expect(error).toStrictEqual({
         body: ERRORS.invalidLocalEnvVar,

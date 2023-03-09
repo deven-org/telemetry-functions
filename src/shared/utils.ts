@@ -1,17 +1,25 @@
 import { HandlerEvent } from "@netlify/functions";
 import { ERRORS, MANDATORY_ENV_VARS } from "./config";
 
-export const isHandlerEvent = (obj: any): obj is HandlerEvent =>
-  obj && obj.body && typeof obj.body === "string";
+import {
+  join,
+  pipe,
+  toLower,
+  propIs,
+  difference,
+  keys,
+  equals,
+  length,
+} from "ramda";
 
-export const areMandatoryEnvVarsSet = () => {
-  const invalidVars: string[] = [];
+export const getPath = (pieces: string[]) => pipe(join("/"), toLower)(pieces);
 
-  MANDATORY_ENV_VARS.forEach((p) => {
-    if (!process.env.hasOwnProperty(p) || !p) {
-      console.error(ERRORS.localEnvVarNotSet.replace("{p}", p));
-      invalidVars.push(p);
-    }
-  });
-  return invalidVars.length === 0;
+export const isHandlerEvent = (obj) => propIs(String, "body")(obj);
+
+export const areMandatoryEnvVarsSet = (vars) => {
+  return pipe(keys, difference(MANDATORY_ENV_VARS), length, equals(0))(vars);
+};
+
+export const throwError = (message: string): never => {
+  throw new Error(message);
 };

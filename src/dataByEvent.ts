@@ -1,4 +1,5 @@
 import { extractCommonData, appendByCompleted } from "./data-extractors";
+import { getPath } from "./shared/utils";
 
 export interface Data {
   path: string;
@@ -24,7 +25,6 @@ export interface EventBody {
   };
 }
 
-const getPath = (owner, repo, date) => `${owner}/${repo}/${date}}.json`;
 const getMessage = (owner, repo, action) =>
   `auto(data): ${owner}/${repo} - ${action}`;
 
@@ -40,7 +40,7 @@ export const dataByAction = (eventBody: EventBody): Data => {
   }
 
   return {
-    path: getPath(data.owner, data.repo, Date.now()),
+    path: getPath([data.owner, data.repo, `${Date.now()}.json`]),
     message: getMessage(data.owner, data.repo, eventBody.action),
     content: data,
   };
