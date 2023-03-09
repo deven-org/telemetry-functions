@@ -1,6 +1,10 @@
 import { Base64 } from "js-base64";
 import { ERRORS } from "../../src/shared/config";
-import { isHandlerEvent, areMandatoryEnvVarsSet } from "../../src/shared/utils";
+import {
+  isHandlerEvent,
+  areMandatoryEnvVarsSet,
+  validateDataObject,
+} from "../../src/shared/utils";
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { Data, dataByAction, EventBody } from "../../src/dataByEvent";
 import R from "ramda";
@@ -32,11 +36,12 @@ function getEventBody(event): Promise<EventBody> {
 
 function createDataObject(eventBody: EventBody): Promise<Data> {
   return new Promise((res, rej) => {
-    // validateDataObject(dataByAction(eventBody)) ? res(data) : rej(ERRORS.invalidDataObject)
+    const data = dataByAction(eventBody);
+    validateDataObject(data) ? res(data) : rej(ERRORS.invalidDataObject);
   });
 }
 
-function pushDataDoGithub(data: Data): Promise<any> {
+function pushDataToGithub(data: Data): Promise<any> {
   const octokit = new Octokit({
     auth: process.env.GITHUB_ACCESS_TOKEN,
   });
@@ -47,8 +52,8 @@ function pushDataDoGithub(data: Data): Promise<any> {
     path: data.path,
     message: data.message,
     committer: {
-      name: process.env.COMMITER_NAME as string,
-      email: process.env.COMMITER_EMAIL as string,
+      name: process.env.COMMITTER_NAME as string,
+      email: process.env.COMMITTER_EMAIL as string,
     },
     content: Base64.encode(JSON.stringify(data.content)),
   });
@@ -60,7 +65,7 @@ const handler: Handler = (event: HandlerEvent) =>
     validateEnvVars,
     getEventBody,
     createDataObject,
-    pushDataDoGithub,
+    pushDataToGithub,
   ])(event).catch(createObjectError);
 
 export { handler };

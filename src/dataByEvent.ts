@@ -32,20 +32,10 @@ const getMessage = (owner, repo, action) =>
 export type Content = CommonData | CompletedData;
 
 const isCompleted = R.propEq("action", "completed");
-const isRaffa = R.propEq("action", "raffa");
-
-export const appendByRaffa = (data): CompletedData => {
-  return {
-    ...data,
-    action: "raffa",
-    name: "raffaele",
-  };
-};
 
 const appendByAction = (data: CommonData) =>
   R.cond([
     [isCompleted, appendByCompleted],
-    [isRaffa, appendByRaffa],
     [R.T, R.always(data)],
   ])(data);
 
