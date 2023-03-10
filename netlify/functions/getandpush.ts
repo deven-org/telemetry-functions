@@ -33,7 +33,6 @@ function validateEnvVars(event: HandlerEvent): Promise<HandlerEvent> {
 function getEventBody(event): Promise<EventBody> {
   return new Promise((res) => res(JSON.parse(String(event.body))));
 }
-
 function createDataObject(eventBody: EventBody): Promise<Data> {
   return new Promise((res, rej) => {
     const data = dataByAction(eventBody);
@@ -68,4 +67,4 @@ const handler: Handler = (event: HandlerEvent) =>
     pushDataToGithub,
   ])(event).catch(createObjectError);
 
-export { handler };
+export { handler, createDataObject };

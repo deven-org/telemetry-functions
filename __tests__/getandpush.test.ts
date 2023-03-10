@@ -1,16 +1,17 @@
-import { handler } from "../netlify/functions/getandpush";
+import { handler, createDataObject } from "../netlify/functions/getandpush";
 import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
 import { ERRORS } from "../src/shared/config";
 import { dataByAction, EventBody } from "../src/dataByEvent";
 import { Octokit } from "@octokit/rest";
 import { Base64 } from "js-base64";
+import { validateDataObject } from "../src/shared/utils";
 
 const basicEventObj = {
   body: JSON.stringify("test"),
 };
 
 let dataByActionResponse: any = {
-  content: "test-content",
+  content: { testProperty: "test-content" },
   path: "test/path",
   message: "test-message",
 };
@@ -46,7 +47,7 @@ describe("Getandpush", () => {
 
     afterEach(() => {
       dataByActionResponse = {
-        content: "test-content",
+        content: { testProperty: "test-content" },
         path: "test/path",
         message: "test-message",
       };
@@ -80,16 +81,24 @@ describe("Getandpush", () => {
       );
       expect(dataByAction).toHaveBeenCalledWith(JSON.parse(basicEventObj.body));
     });
-    it.only("checks validity of data object", async () => {
+    it("throws an error when invalid data is passed ", async () => {
       dataByActionResponse = { content: {} };
-      const response = await handler(
-        basicEventObj as HandlerEvent,
-        {} as HandlerContext
-      );
-      expect(response).toStrictEqual({
-        statusCode: 500,
-        body: ERRORS.invalidDataObject,
-      });
+      let error;
+      try {
+        const response = await createDataObject({} as EventBody);
+      } catch (err) {
+        error = err;
+      }
+      expect(error).toBe(ERRORS.invalidDataObject);
+    });
+    it("checks validity of data object", async () => {
+      let error;
+      try {
+        const response = await createDataObject({} as EventBody);
+      } catch (err) {
+        error = err;
+      }
+      expect(error).not.toBe(ERRORS.invalidDataObject);
     });
     it("call the Octokit request with the right parameters", async () => {
       const octokit = new Octokit({
@@ -109,7 +118,9 @@ describe("Getandpush", () => {
             name: process.env.COMMITTER_NAME,
             email: process.env.COMMITTER_EMAIL,
           },
-          content: Base64.encode(JSON.stringify("test-content")),
+          content: Base64.encode(
+            JSON.stringify({ testProperty: "test-content" })
+          ),
         }
       );
     });
