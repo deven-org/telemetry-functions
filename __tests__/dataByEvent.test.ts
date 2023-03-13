@@ -1,13 +1,13 @@
-import { handler } from "../netlify/functions/getandpush";
-import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
-import { ERRORS } from "../src/shared/config";
-import { dataByAction, EventBody } from "../src/dataByEvent";
-import { Octokit } from "@octokit/rest";
-import { Base64 } from "js-base64";
+import { dataByAction } from "../src/dataByEvent";
+import fetchMock from "fetch-mock";
+import dotenv from "dotenv";
 
 const basicEventObj = {
   body: JSON.stringify("test"),
 };
+
+dotenv.config({ path: ".env" });
+console.log(process.env.GITHUB_ACCESS_TOKEN);
 
 process.env.REPO_NAME = "telemetry-data";
 process.env.REPO_OWNER = "deven-org";
@@ -25,6 +25,11 @@ const eventBody = {
     full_name: "full_name/test",
   },
 };
+
+fetchMock.sandbox().post("https://api.github.com/graphql", (url, options) => {
+  console.log(options);
+  return { data: {} };
+});
 
 const mockDate = 1676473416417;
 const spy = jest.spyOn(global.Date, "now").mockImplementation(() => mockDate);
@@ -48,7 +53,20 @@ describe("dataByEvent", () => {
       });
     });
 
-    it("returns number of commits", async () => {
+    it.only("returns number of commits", async () => {
+      fetchMock.mock().post(
+        "https://api.github.com/graphql",
+        (
+          url,
+          options: fetchMock.MockRequest & {
+            headers: { authorization: string };
+          }
+        ) => {
+          console.log(options.headers.authorization);
+          return { data: {} };
+        }
+      );
+
       const data = dataByAction({ ...eventBody, action: "completed" });
       expect(data).toStrictEqual({
         path: `full_name/test/${mockDate}.json`,

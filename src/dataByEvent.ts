@@ -26,14 +26,14 @@ export interface EventBody {
   };
 }
 
+export type Content = CommonData | CompletedData;
+
 const getMessage = (owner, repo, action) =>
   `auto(data): ${owner}/${repo} - ${action}`;
 
-export type Content = CommonData | CompletedData;
-
 const isCompleted = R.propEq("action", "completed");
 
-const appendByAction = (data: CommonData) =>
+const appendByAction = (data: CommonData): Data =>
   R.cond([
     [isCompleted, appendByCompleted],
     [R.T, R.always(data)],
