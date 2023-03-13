@@ -17,7 +17,7 @@ export const markAsNotParsed = (data): CommonData => {
 const extractByAction = async (data: CommonData): Promise<Data> =>
   R.cond([
     [isClosed, await extractByClosed],
-    [R.T, markAsNotParsed(data)],
+    [R.T, markAsNotParsed],
   ])(data);
 
 export const dataByAction = (eventBody: EventBody): Data =>
