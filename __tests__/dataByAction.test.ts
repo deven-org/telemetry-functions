@@ -24,6 +24,22 @@ describe("dataByEvent", () => {
       });
     });
 
+    it("returns a filename and a commit message for an event", async () => {
+      const data = await dataByAction({
+        ...fixtureMergedPullRequest,
+        action: "foo",
+      });
+
+      expect(data).toMatchObject({
+        path: `deven-org/telemetry-functions/1676473416417.json`,
+        message: `auto(data): deven-org/telemetry-functions - foo (not parsed)`,
+        content: {
+          action: "foo",
+          owner: "deven-org",
+          repo: "telemetry-functions",
+        },
+      });
+    });
     it("returns true if it has been merged", async () => {
       const data = await dataByAction(fixtureMergedPullRequest);
 
