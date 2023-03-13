@@ -42,11 +42,11 @@
     "netlify": "^13.1.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.4.0",
+    "@types/jest": "^29.4.1",
     "@types/node": "^18.13.0",
     "netlify-cli": "^13.0.1",
-    "ts-jest": "^29.0.5",
+    "ramda": "^0.28.0",
     "semver": "^7.3.8",
-    "ramda": "^0.28.0"
+    "ts-jest": "^29.0.5"
   }
 }

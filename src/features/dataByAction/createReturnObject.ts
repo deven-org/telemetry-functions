@@ -2,7 +2,9 @@ import R from "ramda";
 import { Content, Data } from "../../interface";
 
 const getMessage = (owner, repo, action, parsed) =>
-  `auto(data): ${owner}/${repo} - ${action} ${parsed ? "" : "[not catched]"}`;
+  `auto(data): ${owner}/${repo} - ${action} ${
+    parsed ? "[parsed]" : "[not parsed]"
+  }`;
 
 export const getPath = (pieces: string[]) =>
   R.pipe(R.join("/"), R.toLower)(pieces);
