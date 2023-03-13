@@ -15,7 +15,7 @@ describe("dataByEvent", () => {
 
       expect(data).toMatchObject({
         path: `deven-org/telemetry-functions/1676473416417.json`,
-        message: `auto(data): deven-org/telemetry-functions - closed [parsed]`,
+        message: `auto(data): deven-org/telemetry-functions - closed`,
         content: {
           action: "closed",
           owner: "deven-org",
@@ -39,7 +39,7 @@ describe("dataByEvent", () => {
 
       expect(data).toMatchObject({
         path: `deven-org/telemetry-functions/1676473416417.json`,
-        message: `auto(data): deven-org/telemetry-functions - closed [parsed]`,
+        message: `auto(data): deven-org/telemetry-functions - closed`,
         content: {
           commits: 1,
         },
@@ -50,7 +50,7 @@ describe("dataByEvent", () => {
       const data = await dataByAction(fixtureMergedPullRequest);
       expect(data).toMatchObject({
         path: `deven-org/telemetry-functions/1676473416417.json`,
-        message: `auto(data): deven-org/telemetry-functions - closed [parsed]`,
+        message: `auto(data): deven-org/telemetry-functions - closed`,
         content: {
           review_comments: 0,
         },
@@ -61,7 +61,7 @@ describe("dataByEvent", () => {
       const data = await dataByAction(fixtureMergedPullRequest);
       expect(data).toMatchObject({
         path: `deven-org/telemetry-functions/1676473416417.json`,
-        message: `auto(data): deven-org/telemetry-functions - closed [parsed]`,
+        message: `auto(data): deven-org/telemetry-functions - closed`,
         content: {
           changed_files: 3,
         },
@@ -74,7 +74,7 @@ describe("dataByEvent", () => {
 
         expect(data).toMatchObject({
           path: `deven-org/telemetry-functions/1676473416417.json`,
-          message: `auto(data): deven-org/telemetry-functions - closed [parsed]`,
+          message: `auto(data): deven-org/telemetry-functions - closed`,
           content: {
             duration: 1128042000,
           },

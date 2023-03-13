@@ -37,9 +37,7 @@
     "@octokit/rest": "^19.0.7",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
-    "js-base64": "^3.7.5",
-    "moment": "^2.29.4",
-    "netlify": "^13.1.2"
+    "js-base64": "^3.7.5"
   },
   "devDependencies": {
     "@types/jest": "^29.4.1",
@@ -47,6 +45,8 @@
     "netlify-cli": "^13.0.1",
     "ramda": "^0.28.0",
     "semver": "^7.3.8",
-    "ts-jest": "^29.0.5"
+    "ts-jest": "^29.0.5",
+    "moment": "^2.29.4",
+    "netlify": "^13.1.2"
   }
 }

@@ -7,10 +7,17 @@ const isClosed = R.propEq("action", "closed");
 
 const callOrThen = (f, val) => (val && val.then ? val.then(f) : f(val));
 
+export const markAsNotParsed = (data): CommonData => {
+  return {
+    notParsed: true,
+    ...data,
+  };
+};
+
 const extractByAction = async (data: CommonData): Promise<Data> =>
   R.cond([
     [isClosed, await extractByClosed],
-    [R.T, R.always(data)],
+    [R.T, markAsNotParsed(data)],
   ])(data);
 
 export const dataByAction = (eventBody: EventBody): Data =>
