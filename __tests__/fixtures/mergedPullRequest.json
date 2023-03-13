@@ -1,0 +1,26 @@
+{
+  "data": {
+    "repository": {
+      "pullRequest": {
+        "changedFiles": 1,
+        "closed": true,
+        "closedAt": "2023-02-03T14:33:56Z",
+        "createdAt": "2023-02-03T14:33:38Z",
+        "deletions": 0,
+        "files": {
+          "totalCount": 1
+        },
+        "merged": true,
+        "mergedAt": "2023-02-03T14:33:56Z",
+        "number": 10,
+        "publishedAt": "2023-02-03T14:33:38Z",
+        "state": "MERGED",
+        "title": "Develop",
+        "totalCommentsCount": 0,
+        "commits": {
+          "totalCount": 5
+        }
+      }
+    }
+  }
+}

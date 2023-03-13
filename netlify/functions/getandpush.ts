@@ -1,15 +1,25 @@
-import { Base64 } from "js-base64";
-import { ERRORS } from "../../src/shared/config";
-import {
-  isHandlerEvent,
-  areMandatoryEnvVarsSet,
-  validateDataObject,
-} from "../../src/shared/utils";
-import { Handler, HandlerEvent } from "@netlify/functions";
-import { Data, dataByAction, EventBody } from "../../src/dataByEvent";
 import R from "ramda";
-
+import { Base64 } from "js-base64";
+import { ERRORS, MANDATORY_ENV_VARS } from "../../src/shared/config";
+import { Handler, HandlerEvent } from "@netlify/functions";
+import { Data, EventBody } from "../../src/interface";
+import { dataByAction } from "../../src/features/dataByAction";
 import { Octokit } from "@octokit/rest";
+
+export const isHandlerEvent = (obj) => R.propIs(String, "body")(obj);
+
+export const areMandatoryEnvVarsSet = (vars) => {
+  return R.pipe(
+    R.keys,
+    R.difference(MANDATORY_ENV_VARS),
+    R.length,
+    R.equals(0)
+  )(vars);
+};
+
+export const throwError = (message: string): never => {
+  throw new Error(message);
+};
 
 export const createObjectError = (e: Error | string) => ({
   statusCode: 500,
@@ -22,6 +32,13 @@ function validateHandlerEvent(event: HandlerEvent): Promise<HandlerEvent> {
   );
 }
 
+export const validateDataObject = (data) =>
+  R.allPass([
+    R.propIs(String, "path"),
+    R.propIs(String, "message"),
+    R.propIs(Object, "content"),
+  ])(data);
+
 function validateEnvVars(event: HandlerEvent): Promise<HandlerEvent> {
   return new Promise((res, rej) =>
     areMandatoryEnvVarsSet(process.env)
@@ -33,6 +50,7 @@ function validateEnvVars(event: HandlerEvent): Promise<HandlerEvent> {
 function getEventBody(event): Promise<EventBody> {
   return new Promise((res) => res(JSON.parse(String(event.body))));
 }
+
 function createDataObject(eventBody: EventBody): Promise<Data> {
   return new Promise((res, rej) => {
     const data = dataByAction(eventBody);

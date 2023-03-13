@@ -1,10 +1,10 @@
 import { handler, createDataObject } from "../netlify/functions/getandpush";
-import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
+import { HandlerEvent, HandlerContext } from "@netlify/functions";
 import { ERRORS } from "../src/shared/config";
-import { dataByAction, EventBody } from "../src/dataByEvent";
+import { dataByAction } from "../src/features/dataByAction";
+import { EventBody } from "../src/interface";
 import { Octokit } from "@octokit/rest";
 import { Base64 } from "js-base64";
-import { validateDataObject } from "../src/shared/utils";
 
 const basicEventObj = {
   body: JSON.stringify("test"),
@@ -16,12 +16,13 @@ let dataByActionResponse: any = {
   message: "test-message",
 };
 
-jest.mock("../src/dataByEvent", () => ({
+jest.mock("../src/features/dataByAction", () => ({
   __esModule: true,
   dataByAction: jest.fn().mockImplementation(() => dataByActionResponse),
 }));
 
 const request = jest.fn();
+
 jest.mock("@octokit/rest", () => {
   return {
     Octokit: function () {
@@ -61,6 +62,7 @@ describe("Getandpush", () => {
       });
       expect(dataByAction).toHaveBeenCalledTimes(0);
     });
+
     it("returns status code 500 with invalidLocalEnvVar error message", async () => {
       delete process.env.GITHUB_ACCESS_TOKEN;
       const error = await handler(
@@ -74,6 +76,7 @@ describe("Getandpush", () => {
       expect(dataByAction).toHaveBeenCalledTimes(0);
       process.env.GITHUB_ACCESS_TOKEN = "token";
     });
+
     it("calls dataByAction with the payload", async () => {
       const response = await handler(
         basicEventObj as HandlerEvent,
@@ -81,6 +84,7 @@ describe("Getandpush", () => {
       );
       expect(dataByAction).toHaveBeenCalledWith(JSON.parse(basicEventObj.body));
     });
+
     it("throws an error when invalid data is passed ", async () => {
       dataByActionResponse = { content: {} };
       let error;
@@ -100,6 +104,7 @@ describe("Getandpush", () => {
       }
       expect(error).not.toBe(ERRORS.invalidDataObject);
     });
+
     it("call the Octokit request with the right parameters", async () => {
       const octokit = new Octokit({
         auth: process.env.GITHUB_ACCESS_TOKEN,

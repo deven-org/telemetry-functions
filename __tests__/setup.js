@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 global.console = {
   ...console,
   //log: jest.fn(),
@@ -6,3 +8,5 @@ global.console = {
   warn: jest.fn(),
   error: jest.fn(),
 };
+
+dotenv.config({ path: ".test.env" });
