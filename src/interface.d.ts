@@ -5,7 +5,7 @@ export interface Data {
 }
 
 export interface CommonData {
-  parsed: boolean;
+  parsed?: boolean;
   action: string;
   repo: string;
   owner: string;
