@@ -3,6 +3,7 @@ import moment from "moment";
 export enum DataEventSignature {
   Packages = "packages",
   MergedPR = "merged-pr",
+  WorkflowJobCompleted = "workflow-job-completed",
   TestCoverage = "test-coverage",
 }
 
@@ -18,13 +19,13 @@ export interface MergedPrOutput {
   duration: number;
 }
 
+export type WorkflowJobCompletedPayload = any;
 type PackagesOutput = any;
 type TestCoverageOutput = any;
 
 type PackagesPayload = any;
 export type MergedPrPayload = any;
 type TestCoveragePayload = any;
-
 interface DataEventPayloadMap {
   [DataEventSignature.Packages]: PackagesPayload;
   [DataEventSignature.MergedPR]: MergedPrPayload;

@@ -1,5 +1,5 @@
 import { DataEvent, logger, MergedPrOutput, MergedPrPayload } from "../../core";
-import { getDuration } from "./getDuration";
+import { getDuration } from "../../shared/getDuration";
 import { getReleaseByTitle } from "./getReleaseByTitle";
 import { keys } from "ramda";
 
