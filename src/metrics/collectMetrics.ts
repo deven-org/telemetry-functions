@@ -9,6 +9,7 @@ import {
 import { cond, T, always, clone, pipe, omit } from "ramda";
 import { collectPackagesMetrics } from "./packages";
 import { collectMergedPrMetrics } from "./prs";
+import { collectWorfklowJobCompletedMetrics } from "./workflows";
 import { LogErrors, LogInfos } from "../shared/logMessages";
 
 const isSignedAsPackages = (dataEvent: DataEvent) =>
@@ -17,9 +18,13 @@ const isSignedAsPackages = (dataEvent: DataEvent) =>
 const isSignedAsMergedPr = (dataEvent: DataEvent) =>
   dataEvent.dataEventSignature === DataEventSignature.MergedPR;
 
+const isSignedAsWorkflowJobCompleted = (dataEvent: DataEvent) =>
+  dataEvent.dataEventSignature === DataEventSignature.WorkflowJobCompleted;
+
 const collectMetricsBySignature = cond([
   [isSignedAsPackages, collectPackagesMetrics],
   [isSignedAsMergedPr, collectMergedPrMetrics],
+  [isSignedAsWorkflowJobCompleted, collectWorfklowJobCompletedMetrics],
   [T, always(undefined)],
 ]);
 

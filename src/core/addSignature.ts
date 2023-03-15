@@ -7,7 +7,11 @@ import {
   logger,
 } from ".";
 import { cond, T, always, pipe, clone } from "ramda";
-import { isPackages, isMergedPr } from "./signingConditions";
+import {
+  isPackages,
+  isMergedPr,
+  isWorkflowJobCompleted,
+} from "./signingConditions";
 import { LogInfos } from "../shared/logMessages";
 
 const createSignedDataEvent =
@@ -24,6 +28,10 @@ const createSignedDataEvent =
 const signDataEvent = cond([
   [isPackages, createSignedDataEvent(DataEventSignature.Packages)],
   [isMergedPr, createSignedDataEvent(DataEventSignature.MergedPR)],
+  [
+    isWorkflowJobCompleted,
+    createSignedDataEvent(DataEventSignature.WorkflowJobCompleted),
+  ],
   [T, always(false)],
 ]);
 
