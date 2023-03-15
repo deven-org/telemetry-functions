@@ -6,6 +6,6 @@ export const isMergedPr = allPass([
   propEq("action", "closed"),
 ]);
 export const isWorkflowJobCompleted = allPass([
-  propEq("eventSignature", "workflow"),
+  propEq("eventSignature", "workflow_job"),
   propEq("action", "completed"),
 ]);
