@@ -14,5 +14,9 @@ export const getRejectionReason = (error: ErrorForCatcher): ErrorForCatcher =>
   error;
 
 export const errorCatcher = (error: ErrorForCatcher) => {
-  logger[error.level](error.message);
+  if (!error.level) {
+    logger.error(error);
+  } else {
+    logger[error.level](error.message);
+  }
 };

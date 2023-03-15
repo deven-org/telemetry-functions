@@ -20,7 +20,7 @@ export const collectWorfklowJobCompletedMetrics = (
     started_at: payload.workflow_job.started_at,
     status: payload.workflow_job.status,
     name: payload.workflow_job.name,
-    workflow_name: payload.workflow.workflow_name,
+    workflow_name: payload.workflow_job.workflow_name,
     run_attempt: payload.workflow_job.run_attempt,
     steps: payload.workflow_job.steps,
     duration: getDuration(
