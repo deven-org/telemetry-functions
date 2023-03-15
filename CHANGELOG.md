@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/deven-org/telemetry-functions/compare/v1.0.0...v1.1.0) (2023-03-15)
+
+
+### Features
+
+* add initial flow ([ebe0431](https://github.com/deven-org/telemetry-functions/commit/ebe043109322eca75f41aae43f5143675f0919f1))
+
+
+### Bug Fixes
+
+* **packages:** remove useless package ([985c928](https://github.com/deven-org/telemetry-functions/commit/985c928af58ec7ebf9c5350530938d024b235444))
+
 ## 1.0.0 (2023-03-15)
 
 
