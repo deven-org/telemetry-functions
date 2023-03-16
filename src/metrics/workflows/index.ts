@@ -1,19 +1,18 @@
-import {
-  DataEvent,
-  logger,
-  MergedPrOutput,
-  WorkflowJobCompletedPayload,
-} from "../../core";
+import { logger } from "../../core";
 import { getDuration } from "../../shared/getDuration";
-import { getReleaseByTitle } from "./getReleaseByTitle";
 import { keys } from "ramda";
+import { DataEvent } from "../../interfaces";
+import {
+  WorkflowJobCompletedOutput,
+  WorkflowJobCompletedPayload,
+} from "./interfaces";
 
 export const collectWorfklowJobCompletedMetrics = (
   dataEvent: DataEvent
 ): DataEvent => {
   const payload = dataEvent.payload as WorkflowJobCompletedPayload;
 
-  const output: WorkflowJobCompletedPayload = {
+  const output: WorkflowJobCompletedOutput = {
     repository: payload.repository.name,
     completed_at: payload.workflow_job.completed_at,
     created_at: payload.workflow_job.completed_at,

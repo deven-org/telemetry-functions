@@ -1,33 +1,23 @@
-import {
-  DataEvent,
-  DataEventSignature,
-  EnhancedDataEvent,
-  ErrorForCatcher,
-  getRejectionReason,
-  logger,
-} from "../core";
-import { cond, T, always, clone, pipe, omit } from "ramda";
-import { collectPackagesMetrics } from "./packages";
-import { collectMergedPrMetrics } from "./prs";
-import { collectWorfklowJobCompletedMetrics } from "./workflows";
+import { getRejectionReason, logger } from "../core";
+import { cond, clone, pipe, omit } from "ramda";
+import metricsConditions from "../metricsConditions";
+
 import { LogErrors, LogInfos } from "../shared/logMessages";
+import { DataEvent, EnhancedDataEvent } from "../interfaces";
 
-const isSignedAsPackages = (dataEvent: DataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.Packages;
+const collectMetricsBySignature = cond(
+  metricsConditions.map((cond) => [cond[0], cond[1]])
+);
 
-const isSignedAsMergedPr = (dataEvent: DataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.MergedPR;
-
-const isSignedAsWorkflowJobCompleted = (dataEvent: DataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.WorkflowJobCompleted;
-
+/*
 const collectMetricsBySignature = cond([
+  ...metricsConditions,
   [isSignedAsPackages, collectPackagesMetrics],
   [isSignedAsMergedPr, collectMergedPrMetrics],
   [isSignedAsWorkflowJobCompleted, collectWorfklowJobCompletedMetrics],
   [T, always(undefined)],
 ]);
-
+*/
 export const collectMetrics = async (
   dataEvent: DataEvent
 ): Promise<EnhancedDataEvent> => {
