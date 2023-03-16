@@ -7,7 +7,7 @@ Thank you for taking the time to contribute to our project! We sincerely appreci
 - [Chapters](#chapters)
 - [New contributor guide](#new-contributor-guide)
 - [Getting started](#getting-started)
-  - [:file\_folder: File Structure](#file_folder-file-structure)
+  - [:file_folder: File Structure](#file_folder-file-structure)
 - [Issues](#issues)
   - [Create a new issue](#create-a-new-issue)
   - [Solving an Issue](#solving-an-issue)
@@ -47,10 +47,10 @@ Our project has the following file structure:
 
 ### Create a new issue
 
-If you encounter a problem with the tool or documentation, please [first search if a related issue exists](https://github.com/deven-org/telemetry-functions/issues) . If there is no existing issue, please create one using the Issues tab.
+If you encounter a problem with the tool or documentation, please [first search if a related issue exists](https://github.com/deven-org/telemetry-functionss/issues) . If there is no existing issue, please create one using the Issues tab.
 
 To write a useful issue, please ensure it:
-If you spot a problem with the tool or the documentation, please [search if an issue already exists](https://github.com/deven-org/telemetry-functions/issues). If a related issue doesn't exist, you can open a new issue using the same page.
+If you spot a problem with the tool or the documentation, please [search if an issue already exists](https://github.com/deven-org/telemetry-functionss/issues). If a related issue doesn't exist, you can open a new issue using the same page.
 
 <details>
 <summary>To write a useful issue, please ensure it:</summary>
@@ -64,7 +64,7 @@ If you spot a problem with the tool or the documentation, please [search if an i
 
 ### Solving an Issue
 
-Browse our [existing issues](https://github.com/deven-org/telemetry-functions/issues) to find one that interests you. If you would like to work on an issue, you are welcome to open a Merge Request with a fix.
+Browse our [existing issues](https://github.com/deven-org/telemetry-functionss/issues) to find one that interests you. If you would like to work on an issue, you are welcome to open a Merge Request with a fix.
 
 #### Prerequisites
 

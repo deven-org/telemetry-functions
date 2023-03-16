@@ -1,10 +1,15 @@
 # telemetry-functions
 
+[![Issues](https://img.shields.io/github/issues-raw/deven-org/telemetry-functions.svg?maxAge=25000)](https://github.com/deven-org/telemetry-functions/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/deven-org/telemetry-functions.svg?style=flat)](https://github.com/deven-org/telemetry-functions/pulls)
+[![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/deven-org/telemetry-functions/blob/main/doc/CODEOFCONDUCT.md)  
+[![GitHub contributors](https://img.shields.io/github/contributors/deven-org/telemetry-functions.svg?style=flat)](https://github.com/deven-org/telemetry-functions/)
+
 ## Contents
 
 - [telemetry-functions](#telemetry-functions)
   - [Contents](#contents)
-- [Introduction](#introduction)
+  - [Introduction](#introduction)
   - [Requirements](#requirements)
   - [How to start](#how-to-start)
     - [Prerequisites](#prerequisites)
@@ -15,13 +20,13 @@
   - [Contributing](#contributing)
   - [License](#license)
 
-# Introduction
+## Introduction
 
 Telemetry-Functions is the middle layer of the DEVEN Telemetry project, which is designed to collect anonymized, automized metrics using Git SaaS based bots to inform about how teams can improve development retention, productivity and satisfaction for more effectiveness. Telemetry-functions serves as the bridge between the Github OAuth App, which allows access to the raw data, and the private data repository, where the collected data is stored.
 
 ## Requirements
 
-This project is a Node.js package. You need Node version 16 or higher in order to run it. (for more information check out the Node.js documentation[here](https://nodejs.org/en/docs/))
+This project is a Node.js package. You need Node version 16 or higher in order to run it. (for more information check out the Node.js documentation [here](https://nodejs.org/en/docs/)).
 
 ## How to start
 
@@ -54,7 +59,7 @@ In addition, you'll need to log in to Github in your browser.
 
 ### Setup
 
-1. Open the env.template file and copy the list of environment variables and their default values. These include:
+1. Open the `env.template` file and copy the list of environment variables and their default values. These include:
 
 - REPO_NAME
 - REPO_OWNER
@@ -73,7 +78,7 @@ In addition, you'll need to log in to Github in your browser.
 1. In the command line, start the Netlify function with:
 
 ```sh
-  netlify function serve
+  netlify functions:serve
 ```
 
 ## How to test
@@ -87,7 +92,7 @@ The project test suite is run with
 While developing, it may be more convenient to run tests automatically when project files are updated. This can be run with
 
 ```sh
-$ npm test:dev
+  npm test:dev
 ```
 
 ## Contributing
