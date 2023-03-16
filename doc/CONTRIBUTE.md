@@ -1,58 +1,83 @@
-# Contribute
+# Welcome to our docs contributing guide <!-- omit in toc -->
 
-This chapter should display all needed information to set up and run the project and how a new joiner can start contributing to the it. Please provide a short introduction here.
+Thank you for taking the time to contribute to our project! We sincerely appreciate it. :sparkles: Before you start, please read our Code of Conduct to maintain an approachable and respectable community.
 
 ## Chapters
 
-- [Prerequisites](#prerequisites)
-- [Full Step by Step Guide](#full-step-by-step-guide)
-- [How to](#how-to)
-  - [Branch](#branch)
-  - [Commit](#commit)
-  - [Pull Request](#pull-request)
-  - [Comment](#comment)
-- [Troubleshooting](#troubleshooting)
-- [Tips and Tricks](#tips-and-tricks)
+- [Chapters](#chapters)
+- [New contributor guide](#new-contributor-guide)
+- [Getting started](#getting-started)
+  - [:file_folder: File Structure](#file_folder-file-structure)
+- [Issues](#issues)
+  - [Create a new issue](#create-a-new-issue)
+  - [Solving an Issue](#solving-an-issue)
+    - [Prerequisites](#prerequisites)
+    - [Commits](#commits)
+    - [Branch](#branch)
 
+## New contributor guide
 
-## Prerequisites
+Before you get started, read the README to get an overview of the project. Here are some resources to help you begin contributing:
 
-Please provide information about the mandatory and optional prerequisites the user should have in place in order to properly work your code. Don't forget to mention specific versions if needed and use links to tech documentations of your used tools and dependencies.
+- [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [How to handle repositories](https://docs.gitlab.com/ee/user/project/repository/)
+- [Creating an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue)
+- [Creating merge requests](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
 
+## Getting started
 
-## Full Step by Step Guide
+### :file_folder: File Structure
 
-In this section you should provide a clear and easy to follow step by step guide on how to set up and run you project. This should also include the installation process on different operating systems. Please also adress the most common errors that users may run into while setting up your project and provide solutions.
+Our project has the following file structure:
 
+    .
+    └── .github           // GitLab CI/CD pipeline
+    └── .netlify          // Dist folder created by Netlify CLI
+    └── src
+        └── core          // Core modules
+        └── metrics       // Metrics collection modules
+        └── shared        // Global configuration and log messages
+        └── doc           // the documentation skeleton
+    └── postman           // Postman collections
+    └── netlify           // Netlify Serverless functions
+    └── .env              // Env variables
+    └── CHANGELOG.md      // This file is automatically created by the release stage of the main    pipeline. Please don't touch it.
 
-## How to
+## Issues
 
-Please use this section to describe all the Conventions and rules you have in place to ensure a consistent pull request involvement.
+### Create a new issue
 
-### Branch
+If you encounter a problem with the tool or documentation, please [first search if a related issue exists](https://github.com/deven-org/telemetry-functionss/issues) . If there is no existing issue, please create one using the Issues tab.
 
-Describe what branching model you use in your project and how it works. Also consider using some visualizations like graphs or screenshots.
+To write a useful issue, please ensure it:
+If you spot a problem with the tool or the documentation, please [search if an issue already exists](https://github.com/deven-org/telemetry-functionss/issues). If a related issue doesn't exist, you can open a new issue using the same page.
 
-### Commit
+<details>
+<summary>To write a useful issue, please ensure it:</summary>
+<br />
 
-Please provide information on what rules you have in place for semantic commit messages and give examples on how to write them. We encourage you to use code snippets.
+- It should be _reproducible_. It should contain all the istructions needed to reproduce the same outcome.
 
-### Pull Request
+- It should be _specific_. It's important that it addresses one specific problem.
 
-In this section you're supposed to epxplain your pull request process. What are your naming conventions, whats the process of recieving code reviews, when and where do you merge your PR - don't be afraid to go into detail about this.
+</details>
 
-### Comment
+### Solving an Issue
 
-Please discribe your ruleset you use to ensure that the comments you're writing in code reviews are useful for the engineer working on the PR.
+Browse our [existing issues](https://github.com/deven-org/telemetry-functionss/issues) to find one that interests you. If you would like to work on an issue, you are welcome to open a Merge Request with a fix.
 
+#### Prerequisites
 
+Before submitting any merge request, ensure your branch passes all tests:
 
-## Troubleshooting
+```bash
+npm run test
+```
 
-Please provide information of all known problems that occur when setting up your project, using your code or in any other situation working in your project. Every given solution will help save time when others are running into the same problem, the more the better. If helpful, use links to external tech documentation or refer to solutions already described in the setup guide.
+#### Commits
 
+All commits must comply with the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/).
 
+#### Branch
 
-## Tips and Tricks
-
-In this section you're free to add any additional information you think might be useful for your fellow colleagues. Maybe you are using naming conventions or you always send a slack message to the team when you need a code review. Maybe you have some reccomendations for plugins, tools or websites you always use in your daily work. Everything that can be useful to others is welcome to be documented.
+For contributions we are using [Gitflow as branching strategy](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow#:~:text=Gitflow%20is%20a%20legacy%20Git,software%20development%20and%20DevOps%20practices.).
