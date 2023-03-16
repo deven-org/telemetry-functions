@@ -1,4 +1,4 @@
-import { EnhancedDataEvent } from "./createDataEvent";
+import { EnhancedDataEvent } from "./../interfaces";
 import { logger } from ".";
 
 export const storeData = (enhancedDataEvent: EnhancedDataEvent) => {
