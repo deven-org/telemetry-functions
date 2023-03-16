@@ -7,7 +7,7 @@ const handler: Handler = async (event: HandlerEvent) => {
   try {
     const eventSignature = event.headers["x-github-event"] || "unknown";
     const body = getEventBody(event);
-    await collectMetricsHandler({ ...body, eventSignature });
+    await collectMetricsHandler({ eventSignature, ...body });
     return {
       statusCode: 200,
       body: "success",
