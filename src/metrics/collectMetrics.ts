@@ -1,4 +1,5 @@
-import { getRejectionReason, logger } from "../core";
+import { getRejectionReason } from "../core";
+import { logger } from "../core/logger";
 import { cond, clone, pipe, omit } from "ramda";
 import metricsConditions from "../metricsConditions";
 
@@ -9,15 +10,6 @@ const collectMetricsBySignature = cond(
   metricsConditions.map((cond) => [cond[0], cond[1]])
 );
 
-/*
-const collectMetricsBySignature = cond([
-  ...metricsConditions,
-  [isSignedAsPackages, collectPackagesMetrics],
-  [isSignedAsMergedPr, collectMergedPrMetrics],
-  [isSignedAsWorkflowJobCompleted, collectWorfklowJobCompletedMetrics],
-  [T, always(undefined)],
-]);
-*/
 export const collectMetrics = async (
   dataEvent: DataEvent
 ): Promise<EnhancedDataEvent> => {

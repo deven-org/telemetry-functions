@@ -5,5 +5,3 @@ const options: SignaleOptions = {
 };
 
 export const logger = new Signale();
-
-logger.config(options);
