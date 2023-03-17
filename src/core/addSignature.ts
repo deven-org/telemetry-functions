@@ -17,11 +17,14 @@ const createSignedDataEvent =
     });
   };
 
+// const signDataEvent = cond([
+//   [isPackages, createSignedDataEvent(DataEventSignature.Packages)],
+//   [isMergedPr, createSignedDataEvent(DataEventSignature.MergedPR)],
+//   [T, always(false)],
+// ]);
+
 const signDataEvent = cond(
-  signatureConditions.map((cond) => [
-    cond[0],
-    createSignedDataEvent(cond[1] as DataEventSignature),
-  ])
+  signatureConditions.map((item) => [item[0], createSignedDataEvent(item[1])])
 );
 
 export const addSignature = (data: any): Promise<DataEvent> => {
