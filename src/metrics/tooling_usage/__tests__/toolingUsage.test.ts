@@ -1,6 +1,5 @@
 import { DataEventSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
-import mergedCompletedSuccessfully from "./fixtures/merged-completed-successful.json";
 import { encode, decode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
 
@@ -129,6 +128,26 @@ describe("Tooling_Usage", () => {
     expect(output).toMatchObject({
       created_at: expect.any(Number),
       output: { hasValidPackageJson: false },
+      dataEventSignature: DataEventSignature.ToolingUsage,
+    });
+  });
+
+  it("returns hasDocChapters=false if number of chapters are not equal to 9", async () => {
+    const eventBody = {
+      eventSignature: "toolingUsage",
+    };
+
+    octokitResponse = {
+      data: {
+        content: undefined,
+      },
+    };
+
+    const output = await handler(eventBody);
+
+    expect(output).toMatchObject({
+      created_at: expect.any(Number),
+      output: { hasDocChapters: false },
       dataEventSignature: DataEventSignature.ToolingUsage,
     });
   });

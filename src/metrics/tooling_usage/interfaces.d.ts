@@ -10,4 +10,5 @@ export interface ToolingUsageOutput {
   repo: string;
   owner: string;
   hasValidPackageJson: boolean;
+  hasDocChapters: boolean;
 }
