@@ -1,7 +1,7 @@
 import { collectMetrics } from "./core/collectMetrics";
 import { storeData, errorCatcher } from "./core";
 import { logger } from "./core/logger";
-import { pipeWith, tap } from "ramda";
+import { pipeWith } from "ramda";
 import { LogInfos } from "./shared/logMessages";
 import { addSignature } from "./core/addSignature";
 

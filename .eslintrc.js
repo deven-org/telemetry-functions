@@ -11,5 +11,6 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/no-explicit-any": 0,
   },
 };
