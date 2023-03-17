@@ -1,13 +1,13 @@
 import octokit from "../../core/octokit";
-import { collectMetrics } from "../../metrics/collectMetrics";
-import { addSignature } from "../../core/addSignature";
+import "../../core/collectMetrics";
+import "../../core/addSignature";
 import {
   DataEvent,
   DataEventSignature,
   EnhancedDataEvent,
 } from "../../interfaces";
 import { handler } from "../../handler";
-import { logger } from "../logger";
+import "../logger";
 
 jest.mock("../logger", () => ({
   __esModule: true,
@@ -15,7 +15,7 @@ jest.mock("../logger", () => ({
     start: jest.fn(),
     config: jest.fn(),
     info: jest.fn(),
-    warning: jest.fn(),
+    warn: jest.fn(),
     error: jest.fn(),
     complete: jest.fn(),
   },
@@ -53,7 +53,7 @@ const collectMetricsResponse: EnhancedDataEvent = {
   repo: "repo",
 };
 
-jest.mock("../../metrics/collectMetrics", () => ({
+jest.mock("../../core/collectMetrics", () => ({
   __esModule: true,
   collectMetrics: (data: any) => {
     return new Promise((res) => {

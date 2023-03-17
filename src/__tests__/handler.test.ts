@@ -1,10 +1,8 @@
 import * as moduleAddSignature from "../core/addSignature";
 import * as moduleCollectMetrics from "../core/collectMetrics";
-import * as moduleStoreData from "../core/storeData";
 import { handler } from "../handler";
 import { logger } from "../core/logger";
-import { DataEventSignature } from "../interfaces";
-import { LogErrors, LogWarnings } from "../shared/logMessages";
+import { LogWarnings } from "../shared/logMessages";
 
 jest.mock("../core/logger", () => ({
   __esModule: true,
@@ -12,7 +10,7 @@ jest.mock("../core/logger", () => ({
     start: jest.fn(),
     config: jest.fn(),
     info: jest.fn(),
-    warning: jest.fn(),
+    warn: jest.fn(),
     error: jest.fn(),
     complete: jest.fn(),
   },
@@ -69,7 +67,7 @@ describe("handler", () => {
     await handler(event);
 
     expect(spyOnCollectMetrics).not.toBeCalled();
-    expect(logger.warning).toBeCalledWith(
+    expect((logger as any).warn).toBeCalledWith(
       LogWarnings.signingEventSignatureNotRecognized
     );
   });

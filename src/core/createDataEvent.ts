@@ -7,5 +7,7 @@ export function createDataEvent<T extends DataEventSignature>(
   return {
     ...dataEvent,
     created_at: moment().unix(),
+    repo: "",
+    owner: "",
   };
 }
