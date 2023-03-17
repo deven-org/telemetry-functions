@@ -6,5 +6,4 @@ import toolingUsageMetricsConditions from "./metrics/tooling_usage/metricsCondit
 export default [
   ...pullRequestsMetricsConditions,
   ...toolingUsageMetricsConditions,
-  [T, always(false)],
 ];

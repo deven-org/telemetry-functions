@@ -1,4 +1,4 @@
-import { collectMetrics } from "./metrics/collectMetrics";
+import { collectMetrics } from "./core/collectMetrics";
 import { storeData, errorCatcher } from "./core";
 import { logger } from "./core/logger";
 import { pipeWith, tap } from "ramda";

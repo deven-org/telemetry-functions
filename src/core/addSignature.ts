@@ -1,9 +1,7 @@
-import { createDataEvent, Errors, getRejectionReason, logger } from ".";
-import { cond, T, always, pipe, clone } from "ramda";
-import { isWorkflowJobCompleted } from "./signingConditions";
-import { LogInfos } from "../shared/logMessages";
+import { createDataEvent, getRejectionReason, logger } from ".";
+import { cond, pipe, clone, T, always } from "ramda";
+import { LogInfos, LogWarnings } from "../shared/logMessages";
 import { DataEventSignature, DataEvent } from "../interfaces";
-import { isPullRequestClosed } from "../metrics/pull_requests/signatureConditions";
 import signatureConditions from "../signatureConditions";
 
 const createSignedDataEvent =
@@ -14,28 +12,29 @@ const createSignedDataEvent =
       dataEventSignature: signature,
       output: {},
       payload: data,
+      owner: "",
+      repo: "",
     });
   };
 
-// const signDataEvent = cond([
-//   [isPackages, createSignedDataEvent(DataEventSignature.Packages)],
-//   [isMergedPr, createSignedDataEvent(DataEventSignature.MergedPR)],
-//   [T, always(false)],
-// ]);
-
-const signDataEvent = cond(
-  signatureConditions.map((item) => [item[0], createSignedDataEvent(item[1])])
-);
+const signDataEvent = cond([
+  ...signatureConditions.map((item) => [
+    item[0],
+    createSignedDataEvent(item[1]),
+  ]),
+  [T, always(false)],
+]);
 
 export const addSignature = (data: any): Promise<DataEvent> => {
   return new Promise((res, rej) => {
     const signedDataEvent = pipe(clone, signDataEvent)(data);
+
     signedDataEvent
       ? res(signedDataEvent)
       : rej(
           getRejectionReason({
-            level: "warn",
-            message: Errors.signingEventSignatureNotRecognized,
+            level: "warning",
+            message: LogWarnings.signingEventSignatureNotRecognized,
           })
         );
   });
