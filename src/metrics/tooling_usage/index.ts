@@ -13,6 +13,7 @@ export const collectToolingUsageMetrics = async (
   const payload = dataEvent.payload as ToolingUsagePayload;
 
   let output: ToolingUsageOutput;
+  let hasDocChapters;
 
   try {
     const response = await octokit.request(
@@ -39,6 +40,7 @@ export const collectToolingUsageMetrics = async (
       owner: payload.owner,
       repo: payload.repo,
       hasValidPackageJson: true,
+      hasDocChapters,
     };
   } catch (error) {
     output = {
@@ -48,12 +50,28 @@ export const collectToolingUsageMetrics = async (
       owner: payload.owner,
       repo: payload.repo,
       hasValidPackageJson: false,
+      hasDocChapters,
     };
     logger.warn(
       LogWarnings.invalidPackageJson,
       `${payload.owner}/${payload.repo}`
     );
   }
+
+  const response = await octokit.request(
+    "GET /repos/{owner}/{repo}/contents/{path}",
+    {
+      owner: payload.owner,
+      repo: payload.repo,
+      path: "doc",
+    }
+  );
+
+  console.log(response.data);
+
+  hasDocChapters = (response.data as any[]).length === 9;
+
+  output.hasDocChapters = hasDocChapters;
 
   logger.success(
     `Collected metrics for "${dataEvent.dataEventSignature}": %s`,
