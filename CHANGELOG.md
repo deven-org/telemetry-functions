@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/deven-org/telemetry-functions/compare/v1.1.0...v1.2.0) (2023-03-16)
+
+
+### Features
+
+* **documentation:** add documentation ([f94f210](https://github.com/deven-org/telemetry-functions/commit/f94f2108cab8732662d7b22f0f1ec98308fe49cd))
+
+
+### Bug Fixes
+
+* **documentation:** fix typos ([00b6efa](https://github.com/deven-org/telemetry-functions/commit/00b6efa872d96f317a35b91b6c3986f39a9ee08b))
+
 ## [1.1.0](https://github.com/deven-org/telemetry-functions/compare/v1.0.0...v1.1.0) (2023-03-15)
 
 
