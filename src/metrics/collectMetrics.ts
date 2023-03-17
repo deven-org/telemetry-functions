@@ -1,27 +1,14 @@
-import {
-  DataEvent,
-  DataEventSignature,
-  EnhancedDataEvent,
-  ErrorForCatcher,
-  getRejectionReason,
-  logger,
-} from "../core";
-import { cond, T, always, clone, pipe, omit } from "ramda";
-import { collectPackagesMetrics } from "./packages";
-import { collectMergedPrMetrics } from "./prs";
+import { getRejectionReason } from "../core";
+import { logger } from "../core/logger";
+import { cond, clone, pipe, omit } from "ramda";
+import metricsConditions from "../metricsConditions";
+
 import { LogErrors, LogInfos } from "../shared/logMessages";
+import { DataEvent, EnhancedDataEvent } from "../interfaces";
 
-const isSignedAsPackages = (dataEvent: DataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.Packages;
-
-const isSignedAsMergedPr = (dataEvent: DataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.MergedPR;
-
-const collectMetricsBySignature = cond([
-  [isSignedAsPackages, collectPackagesMetrics],
-  [isSignedAsMergedPr, collectMergedPrMetrics],
-  [T, always(undefined)],
-]);
+const collectMetricsBySignature = cond(
+  metricsConditions.map((cond) => [cond[0], cond[1]])
+);
 
 export const collectMetrics = async (
   dataEvent: DataEvent

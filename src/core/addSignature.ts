@@ -1,14 +1,10 @@
-import {
-  createDataEvent,
-  DataEvent,
-  DataEventSignature,
-  Errors,
-  getRejectionReason,
-  logger,
-} from ".";
+import { createDataEvent, Errors, getRejectionReason, logger } from ".";
 import { cond, T, always, pipe, clone } from "ramda";
-import { isPackages, isMergedPr } from "./signingConditions";
+import { isWorkflowJobCompleted } from "./signingConditions";
 import { LogInfos } from "../shared/logMessages";
+import { DataEventSignature, DataEvent } from "../interfaces";
+import { isPullRequestClosed } from "../metrics/pull_requests/signatureConditions";
+import signatureConditions from "../signatureConditions";
 
 const createSignedDataEvent =
   (signature: DataEventSignature) => (data: any) => {
@@ -21,11 +17,12 @@ const createSignedDataEvent =
     });
   };
 
-const signDataEvent = cond([
-  [isPackages, createSignedDataEvent(DataEventSignature.Packages)],
-  [isMergedPr, createSignedDataEvent(DataEventSignature.MergedPR)],
-  [T, always(false)],
-]);
+const signDataEvent = cond(
+  signatureConditions.map((cond) => [
+    cond[0],
+    createSignedDataEvent(cond[1] as DataEventSignature),
+  ])
+);
 
 export const addSignature = (data: any): Promise<DataEvent> => {
   return new Promise((res, rej) => {
