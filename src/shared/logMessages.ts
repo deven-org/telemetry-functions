@@ -8,3 +8,7 @@ export enum LogInfos {
   eventSigned = "Event has been signed as: '%s'",
   startCollectingMetrics = "Trying to collect metrics...",
 }
+
+export enum LogWarnings {
+  invalidPackageJson = "Package.json is invalid. Owner/Repo is: '%s'",
+}

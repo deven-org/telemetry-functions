@@ -9,4 +9,5 @@ export interface ToolingUsageOutput {
   dependencies: object;
   repo: string;
   owner: string;
+  hasValidPackageJson: boolean;
 }
