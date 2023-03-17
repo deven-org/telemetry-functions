@@ -1,13 +1,14 @@
-import { getRejectionReason } from "../core";
-import { logger } from "../core/logger";
-import { cond, clone, pipe, omit } from "ramda";
+import { getRejectionReason } from ".";
+import { logger } from "./logger";
+import { cond, clone, pipe, omit, T, always } from "ramda";
 import metricsConditions from "../metricsConditions";
 
 import { LogErrors, LogInfos } from "../shared/logMessages";
 import { DataEvent, EnhancedDataEvent } from "../interfaces";
 
 const collectMetricsBySignature = cond(
-  metricsConditions.map((cond) => [cond[0], cond[1]])
+  [metricsConditions.map((cond) => [cond[0], cond[1]])],
+  [T, always(false)]
 );
 
 export const collectMetrics = async (
