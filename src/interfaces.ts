@@ -36,7 +36,7 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   dataEventSignature: T;
   payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
   output: T extends keyof DataEventOutputMap ? DataEventOutputMap[T] : never;
-  created_at: Number;
+  created_at: number;
 }
 
 export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
@@ -45,5 +45,5 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   output: T extends keyof DataEventOutputMap ? DataEventOutputMap[T] : never;
   owner: string;
   repo: string;
-  created_at: Number;
+  created_at: number;
 }
