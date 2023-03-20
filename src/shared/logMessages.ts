@@ -1,5 +1,5 @@
 export enum LogErrors {
-  collectMetricsSignatureNotRecognized = "The signature of the data event is not recognized.",
+  collectMetricsSignatureNotRecognized = "No collect-metrics function found for this event.",
 }
 
 export enum LogInfos {
