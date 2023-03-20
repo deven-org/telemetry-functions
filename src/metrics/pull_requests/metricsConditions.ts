@@ -1,9 +1,11 @@
 import { collectPullRequestCompleteMetrics } from ".";
-import { DataEvent, DataEventSignature } from "../../interfaces";
+import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
 
 const isSignedAsPullRequestClosed = (dataEvent: DataEvent) =>
   dataEvent.dataEventSignature === DataEventSignature.PullRequestClosed;
 
-export default [
+const conditions: Conditions = [
+  [isSignedAsPullRequestClosed, collectPullRequestCompleteMetrics],
   [isSignedAsPullRequestClosed, collectPullRequestCompleteMetrics],
 ];
+export default conditions;

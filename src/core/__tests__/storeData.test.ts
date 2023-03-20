@@ -35,27 +35,44 @@ const dataSignatureResponse: DataEvent = {
 
 jest.mock("../../core/addSignature", () => ({
   __esModule: true,
-  addSignature: (data: any) => {
+  addSignature: () => {
     return new Promise((res) => {
       res(dataSignatureResponse);
     });
   },
 }));
 
-const collectMetricsResponse: EnhancedDataEvent = {
-  dataEventSignature: DataEventSignature.WorkflowJobCompleted,
-  created_at: 100,
-  output: {
-    foo: "foo",
-    bar: "bar",
+const collectMetricsResponse: (
+  | EnhancedDataEvent
+  | Promise<EnhancedDataEvent>
+)[] = [
+  {
+    dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+    created_at: 100,
+    output: {
+      foo: "foo",
+      bar: "bar",
+    },
+    owner: "owner",
+    repo: "repo",
   },
-  owner: "owner",
-  repo: "repo",
-};
+  new Promise((res) =>
+    res({
+      dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+      created_at: 100,
+      output: {
+        foo: "foo",
+        bar: "bar",
+      },
+      owner: "owner",
+      repo: "repo",
+    })
+  ),
+];
 
 jest.mock("../../core/collectMetrics", () => ({
   __esModule: true,
-  collectMetrics: (data: any) => {
+  collectMetrics: () => {
     return new Promise((res) => {
       res(collectMetricsResponse);
     });
@@ -78,8 +95,26 @@ describe("storeData", () => {
       eventSignature: "event-signature",
     };
     await handler(event);
-
-    expect(octokit.request).toHaveBeenCalledWith(
+    expect(octokit.request).toHaveBeenCalledTimes(2);
+    expect(octokit.request).toHaveBeenNthCalledWith(
+      1,
+      "PUT /repos/{owner}/{repo}/contents/{path}",
+      {
+        committer: { email: "committer_email", name: "committer_name" },
+        content:
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2ItY29tcGxldGVkIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
+        message: "auto(data): add workflow-job-completed for owner/repo",
+        owner: "deven-org",
+        path: "raw-data",
+        repo: "telemetry-data",
+        author: {
+          email: "author_email",
+          name: "author_name",
+        },
+      }
+    );
+    expect(octokit.request).toHaveBeenNthCalledWith(
+      2,
       "PUT /repos/{owner}/{repo}/contents/{path}",
       {
         committer: { email: "committer_email", name: "committer_name" },

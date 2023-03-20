@@ -47,3 +47,8 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   repo: string;
   created_at: number;
 }
+
+export type Conditions = [
+  (any) => boolean,
+  (any) => EnhancedDataEvent | Promise<EnhancedDataEvent>
+][];
