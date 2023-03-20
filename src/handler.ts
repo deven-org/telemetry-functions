@@ -19,7 +19,7 @@ export const handler = async (event: any): Promise<any> => {
   try {
     const resolvedEnhancedDataEvents = await enhancedDataEvents;
     if (resolvedEnhancedDataEvents) {
-      await storeData(await enhancedDataEvents);
+      return await storeData(await enhancedDataEvents);
     } else {
       logger.error(LogErrors.wrongResolvedEnhancedEvents);
     }
