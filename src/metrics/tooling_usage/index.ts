@@ -3,7 +3,7 @@ import { DataEvent, EnhancedDataEvent } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
 import { keys, pipe, mergeAll, includes } from "ramda";
 import octokit from "../../core/octokit";
-import { encode, decode } from "js-base64";
+import { decode } from "js-base64";
 import { LogWarnings } from "../../shared/logMessages";
 
 export const collectToolingUsageMetrics = async (
