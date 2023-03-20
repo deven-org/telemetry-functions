@@ -12,7 +12,7 @@ export const collectToolingUsageMetrics = async (
   const payload = dataEvent.payload as ToolingUsagePayload;
 
   let output: ToolingUsageOutput;
-  const hasDocChapters = false;
+  let hasDocChapters = false;
 
   try {
     const response = await octokit.request(
@@ -66,8 +66,11 @@ export const collectToolingUsageMetrics = async (
     }
   );
 
-  // hasDocChapters = (response.data as any[]).length === 9;
-
+  if (response) {
+    if (Array.isArray(response.data)) {
+      hasDocChapters = response.data.length === 9;
+    }
+  }
   output.hasDocChapters = hasDocChapters;
 
   logger.success(
