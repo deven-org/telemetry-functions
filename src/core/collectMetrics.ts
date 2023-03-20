@@ -1,30 +1,31 @@
 import { getRejectionReason } from ".";
 import { logger } from "./logger";
-import { cond, clone, pipe, omit, T, always } from "ramda";
+import { clone } from "ramda";
 import metricsConditions from "../metricsConditions";
 
 import { LogErrors, LogInfos } from "../shared/logMessages";
 import { DataEvent, EnhancedDataEvent } from "../interfaces";
 
-const collectMetricsBySignature = cond(
-  [metricsConditions.map((cond) => [cond[0], cond[1]])],
-  [T, always(false)]
-);
-
-export const collectMetrics = async (
+export const collectMetrics = (
   dataEvent: DataEvent
-): Promise<EnhancedDataEvent> => {
+): (EnhancedDataEvent | Promise<EnhancedDataEvent>)[] => {
   logger.info(LogInfos.startCollectingMetrics);
 
-  const dataEventWithMetrics = pipe(
-    clone,
-    await collectMetricsBySignature
-  )(dataEvent);
-  if (!dataEventWithMetrics) {
+  const collectedMetrics: (EnhancedDataEvent | Promise<EnhancedDataEvent>)[] =
+    [];
+
+  metricsConditions.forEach(([condition, collect]) => {
+    const clonedDataEvent = clone(dataEvent);
+    if (condition(clonedDataEvent)) {
+      collectedMetrics.push(collect(clonedDataEvent));
+    }
+  });
+
+  if (collectedMetrics.length === 0) {
     throw getRejectionReason({
       level: "error",
       message: LogErrors.collectMetricsSignatureNotRecognized,
     });
   }
-  return omit(["payload"], await dataEventWithMetrics);
+  return collectedMetrics;
 };
