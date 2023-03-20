@@ -1,6 +1,6 @@
 import { getRejectionReason } from ".";
 import { logger } from "./logger";
-import { clone } from "ramda";
+import { clone, omit } from "ramda";
 import metricsConditions from "../metricsConditions";
 
 import { LogErrors, LogInfos } from "../shared/logMessages";
@@ -16,7 +16,7 @@ export const collectMetrics = async (
   for (const [condition, collect] of metricsConditions) {
     const clonedDataEvent = clone(dataEvent);
     if (condition(clonedDataEvent)) {
-      collectedMetrics.push(await collect(clonedDataEvent));
+      collectedMetrics.push(omit(["payload"], await collect(clonedDataEvent)));
     }
   }
 

@@ -24,7 +24,6 @@ describe("collectMetrics", () => {
   it("collects metrics and returns an array of promises, containing the metrics", async () => {
     const event = {
       dataEventSignature: "foo-signature" as DataEventSignature,
-      payload: {},
       output: {},
       created_at: 100,
       owner: "",
