@@ -66,8 +66,8 @@ export const collectWorkflowsMetrics = async (
 
   return {
     ...dataEvent,
-    repo: payload.repository.name,
-    owner: "",
+    repo,
+    owner,
     output,
   };
 };
