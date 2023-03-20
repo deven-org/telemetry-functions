@@ -12,11 +12,20 @@ jest.mock("./../../../core/octokit.ts", () => ({
   },
 }));
 
+jest.mock("../../../core/logger.ts", () => ({
+  __esModule: true,
+  logger: {
+    start: jest.fn(),
+    config: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    complete: jest.fn(),
+    success: jest.fn(),
+  },
+}));
+
 describe("Tooling_Usage", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   it("event gets signed as a toolingUsage event", async () => {
     const eventBody = {
       eventSignature: "toolingUsage",
@@ -28,13 +37,15 @@ describe("Tooling_Usage", () => {
       },
     };
 
-    const output = await handler(eventBody);
+    const output: [] = await handler(eventBody);
 
-    expect(output).toMatchObject({
-      created_at: expect.any(Number),
-      output: {},
-      dataEventSignature: DataEventSignature.ToolingUsage,
-    });
+    expect(output).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: {},
+        dataEventSignature: DataEventSignature.ToolingUsage,
+      },
+    ]);
   });
 
   it("returns true if package has deven-documentation-skeleton", async () => {
@@ -48,13 +59,15 @@ describe("Tooling_Usage", () => {
       },
     };
 
-    const output = await handler(eventBody);
+    const output: [] = await handler(eventBody);
 
-    expect(output).toMatchObject({
-      created_at: expect.any(Number),
-      output: { hasDocumentationSkeleton: true },
-      dataEventSignature: DataEventSignature.ToolingUsage,
-    });
+    expect(output).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: { hasDocumentationSkeleton: true },
+        dataEventSignature: DataEventSignature.ToolingUsage,
+      },
+    ]);
   });
 
   it("returns false if package does not have deven-documentation-skeleton ", async () => {
@@ -62,7 +75,7 @@ describe("Tooling_Usage", () => {
       eventSignature: "toolingUsage",
     };
 
-    let mockedPackageWithoutDocSkeleton = JSON.parse(
+    const mockedPackageWithoutDocSkeleton = JSON.parse(
       JSON.stringify(mockedPackageWithDocSkeleton)
     );
 
@@ -78,11 +91,13 @@ describe("Tooling_Usage", () => {
 
     const output = await handler(eventBody);
 
-    expect(output).toMatchObject({
-      created_at: expect.any(Number),
-      output: { hasDocumentationSkeleton: false },
-      dataEventSignature: DataEventSignature.ToolingUsage,
-    });
+    expect(output).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: { hasDocumentationSkeleton: false },
+        dataEventSignature: DataEventSignature.ToolingUsage,
+      },
+    ]);
   });
 
   it("returns false if there are no devDependencies", async () => {
@@ -90,7 +105,7 @@ describe("Tooling_Usage", () => {
       eventSignature: "toolingUsage",
     };
 
-    let mockedPackageWithoutDocSkeleton = JSON.parse(
+    const mockedPackageWithoutDocSkeleton = JSON.parse(
       JSON.stringify(mockedPackageWithDocSkeleton)
     );
 
@@ -105,11 +120,13 @@ describe("Tooling_Usage", () => {
 
     const output = await handler(eventBody);
 
-    expect(output).toMatchObject({
-      created_at: expect.any(Number),
-      output: { hasDocumentationSkeleton: false },
-      dataEventSignature: DataEventSignature.ToolingUsage,
-    });
+    expect(output).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: { hasDocumentationSkeleton: false },
+        dataEventSignature: DataEventSignature.ToolingUsage,
+      },
+    ]);
   });
 
   it("return hasValidPackageJson=false if package.json is invalid", async () => {
@@ -125,11 +142,13 @@ describe("Tooling_Usage", () => {
 
     const output = await handler(eventBody);
 
-    expect(output).toMatchObject({
-      created_at: expect.any(Number),
-      output: { hasValidPackageJson: false },
-      dataEventSignature: DataEventSignature.ToolingUsage,
-    });
+    expect(output).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: { hasValidPackageJson: false },
+        dataEventSignature: DataEventSignature.ToolingUsage,
+      },
+    ]);
   });
 
   it("returns hasDocChapters=false if number of chapters are not equal to 9", async () => {
@@ -145,10 +164,12 @@ describe("Tooling_Usage", () => {
 
     const output = await handler(eventBody);
 
-    expect(output).toMatchObject({
-      created_at: expect.any(Number),
-      output: { hasDocChapters: false },
-      dataEventSignature: DataEventSignature.ToolingUsage,
-    });
+    expect(output).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: { hasDocChapters: false },
+        dataEventSignature: DataEventSignature.ToolingUsage,
+      },
+    ]);
   });
 });
