@@ -12,6 +12,11 @@ import {
   WorkflowJobCompletedPayload,
 } from "./metrics/workflows/interfaces";
 
+import {
+  PullRequestPayload,
+  PullRequestOutput,
+} from "./metrics/commits_per_pr/interfaces";
+
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
@@ -37,10 +42,14 @@ interface DataEventPayloadMap {
 interface DataEventOutputMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
+<<<<<<< HEAD
   [DataEventSignature.PullRequest]:
-    | PullRquestClosedOutput
+    | PullRequestClosedOutput
     | ReleaseVersionsOutput;
   [DataEventSignature.CheckSuite]: CheckSuiteMetricsOutput;
+=======
+  [DataEventSignature.PullRequest]: PullRequestOutput;
+>>>>>>> 0ca0bb2 (feat: add commits per pr metric)
 }
 
 export type EnhancedDataEvent = Omit<DataEvent, "payload">;
