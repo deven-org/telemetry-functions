@@ -22,7 +22,7 @@ jest.mock("../logger", () => ({
 }));
 
 const dataSignatureResponse: DataEvent = {
-  dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+  dataEventSignature: DataEventSignature.WorkflowJob,
   created_at: 100,
   output: {},
   payload: {
@@ -47,7 +47,7 @@ const collectMetricsResponse: (
   | Promise<EnhancedDataEvent>
 )[] = [
   {
-    dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+    dataEventSignature: DataEventSignature.WorkflowJob,
     created_at: 100,
     output: {
       foo: "foo",
@@ -58,19 +58,7 @@ const collectMetricsResponse: (
   },
   new Promise((res) =>
     res({
-      dataEventSignature: DataEventSignature.WorkflowJobCompleted,
-      created_at: 100,
-      output: {
-        foo: "foo",
-        bar: "bar",
-      },
-      owner: "owner",
-      repo: "repo",
-    })
-  ),
-  new Promise((res) =>
-    res({
-      dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+      dataEventSignature: DataEventSignature.WorkflowJob,
       created_at: 100,
       output: {
         foo: "foo",
@@ -107,15 +95,15 @@ describe("storeData", () => {
       eventSignature: "event-signature",
     };
     await handler(event);
-    expect(octokit.request).toHaveBeenCalledTimes(3);
+    expect(octokit.request).toHaveBeenCalledTimes(2);
     expect(octokit.request).toHaveBeenNthCalledWith(
       1,
       "PUT /repos/{owner}/{repo}/contents/{path}",
       {
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2ItY29tcGxldGVkIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
-        message: "auto(data): add workflow-job-completed for owner/repo",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
+        message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
         path: "raw-data",
         repo: "telemetry-data",
@@ -131,8 +119,8 @@ describe("storeData", () => {
       {
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2ItY29tcGxldGVkIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
-        message: "auto(data): add workflow-job-completed for owner/repo",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
+        message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
         path: "raw-data",
         repo: "telemetry-data",
