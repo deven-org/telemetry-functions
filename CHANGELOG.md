@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.6.0](https://github.com/deven-org/telemetry-functions/compare/v1.5.0...v1.6.0) (2023-03-20)
+
+
+### Features
+
+* add tooling usage metric ([012bc66](https://github.com/deven-org/telemetry-functions/commit/012bc66ec1d6b4418d0854da236bf97a9253c46e))
+* check for documentation skeleton ([95c6286](https://github.com/deven-org/telemetry-functions/commit/95c62862305a03453a1f7f1ebc5f1929ac7110bf))
+* **workflows:** [#18](https://github.com/deven-org/telemetry-functions/issues/18) add code review involvements metrics ([d54e490](https://github.com/deven-org/telemetry-functions/commit/d54e49061cc30ff5a2a8175fdf5efc7de0beed6b))
+* **workflows:** [#18](https://github.com/deven-org/telemetry-functions/issues/18) add workflows metrics ([abeb05c](https://github.com/deven-org/telemetry-functions/commit/abeb05cd8915ada9b1dafe3ffe977f3fcddbb52f))
+
+
+### Bug Fixes
+
+* **conditions:** conditions don't have to be specified in each metric ([f4c2c32](https://github.com/deven-org/telemetry-functions/commit/f4c2c32fda00ade64be40433013c4de7fa2901f0))
+* **metrics:** add metrics log as example ([8371e44](https://github.com/deven-org/telemetry-functions/commit/8371e44d5d1a0231cf56e00ba31aa93c6f06048a))
+* **metrics:** changes check for workflow ([c1e007a](https://github.com/deven-org/telemetry-functions/commit/c1e007a126bcf381dba9c76afa89e6f9553bbaaf))
+* **metrics:** changes check for workflow ([022f68e](https://github.com/deven-org/telemetry-functions/commit/022f68e8d8104dacb254ec783bd466cf7fb0d3bb))
+* **metrics:** changes check for workflow ([275df3b](https://github.com/deven-org/telemetry-functions/commit/275df3bc934b0c007f682b0b5f8b044bc4561ce0))
+* **push-to-repo:** fix the file path ([86d0d2f](https://github.com/deven-org/telemetry-functions/commit/86d0d2f63f02eff469630ad77a97d2b637f79aeb))
+* **store-data:** resolve events before push ([ea1f807](https://github.com/deven-org/telemetry-functions/commit/ea1f8070e4887ba60ca1ca59f93c7124c21028ef))
+* **tests:** collect metrics uses mocked data ([c82c270](https://github.com/deven-org/telemetry-functions/commit/c82c270af12d57f27a1e3679575f4952ee98be6d))
+* **tests:** tooling usage ([aeaadac](https://github.com/deven-org/telemetry-functions/commit/aeaadace595c692ebd602449cc3ffb7af4a5f437))
+* **tests:** tooling usage ([3b509f8](https://github.com/deven-org/telemetry-functions/commit/3b509f86a7eb15ac8d1862247035565a95edef21))
+* **tests:** tooling usage ([412df53](https://github.com/deven-org/telemetry-functions/commit/412df535b8df3f6cbe2a549e74923b5cc91dd71f))
+* **tests:** tooling usage ([2e57772](https://github.com/deven-org/telemetry-functions/commit/2e57772626c44993b8a2cca9ab2cd3c606ec1470))
+* **tests:** tooling usage ([633ec02](https://github.com/deven-org/telemetry-functions/commit/633ec02dfbf35dfbd0e59403368b3cfdc10523e7))
+* **tests:** tooling usage ([6d09479](https://github.com/deven-org/telemetry-functions/commit/6d09479677ff0d0b98b078209e8838778c836afb))
+
 ## [1.5.0](https://github.com/deven-org/telemetry-functions/compare/v1.4.0...v1.5.0) (2023-03-20)
 
 
