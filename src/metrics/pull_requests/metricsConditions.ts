@@ -6,6 +6,5 @@ const isSignedAsPullRequestClosed = (dataEvent: DataEvent) =>
 
 const conditions: Conditions = [
   [isSignedAsPullRequestClosed, collectPullRequestCompleteMetrics],
-  [isSignedAsPullRequestClosed, collectPullRequestCompleteMetrics],
 ];
 export default conditions;

@@ -68,6 +68,18 @@ const collectMetricsResponse: (
       repo: "repo",
     })
   ),
+  new Promise((res) =>
+    res({
+      dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+      created_at: 100,
+      output: {
+        foo: "foo",
+        bar: "bar",
+      },
+      owner: "owner",
+      repo: "repo",
+    })
+  ),
 ];
 
 jest.mock("../../core/collectMetrics", () => ({
@@ -95,7 +107,7 @@ describe("storeData", () => {
       eventSignature: "event-signature",
     };
     await handler(event);
-    expect(octokit.request).toHaveBeenCalledTimes(2);
+    expect(octokit.request).toHaveBeenCalledTimes(3);
     expect(octokit.request).toHaveBeenNthCalledWith(
       1,
       "PUT /repos/{owner}/{repo}/contents/{path}",
