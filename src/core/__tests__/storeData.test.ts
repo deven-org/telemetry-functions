@@ -18,6 +18,7 @@ jest.mock("../logger", () => ({
     warn: jest.fn(),
     error: jest.fn(),
     complete: jest.fn(),
+    success: jest.fn(),
   },
 }));
 
@@ -72,19 +73,14 @@ const collectMetricsResponse: (
 
 jest.mock("../../core/collectMetrics", () => ({
   __esModule: true,
-  collectMetrics: () => {
-    return new Promise((res) => {
-      res(collectMetricsResponse);
-    });
-  },
+  collectMetrics: () => collectMetricsResponse,
 }));
 
 jest.mock("../../core/octokit", () => ({
-  request: jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn(),
-    };
-  }),
+  __esModule: true,
+  default: {
+    request: jest.fn(),
+  },
 }));
 
 describe("storeData", () => {
@@ -95,6 +91,7 @@ describe("storeData", () => {
       eventSignature: "event-signature",
     };
     await handler(event);
+
     expect(octokit.request).toHaveBeenCalledTimes(2);
     expect(octokit.request).toHaveBeenNthCalledWith(
       1,

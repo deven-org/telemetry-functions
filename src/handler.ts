@@ -2,7 +2,7 @@ import { collectMetrics } from "./core/collectMetrics";
 import { storeData, errorCatcher } from "./core";
 import { logger } from "./core/logger";
 import { pipeWith } from "ramda";
-import { LogInfos } from "./shared/logMessages";
+import { LogErrors, LogInfos } from "./shared/logMessages";
 import { addSignature } from "./core/addSignature";
 
 const callOrThen = (fn: any, args: any) =>
@@ -11,7 +11,19 @@ const callOrThen = (fn: any, args: any) =>
 export const handler = async (event: any): Promise<any> => {
   logger.start(LogInfos.eventReceived);
 
-  return pipeWith(callOrThen, [addSignature, collectMetrics, storeData])(
-    event
-  ).catch(errorCatcher);
+  const enhancedDataEvents = pipeWith(callOrThen, [
+    addSignature,
+    collectMetrics,
+  ])(event).catch(errorCatcher);
+
+  try {
+    const resolvedEnhancedDataEvents = await enhancedDataEvents;
+    if (resolvedEnhancedDataEvents) {
+      await storeData(await enhancedDataEvents);
+    } else {
+      logger.error(LogErrors.wrongResolvedEnhancedEvents);
+    }
+  } catch (e) {
+    console.error(e);
+  }
 };

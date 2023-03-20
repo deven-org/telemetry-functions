@@ -4,6 +4,13 @@ import { handler } from "../handler";
 import { logger } from "../core/logger";
 import { LogWarnings } from "../shared/logMessages";
 
+jest.mock("../core/octokit", () => ({
+  __esModule: true,
+  default: {
+    request: jest.fn(),
+  },
+}));
+
 jest.mock("../core/logger", () => ({
   __esModule: true,
   logger: {
@@ -13,6 +20,7 @@ jest.mock("../core/logger", () => ({
     warn: jest.fn(),
     error: jest.fn(),
     complete: jest.fn(),
+    success: jest.fn(),
   },
 }));
 

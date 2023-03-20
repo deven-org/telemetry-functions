@@ -4,14 +4,16 @@ import { EnhancedDataEvent } from "../interfaces";
 import octokit from "./octokit";
 
 export const storeData = async (
-  enhancedDataEvents: (EnhancedDataEvent | Promise<EnhancedDataEvent>)[]
+  enhancedDataEvents: Promise<EnhancedDataEvent>[]
 ) => {
+  if (!enhancedDataEvents) return false;
   const resolvedEnhancedDataEvents = await Promise.all(enhancedDataEvents);
 
   resolvedEnhancedDataEvents.forEach(async (data) => {
     logger.info(
       `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
     );
+
     try {
       await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
         owner: process.env.REPO_OWNER as string,
