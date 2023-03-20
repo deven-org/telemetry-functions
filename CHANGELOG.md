@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/deven-org/telemetry-functions/compare/v1.3.0...v1.4.0) (2023-03-20)
+
+
+### Features
+
+* **workflow:** add workflow to sync develop with main ([db0a647](https://github.com/deven-org/telemetry-functions/commit/db0a64760e77979edf829527e82ac5485fb05652))
+
+## [1.3.0](https://github.com/deven-org/telemetry-functions/compare/v1.2.0...v1.3.0) (2023-03-17)
+
+
+### Features
+
+* **core:** [#43](https://github.com/deven-org/telemetry-functions/issues/43) add basic tests for the core modules ([1c591a0](https://github.com/deven-org/telemetry-functions/commit/1c591a046132dcd2872284d20abf95ef42f4d0e8))
+
 ## [1.2.0](https://github.com/deven-org/telemetry-functions/compare/v1.1.0...v1.2.0) (2023-03-16)
 
 
