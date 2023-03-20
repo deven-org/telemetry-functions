@@ -6,26 +6,38 @@ import octokit from "./octokit";
 export const storeData = async (
   enhancedDataEvents: (EnhancedDataEvent | Promise<EnhancedDataEvent>)[]
 ) => {
+  if (!enhancedDataEvents) return false;
   const resolvedEnhancedDataEvents = await Promise.all(enhancedDataEvents);
 
-  resolvedEnhancedDataEvents.forEach((data) => {
-    return octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
-      owner: process.env.REPO_OWNER as string,
-      repo: process.env.REPO_NAME as string,
-      path: process.env.REPO_PATH as string,
-      message: `auto(data): add ${data.dataEventSignature} for ${data.owner}/${data.repo}`,
-      committer: {
-        name: process.env.COMMITTER_NAME as string,
-        email: process.env.COMMITTER_EMAIL as string,
-      },
-      author: {
-        name: process.env.AUTHOR_NAME as string,
-        email: process.env.AUTHOR_EMAIL as string,
-      },
-      content: Base64.encode(JSON.stringify(data)),
-    });
+  for (const data of resolvedEnhancedDataEvents) {
+    logger.info(
+      `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
+    );
 
-    logger.complete(`File pushed to repo: "path/to/file.json"`);
-  });
+    try {
+      await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+        owner: process.env.REPO_OWNER as string,
+        repo: process.env.REPO_NAME as string,
+        path: `${process.env.REPO_PATH}/${data.created_at}.json`,
+        message: `auto(data): add ${data.dataEventSignature} for ${data.owner}/${data.repo}`,
+        committer: {
+          name: process.env.COMMITTER_NAME as string,
+          email: process.env.COMMITTER_EMAIL as string,
+        },
+        author: {
+          name: process.env.AUTHOR_NAME as string,
+          email: process.env.AUTHOR_EMAIL as string,
+        },
+        content: Base64.encode(JSON.stringify(data)),
+      });
+
+      logger.complete(
+        `File pushed to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return resolvedEnhancedDataEvents;
 };

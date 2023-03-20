@@ -18,11 +18,12 @@ jest.mock("../logger", () => ({
     warn: jest.fn(),
     error: jest.fn(),
     complete: jest.fn(),
+    success: jest.fn(),
   },
 }));
 
-const dataSignatureResponse: DataEvent = {
-  dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+const dataSignatureResponse = {
+  dataEventSignature: DataEventSignature.WorkflowJob,
   created_at: 100,
   output: {},
   payload: {
@@ -47,7 +48,7 @@ const collectMetricsResponse: (
   | Promise<EnhancedDataEvent>
 )[] = [
   {
-    dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+    dataEventSignature: DataEventSignature.WorkflowJob,
     created_at: 100,
     output: {
       foo: "foo",
@@ -58,19 +59,7 @@ const collectMetricsResponse: (
   },
   new Promise((res) =>
     res({
-      dataEventSignature: DataEventSignature.WorkflowJobCompleted,
-      created_at: 100,
-      output: {
-        foo: "foo",
-        bar: "bar",
-      },
-      owner: "owner",
-      repo: "repo",
-    })
-  ),
-  new Promise((res) =>
-    res({
-      dataEventSignature: DataEventSignature.WorkflowJobCompleted,
+      dataEventSignature: DataEventSignature.WorkflowJob,
       created_at: 100,
       output: {
         foo: "foo",
@@ -84,19 +73,14 @@ const collectMetricsResponse: (
 
 jest.mock("../../core/collectMetrics", () => ({
   __esModule: true,
-  collectMetrics: () => {
-    return new Promise((res) => {
-      res(collectMetricsResponse);
-    });
-  },
+  collectMetrics: () => collectMetricsResponse,
 }));
 
 jest.mock("../../core/octokit", () => ({
-  request: jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn(),
-    };
-  }),
+  __esModule: true,
+  default: {
+    request: jest.fn(),
+  },
 }));
 
 describe("storeData", () => {
@@ -107,17 +91,18 @@ describe("storeData", () => {
       eventSignature: "event-signature",
     };
     await handler(event);
-    expect(octokit.request).toHaveBeenCalledTimes(3);
+
+    expect(octokit.request).toHaveBeenCalledTimes(2);
     expect(octokit.request).toHaveBeenNthCalledWith(
       1,
       "PUT /repos/{owner}/{repo}/contents/{path}",
       {
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2ItY29tcGxldGVkIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
-        message: "auto(data): add workflow-job-completed for owner/repo",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
+        message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data",
+        path: "raw-data/100.json",
         repo: "telemetry-data",
         author: {
           email: "author_email",
@@ -129,17 +114,14 @@ describe("storeData", () => {
       2,
       "PUT /repos/{owner}/{repo}/contents/{path}",
       {
+        author: { email: "author_email", name: "author_name" },
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2ItY29tcGxldGVkIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
-        message: "auto(data): add workflow-job-completed for owner/repo",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
+        message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data",
+        path: "raw-data/100.json",
         repo: "telemetry-data",
-        author: {
-          email: "author_email",
-          name: "author_name",
-        },
       }
     );
   });

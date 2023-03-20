@@ -1,7 +1,7 @@
 import {
-  PullRequestClosedPayload,
-  PullRequestClosedOutput,
-} from "./metrics/pull_requests/interfaces";
+  PullRquestClosedOutput,
+  PullRquestClosedPayload,
+} from "./metrics/code_review_involvement/interfaces";
 import {
   ToolingUsageOutput,
   ToolingUsagePayload,
@@ -13,21 +13,21 @@ import {
 } from "./metrics/workflows/interfaces";
 
 export enum DataEventSignature {
-  PullRequestClosed = "pull_request-completed",
-  WorkflowJobCompleted = "workflow-job-completed",
+  WorkflowJob = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
+  PullRequest = "pull-request",
 }
 
 interface DataEventPayloadMap {
-  [DataEventSignature.PullRequestClosed]: PullRequestClosedPayload;
-  [DataEventSignature.WorkflowJobCompleted]: WorkflowJobCompletedPayload;
+  [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
+  [DataEventSignature.PullRequest]: PullRquestClosedPayload;
 }
 
 interface DataEventOutputMap {
-  [DataEventSignature.PullRequestClosed]: PullRequestClosedOutput;
-  [DataEventSignature.WorkflowJobCompleted]: WorkflowJobCompletedOutput;
+  [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
+  [DataEventSignature.PullRequest]: PullRquestClosedOutput;
 }
 
 export type EnhancedDataEvent = Omit<DataEvent, "payload">;
