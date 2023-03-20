@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://github.com/deven-org/telemetry-functions/compare/v1.4.0...v1.5.0) (2023-03-20)
+
+
+### Features
+
+* **collect-metrics:** enable multiple collect metrics ([960b338](https://github.com/deven-org/telemetry-functions/commit/960b338d53c1285269a91233ef7a104946d69a33))
+
+
+### Bug Fixes
+
+* **condition:** remove wrong condition ([315f09d](https://github.com/deven-org/telemetry-functions/commit/315f09d1e1885fe671949bf32c9c83d8c683925d))
+
 ## [1.4.0](https://github.com/deven-org/telemetry-functions/compare/v1.3.0...v1.4.0) (2023-03-20)
 
 
