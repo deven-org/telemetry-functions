@@ -1,8 +1,5 @@
-import octokit from "../octokit";
 import { collectMetrics } from "../collectMetrics";
-import "../../metricsConditions";
 
-import { handler } from "../../handler";
 import "../logger";
 import { DataEvent, DataEventSignature } from "../../interfaces";
 
@@ -19,10 +16,14 @@ jest.mock("../logger", () => ({
   },
 }));
 
+jest.mock("../../metricsConditions", () => ({
+  __esModule: true,
+  default: [[() => true, (args) => ({ it: "works", ...args })]],
+}));
 describe("collectMetrics", () => {
   it("collects metrics and returns an array of promises, containing the metrics", async () => {
     const event: DataEvent = {
-      dataEventSignature: DataEventSignature.ToolingUsage,
+      dataEventSignature: "foo-signature" as DataEventSignature,
       payload: {},
       output: {},
       created_at: 100,
@@ -33,20 +34,6 @@ describe("collectMetrics", () => {
     const collectedMetrics = await collectMetrics(event);
     const result = await Promise.all(collectedMetrics);
 
-    expect(result[0]).toMatchObject({
-      dataEventSignature: "deven-tooling-usage",
-      payload: {},
-      output: {
-        hasDocumentationSkeleton: false,
-        dependencies: [],
-        devDependencies: [],
-        owner: undefined,
-        repo: undefined,
-        hasValidPackageJson: false,
-      },
-      created_at: 100,
-      owner: "",
-      repo: "",
-    });
+    expect(result[0]).toMatchObject({ it: "works", ...event });
   });
 });
