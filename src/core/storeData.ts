@@ -8,11 +8,11 @@ export const storeData = async (
 ) => {
   const resolvedEnhancedDataEvents = await Promise.all(enhancedDataEvents);
 
-  resolvedEnhancedDataEvents.forEach((data) => {
-    return octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
+  resolvedEnhancedDataEvents.forEach(async (data) => {
+    await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
       owner: process.env.REPO_OWNER as string,
       repo: process.env.REPO_NAME as string,
-      path: process.env.REPO_PATH as string,
+      path: `${process.env.REPO_PATH}/${data.created_at}.json`,
       message: `auto(data): add ${data.dataEventSignature} for ${data.owner}/${data.repo}`,
       committer: {
         name: process.env.COMMITTER_NAME as string,
@@ -25,7 +25,9 @@ export const storeData = async (
       content: Base64.encode(JSON.stringify(data)),
     });
 
-    logger.complete(`File pushed to repo: "path/to/file.json"`);
+    logger.complete(
+      `File pushed to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
+    );
   });
   return resolvedEnhancedDataEvents;
 };

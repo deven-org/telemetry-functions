@@ -105,7 +105,7 @@ describe("storeData", () => {
           "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
         message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data",
+        path: "raw-data/100.json",
         repo: "telemetry-data",
         author: {
           email: "author_email",
@@ -117,17 +117,14 @@ describe("storeData", () => {
       2,
       "PUT /repos/{owner}/{repo}/contents/{path}",
       {
+        author: { email: "author_email", name: "author_name" },
         committer: { email: "committer_email", name: "committer_name" },
         content:
           "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
         message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data",
+        path: "raw-data/100.json",
         repo: "telemetry-data",
-        author: {
-          email: "author_email",
-          name: "author_name",
-        },
       }
     );
   });

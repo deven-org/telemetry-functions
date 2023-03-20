@@ -7,9 +7,7 @@ import {
   WorkflowJobCompletedPayload,
 } from "./interfaces";
 
-export const collectWorfklowJobCompletedMetrics = (
-  dataEvent: DataEvent
-): DataEvent => {
+export const collectWorkflowsMetrics = (dataEvent: DataEvent): DataEvent => {
   const payload = dataEvent.payload as WorkflowJobCompletedPayload;
 
   const output: WorkflowJobCompletedOutput = {
@@ -35,6 +33,8 @@ export const collectWorfklowJobCompletedMetrics = (
 
   return {
     ...dataEvent,
+    repo: payload.repository.name,
+    owner: "",
     output,
   };
 };
