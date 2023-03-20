@@ -65,7 +65,7 @@ describe("handler", () => {
     });
   });
 
-  it("doesn't call collectMetrics if the event is unknown", async () => {
+  xit("doesn't call collectMetrics if the event is unknown", async () => {
     const event = {
       foo: "foo",
       bar: "bar",

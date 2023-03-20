@@ -8,7 +8,6 @@ const handler: Handler = async (event: HandlerEvent) => {
     const eventSignature = event.headers["x-github-event"] || "unknown";
     const body = getEventBody(event);
     const metrics = await collectMetricsHandler({ eventSignature, ...body });
-    console.log(metrics);
     return {
       statusCode: 200,
       body: "success",

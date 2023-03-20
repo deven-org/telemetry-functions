@@ -8,8 +8,6 @@ import {
 } from "./interfaces";
 
 export const collectWorkflowsMetrics = (dataEvent: DataEvent): DataEvent => {
-  console.log(dataEvent);
-
   const payload = dataEvent.payload as WorkflowJobCompletedPayload;
 
   const output: WorkflowJobCompletedOutput = {
