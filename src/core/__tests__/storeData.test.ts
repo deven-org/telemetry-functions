@@ -22,7 +22,7 @@ jest.mock("../logger", () => ({
   },
 }));
 
-const dataSignatureResponse: DataEvent = {
+const dataSignatureResponse = {
   dataEventSignature: DataEventSignature.WorkflowJob,
   created_at: 100,
   output: {},

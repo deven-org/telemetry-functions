@@ -22,7 +22,7 @@ jest.mock("../../metricsConditions", () => ({
 }));
 describe("collectMetrics", () => {
   it("collects metrics and returns an array of promises, containing the metrics", async () => {
-    const event: DataEvent = {
+    const event = {
       dataEventSignature: "foo-signature" as DataEventSignature,
       payload: {},
       output: {},
@@ -31,7 +31,7 @@ describe("collectMetrics", () => {
       repo: "",
     };
 
-    const collectedMetrics = await collectMetrics(event);
+    const collectedMetrics = await collectMetrics(event as DataEvent);
     const result = await Promise.all(collectedMetrics);
 
     expect(result[0]).toMatchObject({ it: "works", ...event });
