@@ -1,11 +1,21 @@
-import { collectPullRequestMetrics } from ".";
+import { collectCommitsPerPrMetrics } from ".";
 import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import { PullRequestClosedEvent } from "./../../github.interfaces";
 
-const isSignedAsPullRequest = (dataEvent: DataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.PullRequest;
+const isSignedAsCommitsPerPr = (dataEvent: DataEvent) => {
+  if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
+    return false;
+  }
+
+  if ((dataEvent.payload as PullRequestClosedEvent).action !== "closed") {
+    return false;
+  }
+
+  return true;
+};
 
 const conditions: Conditions = [
-  [isSignedAsPullRequest, collectPullRequestMetrics],
+  [isSignedAsCommitsPerPr, collectCommitsPerPrMetrics],
 ];
 
 export default conditions;
