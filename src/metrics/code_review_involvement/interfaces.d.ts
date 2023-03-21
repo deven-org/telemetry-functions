@@ -1,4 +1,4 @@
-export type PullRquestClosedPayload = {
+export type PullRequestClosedPayload = {
   action: "closed";
   number: number;
   repository: {

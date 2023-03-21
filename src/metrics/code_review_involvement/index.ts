@@ -2,14 +2,15 @@ import { logger } from "../../core";
 import { decode } from "js-base64";
 import { keys } from "ramda";
 import { DataEvent, MetricsSignature } from "../../interfaces";
-import { PullRquestClosedPayload, PullRquestClosedOutput } from "./interfaces";
+import { PullRquestClosedOutput } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
+import { PullRequestClosedEvent } from "../../github.interfaces";
 
 export const collectCodeReviewInvolvementMetrics = async (
   dataEvent: DataEvent
 ): Promise<DataEvent> => {
-  const payload = dataEvent.payload as PullRquestClosedPayload;
+  const payload = dataEvent.payload as PullRequestClosedEvent;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -46,9 +47,7 @@ export const collectCodeReviewInvolvementMetrics = async (
       }
     );
     packages = JSON.parse(decode(getPackageJson.data["content"]));
-  } catch (e) {
-    packages = [];
-  }
+  } catch (e) {}
   const output: PullRquestClosedOutput = {
     repo,
     owner,

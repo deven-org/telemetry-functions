@@ -1,4 +1,8 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEvent,
+  DataEventSignature,
+  MetricsSignature,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 
@@ -34,8 +38,12 @@ describe("Code Reviews Involvement", () => {
     };
 
     const output = await handler(eventBody);
-
-    expect(output).toMatchObject([
+    expect(
+      output.filter(
+        (o: DataEvent) =>
+          o.metricsSignature === MetricsSignature.CodeReviewInvolvement
+      )
+    ).toMatchObject([
       {
         created_at: expect.any(Number),
         output: {},
@@ -52,7 +60,12 @@ describe("Code Reviews Involvement", () => {
 
     const output: [] = await handler(eventBody);
 
-    expect(output).toMatchObject([
+    expect(
+      output.filter(
+        (o: DataEvent) =>
+          o.metricsSignature === MetricsSignature.CodeReviewInvolvement
+      )
+    ).toMatchObject([
       {
         created_at: expect.any(Number),
         output: {

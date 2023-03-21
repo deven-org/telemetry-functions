@@ -22,7 +22,6 @@
     "requested_teams": [],
     "merged_by": {
       "login": "merged_by_username"
-    },
-    "title": "feat(foo): release 1.0.0"
+    }
   }
 }
