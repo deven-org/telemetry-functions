@@ -26,11 +26,6 @@ export const collectCodeReviewInvolvementMetrics = async (
     duration,
   };
 
-  logger.success(
-    `Collected metrics for "${dataEvent.dataEventSignature}": %s`,
-    keys(output).join(", ")
-  );
-
   return {
     ...dataEvent,
     repo: payload.repository.name,

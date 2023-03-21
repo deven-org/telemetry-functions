@@ -4,12 +4,17 @@ export enum LogErrors {
 }
 
 export enum LogInfos {
-  eventReceived = "Event has been received.",
+  eventReceived = "Received '%s' event",
   eventSigned = "Event has been signed as: '%s'",
   startCollectingMetrics = "Trying to collect metrics...",
 }
 
 export enum LogWarnings {
   invalidPackageJson = "Package.json is invalid. Owner/Repo is: '%s'",
-  signingEventSignatureNotRecognized = "Can't identify the signature of the data event. Skipping.",
+  signingEventSignatureNotRecognized = "It is not possible to add a signature to the event.",
+  collectMetricsSignatureNotRecognized = "It is not possible to collect metrics from this event.",
+}
+
+export enum LogSuccess {
+  metricsCollected = "The following metrics were collected from the '%s' event:",
 }

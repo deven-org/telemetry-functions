@@ -33,7 +33,7 @@ export const addSignature = (data: any): Promise<DataEvent> => {
       ? res(signedDataEvent)
       : rej(
           getRejectionReason({
-            level: "warn",
+            level: "skip",
             message: LogWarnings.signingEventSignatureNotRecognized,
           })
         );

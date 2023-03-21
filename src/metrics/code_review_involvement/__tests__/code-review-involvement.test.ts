@@ -1,6 +1,5 @@
 import { DataEventSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
-import { encode } from "js-base64";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 
 const octokitResponse = {};
@@ -22,6 +21,8 @@ jest.mock("../../../core/logger.ts", () => ({
     error: jest.fn(),
     complete: jest.fn(),
     success: jest.fn(),
+    pending: jest.fn(),
+    skip: jest.fn(),
   },
 }));
 

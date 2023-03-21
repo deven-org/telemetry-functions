@@ -55,5 +55,5 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
 
 export type Conditions = [
   (any) => boolean,
-  (any) => EnhancedDataEvent | Promise<EnhancedDataEvent>
+  (any) => DataEvent | EnhancedDataEvent | Promise<EnhancedDataEvent>
 ][];

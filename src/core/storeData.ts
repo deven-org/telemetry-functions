@@ -10,10 +10,9 @@ export const storeData = async (
   const resolvedEnhancedDataEvents = await Promise.all(enhancedDataEvents);
 
   for (const data of resolvedEnhancedDataEvents) {
-    logger.info(
+    logger.pending(
       `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
     );
-
     try {
       await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
         owner: process.env.REPO_OWNER as string,
@@ -38,6 +37,5 @@ export const storeData = async (
       console.log(e);
     }
   }
-
   return resolvedEnhancedDataEvents;
 };

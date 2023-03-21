@@ -1,11 +1,7 @@
 import octokit from "../../core/octokit";
 import "../../core/collectMetrics";
 import "../../core/addSignature";
-import {
-  DataEvent,
-  DataEventSignature,
-  EnhancedDataEvent,
-} from "../../interfaces";
+import { DataEventSignature, EnhancedDataEvent } from "../../interfaces";
 import { handler } from "../../handler";
 import "../logger";
 
@@ -19,6 +15,8 @@ jest.mock("../logger", () => ({
     error: jest.fn(),
     complete: jest.fn(),
     success: jest.fn(),
+    pending: jest.fn(),
+    skip: jest.fn(),
   },
 }));
 

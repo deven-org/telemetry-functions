@@ -73,11 +73,6 @@ export const collectToolingUsageMetrics = async (
   }
   output.hasDocChapters = hasDocChapters;
 
-  logger.success(
-    `Collected metrics for "${dataEvent.dataEventSignature}": %s`,
-    keys(output).join(", ")
-  );
-
   return {
     ...dataEvent,
     output,

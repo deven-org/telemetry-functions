@@ -1,29 +1,42 @@
-import { getRejectionReason } from ".";
-import { logger } from "./logger";
-import { clone, omit } from "ramda";
+import { getRejectionReason, logger } from ".";
+import { clone, keys } from "ramda";
 import metricsConditions from "../metricsConditions";
+import Table from "cli-table3";
 
-import { LogErrors, LogInfos } from "../shared/logMessages";
+import { LogSuccess, LogWarnings } from "../shared/logMessages";
 import { DataEvent, EnhancedDataEvent } from "../interfaces";
 
 export const collectMetrics = async (
   dataEvent: DataEvent
 ): Promise<EnhancedDataEvent[]> => {
-  logger.info(LogInfos.startCollectingMetrics);
-
   const collectedMetrics: EnhancedDataEvent[] = [];
 
   for (const [condition, collect] of metricsConditions) {
     const clonedDataEvent = clone(dataEvent);
     if (condition(clonedDataEvent)) {
-      collectedMetrics.push(omit(["payload"], await collect(clonedDataEvent)));
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { payload, ...metrics } = (await collect(
+        clonedDataEvent
+      )) as DataEvent;
+
+      const table = new Table({
+        style: { head: ["cyan"] },
+        head: [`Metric for ${metrics.dataEventSignature}`],
+        colWidths: [40],
+      });
+      for (const k of keys(metrics)) {
+        table.push([k]);
+      }
+      collectedMetrics.push(metrics);
+      logger.success(LogSuccess.metricsCollected, metrics.dataEventSignature);
+      logger.info("\n" + table.toString());
     }
   }
 
   if (collectedMetrics.length === 0) {
     throw getRejectionReason({
-      level: "error",
-      message: LogErrors.collectMetricsSignatureNotRecognized,
+      level: "skip",
+      message: LogWarnings.collectMetricsSignatureNotRecognized,
     });
   }
 
