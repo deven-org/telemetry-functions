@@ -1,3 +1,5 @@
+import { CheckSuiteEvent } from "./github.interfaces";
+import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
 import {
   PullRquestClosedOutput,
   PullRquestClosedPayload,
@@ -16,18 +18,21 @@ export enum DataEventSignature {
   WorkflowJob = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
   PullRequest = "pull-request",
+  CheckSuite = "check-suite",
 }
 
 interface DataEventPayloadMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
   [DataEventSignature.PullRequest]: PullRquestClosedPayload;
+  [DataEventSignature.CheckSuite]: CheckSuiteEvent;
 }
 
 interface DataEventOutputMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
   [DataEventSignature.PullRequest]: PullRquestClosedOutput;
+  [DataEventSignature.CheckSuite]: CheckSuiteMetricsOutput;
 }
 
 export type EnhancedDataEvent = Omit<DataEvent, "payload">;
