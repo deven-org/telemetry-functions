@@ -14,14 +14,17 @@ export const storeData = async (
       `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
     );
 
-    //const actionType = data.output?.action ? ` - ${data.output.action} ` : "";
+    const actionType = data.metricsSignature
+      ? ` - ${data.metricsSignature} `
+      : " ";
 
+    const path = `${process.env.REPO_PATH}/${data.owner}/${data.repo}/${data.metricsSignature}/${data.created_at}.json`;
     try {
       await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
         owner: process.env.REPO_OWNER as string,
         repo: process.env.REPO_NAME as string,
-        path: `${process.env.REPO_PATH}/${data.owner}/${data.repo}/${data.created_at}.json`,
-        message: `auto(data): add ${data.dataEventSignature} for ${data.owner}/${data.repo}`,
+        path,
+        message: `auto(data): add ${data.dataEventSignature}${actionType}for ${data.owner}/${data.repo}`,
         committer: {
           name: process.env.COMMITTER_NAME as string,
           email: process.env.COMMITTER_EMAIL as string,
@@ -33,9 +36,7 @@ export const storeData = async (
         content: Base64.encode(JSON.stringify(data)),
       });
 
-      logger.complete(
-        `File pushed to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
-      );
+      logger.complete(`File pushed to repo: ${path}`);
     } catch (e) {
       console.log(e);
     }

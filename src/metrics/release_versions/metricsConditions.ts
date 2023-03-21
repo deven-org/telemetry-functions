@@ -1,4 +1,4 @@
-import { collectCodeReviewInvolvementMetrics } from ".";
+import { collectReleaseVersionsMetrics } from ".";
 import { PullRequestClosedEvent } from "../../github.interfaces";
 import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
 
@@ -16,7 +16,7 @@ const isSignedAsPullRequestClosed = (dataEvent: DataEvent) => {
 };
 
 const conditions: Conditions = [
-  [isSignedAsPullRequestClosed, collectCodeReviewInvolvementMetrics],
+  [isSignedAsPullRequestClosed, collectReleaseVersionsMetrics],
 ];
 
 export default conditions;

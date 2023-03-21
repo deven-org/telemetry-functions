@@ -1,7 +1,11 @@
 import octokit from "../../core/octokit";
 import "../../core/collectMetrics";
 import "../../core/addSignature";
-import { DataEventSignature, EnhancedDataEvent } from "../../interfaces";
+import {
+  DataEventSignature,
+  EnhancedDataEvent,
+  MetricsSignature,
+} from "../../interfaces";
 import { handler } from "../../handler";
 import "../logger";
 
@@ -47,6 +51,7 @@ const collectMetricsResponse: (
 )[] = [
   {
     dataEventSignature: DataEventSignature.WorkflowJob,
+    metricsSignature: MetricsSignature.WorkflowJob,
     created_at: 100,
     output: {
       foo: "foo",
@@ -58,6 +63,7 @@ const collectMetricsResponse: (
   new Promise((res) =>
     res({
       dataEventSignature: DataEventSignature.WorkflowJob,
+      metricsSignature: MetricsSignature.WorkflowJob,
       created_at: 100,
       output: {
         foo: "foo",
@@ -97,10 +103,10 @@ describe("storeData", () => {
       {
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
-        message: "auto(data): add workflow-job for owner/repo",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJtZXRyaWNzU2lnbmF0dXJlIjoid29ya2Zsb3ctam9iIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
+        message: "auto(data): add workflow-job - workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data/owner/repo/100.json",
+        path: "raw-data/owner/repo/workflow-job/100.json",
         repo: "telemetry-data",
         author: {
           email: "author_email",
@@ -115,10 +121,10 @@ describe("storeData", () => {
         author: { email: "author_email", name: "author_name" },
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
-        message: "auto(data): add workflow-job for owner/repo",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJtZXRyaWNzU2lnbmF0dXJlIjoid29ya2Zsb3ctam9iIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiZm9vIjoiZm9vIiwiYmFyIjoiYmFyIn0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyJ9",
+        message: "auto(data): add workflow-job - workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data/owner/repo/100.json",
+        path: "raw-data/owner/repo/workflow-job/100.json",
         repo: "telemetry-data",
       }
     );

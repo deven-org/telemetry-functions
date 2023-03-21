@@ -85,6 +85,7 @@ export interface PullRequest {
   created_at: string;
   closed_at: string;
   merged_at: string;
+  updated_at: string;
   comments: number;
   review_comments: number;
   changed_files: number;
@@ -118,6 +119,7 @@ export interface PullRequestEvent {
   number: number;
   organization: any;
   pull_request: PullRequest;
+  repository: Repository;
 }
 
 export interface PullRequestClosedEvent extends PullRequestEvent {

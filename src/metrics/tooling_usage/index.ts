@@ -1,5 +1,9 @@
 import { logger } from "../../core";
-import { DataEvent, EnhancedDataEvent } from "../../interfaces";
+import {
+  DataEvent,
+  EnhancedDataEvent,
+  MetricsSignature,
+} from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
 import { keys, pipe, mergeAll, includes } from "ramda";
 import octokit from "../../core/octokit";
@@ -75,6 +79,7 @@ export const collectToolingUsageMetrics = async (
 
   return {
     ...dataEvent,
+    metricsSignature: MetricsSignature.ToolingUsage,
     output,
     repo: payload.repo,
     owner: payload.owner,

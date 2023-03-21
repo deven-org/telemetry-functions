@@ -21,10 +21,12 @@ export const collectMetrics = async (
 
       const table = new Table({
         style: { head: ["cyan"] },
-        head: [`Metric for ${metrics.dataEventSignature}`],
-        colWidths: [40],
+        head: [
+          `Metrics: ${metrics.dataEventSignature} > ${metrics.metricsSignature}`,
+        ],
+        colWidths: [100],
       });
-      for (const k of keys(metrics)) {
+      for (const k of keys(metrics.output)) {
         table.push([k]);
       }
       collectedMetrics.push(metrics);

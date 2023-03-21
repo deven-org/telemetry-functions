@@ -1,9 +1,7 @@
-import { CheckSuiteEvent } from "./github.interfaces";
+import { CheckSuiteEvent, PullRequestClosedEvent } from "./github.interfaces";
 import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
-import {
-  PullRquestClosedOutput,
-  PullRquestClosedPayload,
-} from "./metrics/code_review_involvement/interfaces";
+import { PullRquestClosedOutput } from "./metrics/code_review_involvement/interfaces";
+import { ReleaseVersionsOutput } from "./metrics/release_versions/interfaces";
 import {
   ToolingUsageOutput,
   ToolingUsagePayload,
@@ -21,17 +19,27 @@ export enum DataEventSignature {
   CheckSuite = "check-suite",
 }
 
+export enum MetricsSignature {
+  CheckSuite = "check-suite",
+  WorkflowJob = "workflow-job",
+  CodeReviewInvolvement = "code-review-involvement",
+  ToolingUsage = "tooling-usage",
+  ReleaseVersions = "release-versions",
+}
+
 interface DataEventPayloadMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
-  [DataEventSignature.PullRequest]: PullRquestClosedPayload;
+  [DataEventSignature.PullRequest]: PullRequestClosedEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
 }
 
 interface DataEventOutputMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
-  [DataEventSignature.PullRequest]: PullRquestClosedOutput;
+  [DataEventSignature.PullRequest]:
+    | PullRquestClosedOutput
+    | ReleaseVersionsOutput;
   [DataEventSignature.CheckSuite]: CheckSuiteMetricsOutput;
 }
 
@@ -41,6 +49,7 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   dataEventSignature: T;
   payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
   output: T extends keyof DataEventOutputMap ? DataEventOutputMap[T] : never;
+  metricsSignature?: MetricsSignature;
   created_at: number;
 }
 

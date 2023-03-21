@@ -1,7 +1,7 @@
 import { logger } from "../../core";
 import { decode } from "js-base64";
 import { keys } from "ramda";
-import { DataEvent } from "../../interfaces";
+import { DataEvent, MetricsSignature } from "../../interfaces";
 import {
   WorkflowJobCompletedOutput,
   WorkflowJobCompletedPayload,
@@ -61,6 +61,7 @@ export const collectWorkflowsMetrics = async (
 
   return {
     ...dataEvent,
+    metricsSignature: MetricsSignature.WorkflowJob,
     repo,
     owner,
     output,

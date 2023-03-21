@@ -1,4 +1,4 @@
-import { DataEventSignature } from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 
 import mockedCheckSuite from "./fixtures/mocked-check-suite.json";
@@ -66,6 +66,7 @@ describe("Code Reviews Involvement", () => {
         dataEventSignature: DataEventSignature.CheckSuite,
         owner: "owner_name",
         repo: "repo_name",
+        metricsSignature: MetricsSignature.CheckSuite,
         created_at: expect.any(Number),
       },
     ]);
