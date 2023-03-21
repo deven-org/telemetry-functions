@@ -1,4 +1,4 @@
-import { DataEventSignature } from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
@@ -68,6 +68,7 @@ describe("Tooling_Usage", () => {
         created_at: expect.any(Number),
         output: { hasDocumentationSkeleton: true },
         dataEventSignature: DataEventSignature.ToolingUsage,
+        metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });
@@ -98,6 +99,7 @@ describe("Tooling_Usage", () => {
         created_at: expect.any(Number),
         output: { hasDocumentationSkeleton: false },
         dataEventSignature: DataEventSignature.ToolingUsage,
+        metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });
@@ -127,6 +129,7 @@ describe("Tooling_Usage", () => {
         created_at: expect.any(Number),
         output: { hasDocumentationSkeleton: false },
         dataEventSignature: DataEventSignature.ToolingUsage,
+        metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });
@@ -149,6 +152,7 @@ describe("Tooling_Usage", () => {
         created_at: expect.any(Number),
         output: { hasValidPackageJson: false },
         dataEventSignature: DataEventSignature.ToolingUsage,
+        metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });
@@ -171,6 +175,7 @@ describe("Tooling_Usage", () => {
         created_at: expect.any(Number),
         output: { hasDocChapters: false },
         dataEventSignature: DataEventSignature.ToolingUsage,
+        metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });

@@ -1,7 +1,7 @@
 import { logger } from "../../core";
 import { decode } from "js-base64";
 import { keys } from "ramda";
-import { DataEvent } from "../../interfaces";
+import { DataEvent, MetricsSignature } from "../../interfaces";
 import { PullRquestClosedPayload, PullRquestClosedOutput } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
@@ -70,6 +70,7 @@ export const collectCodeReviewInvolvementMetrics = async (
 
   return {
     ...dataEvent,
+    metricsSignature: MetricsSignature.CodeReviewInvolvement,
     repo,
     owner,
     output,

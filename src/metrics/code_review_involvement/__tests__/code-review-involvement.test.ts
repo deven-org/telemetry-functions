@@ -1,4 +1,4 @@
-import { DataEventSignature } from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 
@@ -73,6 +73,7 @@ describe("Code Reviews Involvement", () => {
           requested_reviewers: 3,
           requested_teams: 0,
         },
+        metricsSignature: MetricsSignature.CodeReviewInvolvement,
         dataEventSignature: DataEventSignature.PullRequest,
       },
     ]);

@@ -21,6 +21,13 @@ export enum DataEventSignature {
   CheckSuite = "check-suite",
 }
 
+export enum MetricsSignature {
+  CheckSuite = "check-suite",
+  WorkflowJob = "workflow-job",
+  CodeReviewInvolvement = "code-review-involvement",
+  ToolingUsage = "tooling-usage",
+}
+
 interface DataEventPayloadMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
@@ -41,6 +48,7 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   dataEventSignature: T;
   payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
   output: T extends keyof DataEventOutputMap ? DataEventOutputMap[T] : never;
+  metricsSignature?: MetricsSignature;
   created_at: number;
 }
 

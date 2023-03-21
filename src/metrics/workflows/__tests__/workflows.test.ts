@@ -1,4 +1,4 @@
-import { DataEventSignature } from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
@@ -113,6 +113,7 @@ describe("Workflows", () => {
           },
         },
         dataEventSignature: DataEventSignature.WorkflowJob,
+        metricsSignature: MetricsSignature.WorkflowJob,
       },
     ]);
   });
