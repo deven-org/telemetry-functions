@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/deven-org/telemetry-functions/compare/v1.6.0...v1.7.0) (2023-03-21)
+
+
+### Features
+
+* **check-suite:** [#34](https://github.com/deven-org/telemetry-functions/issues/34) add check suite metrics ([de4a243](https://github.com/deven-org/telemetry-functions/commit/de4a24354f6c33b60d294003176e2db43997fdf2))
+* **log:** improve logger ([37a0d8c](https://github.com/deven-org/telemetry-functions/commit/37a0d8cc88c8b4c2de16b42f11a9fc320d125091))
+
+
+### Bug Fixes
+
+* **log:** add action log ([3ce9002](https://github.com/deven-org/telemetry-functions/commit/3ce90023faf1d80127f04691ecabccdd6ef3e86b))
+* **storeData:** improve commit message and file structure ([738e6e6](https://github.com/deven-org/telemetry-functions/commit/738e6e60eb790452a00ecbe86de9486b3b84779f))
+
 ## [1.6.0](https://github.com/deven-org/telemetry-functions/compare/v1.5.0...v1.6.0) (2023-03-20)
 
 
