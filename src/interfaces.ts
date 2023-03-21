@@ -1,9 +1,6 @@
 import { CheckSuiteEvent, PullRequestClosedEvent } from "./github.interfaces";
 import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
-import {
-  PullRquestClosedOutput,
-  PullRequestClosedPayload,
-} from "./metrics/code_review_involvement/interfaces";
+import { PullRquestClosedOutput } from "./metrics/code_review_involvement/interfaces";
 import { ReleaseVersionsOutput } from "./metrics/release_versions/interfaces";
 import {
   ToolingUsageOutput,
