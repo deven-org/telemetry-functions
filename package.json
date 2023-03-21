@@ -47,6 +47,7 @@
     "@types/jest": "^29.4.1",
     "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "cli-table3": "^0.6.3",
     "deven-documentation-skeleton": "^2.0.0",
     "eslint": "^8.36.0",
     "husky": "^8.0.0",

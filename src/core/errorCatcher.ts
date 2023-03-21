@@ -1,7 +1,7 @@
 import { logger } from "./logger";
 
 export interface ErrorForCatcher {
-  level: "error" | "warn";
+  level: "error" | "warn" | "skip";
   message: string;
 }
 

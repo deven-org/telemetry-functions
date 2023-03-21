@@ -59,11 +59,6 @@ export const collectWorkflowsMetrics = async (
     packages,
   };
 
-  logger.success(
-    `Collected metrics for "${dataEvent.dataEventSignature}": %s`,
-    keys(output).join(", ")
-  );
-
   return {
     ...dataEvent,
     repo,

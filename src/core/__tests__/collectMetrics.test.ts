@@ -13,6 +13,8 @@ jest.mock("../logger", () => ({
     error: jest.fn(),
     complete: jest.fn(),
     success: jest.fn(),
+    pending: jest.fn(),
+    skip: jest.fn(),
   },
 }));
 

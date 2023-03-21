@@ -1,11 +1,7 @@
 import octokit from "../../core/octokit";
 import "../../core/collectMetrics";
 import "../../core/addSignature";
-import {
-  DataEvent,
-  DataEventSignature,
-  EnhancedDataEvent,
-} from "../../interfaces";
+import { DataEventSignature, EnhancedDataEvent } from "../../interfaces";
 import { handler } from "../../handler";
 import "../logger";
 
@@ -19,6 +15,8 @@ jest.mock("../logger", () => ({
     error: jest.fn(),
     complete: jest.fn(),
     success: jest.fn(),
+    pending: jest.fn(),
+    skip: jest.fn(),
   },
 }));
 
@@ -102,7 +100,7 @@ describe("storeData", () => {
           "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
         message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data/100.json",
+        path: "raw-data/owner/repo/100.json",
         repo: "telemetry-data",
         author: {
           email: "author_email",
@@ -120,7 +118,7 @@ describe("storeData", () => {
           "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJmb28iOiJmb28iLCJiYXIiOiJiYXIifSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
         message: "auto(data): add workflow-job for owner/repo",
         owner: "deven-org",
-        path: "raw-data/100.json",
+        path: "raw-data/owner/repo/100.json",
         repo: "telemetry-data",
       }
     );

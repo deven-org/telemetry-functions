@@ -1,6 +1,7 @@
 import { DataEventSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
-import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
+
+import mockedCheckSuite from "./fixtures/mocked-check-suite.json";
 
 const octokitResponse = {};
 
@@ -29,8 +30,8 @@ jest.mock("../../../core/logger.ts", () => ({
 describe("Code Reviews Involvement", () => {
   it("event gets signed as pull_request event", async () => {
     const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+      eventSignature: "check_suite",
+      ...mockedCheckSuite,
     };
 
     const output = await handler(eventBody);
@@ -39,41 +40,33 @@ describe("Code Reviews Involvement", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        dataEventSignature: DataEventSignature.PullRequest,
+        dataEventSignature: DataEventSignature.CheckSuite,
       },
     ]);
   });
 
   it("returns collected metrics", async () => {
     const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+      eventSignature: "check_suite",
+      ...mockedCheckSuite,
     };
 
     const output: [] = await handler(eventBody);
 
-    expect(output).toMatchObject([
+    expect(output).toStrictEqual([
       {
-        created_at: expect.any(Number),
         output: {
-          repo: "repo_name",
-          owner: "owner",
-          number: 10,
-          created_at: 1675866904000,
-          updated_at: 1675863304000,
-          closed_at: 1675870504000,
-          merged_at: 1675874104000,
-          total_duration: 3600000,
-          created_to_merged_duration: 7200000,
-          updated_to_closed: 7200000,
-          comments: 5,
-          review_comments: 12,
-          changed_files: 52,
-          has_been_merged_by_author: false,
-          requested_reviewers: 3,
-          requested_teams: 0,
+          conclusion: "success",
+          duration: 3600000,
+          created_at: 1678724577000,
+          updated_at: 1678728177000,
+          is_app_owner: true,
+          pull_requests: [{}, {}, {}],
         },
-        dataEventSignature: DataEventSignature.PullRequest,
+        dataEventSignature: DataEventSignature.CheckSuite,
+        owner: "owner_name",
+        repo: "repo_name",
+        created_at: expect.any(Number),
       },
     ]);
   });

@@ -68,11 +68,6 @@ export const collectCodeReviewInvolvementMetrics = async (
     requested_teams,
   };
 
-  logger.success(
-    `Collected metrics for "${dataEvent.dataEventSignature}": %s`,
-    keys(output).join(", ")
-  );
-
   return {
     ...dataEvent,
     repo,
