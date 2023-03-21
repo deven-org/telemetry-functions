@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/deven-org/telemetry-functions/compare/v1.7.0...v1.8.0) (2023-03-21)
+
+
+### Features
+
+* **metrics-signature:** add metrics signature ([#71](https://github.com/deven-org/telemetry-functions/issues/71)) ([6937168](https://github.com/deven-org/telemetry-functions/commit/6937168221fe2883a7a8d7cd40d4e2e282a8b106))
+
 ## [1.7.0](https://github.com/deven-org/telemetry-functions/compare/v1.6.0...v1.7.0) (2023-03-21)
 
 
