@@ -20,6 +20,7 @@ import {
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
+  TestCoverage = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
   PullRequest = "pull-request",
   CheckSuite = "check-suite",
@@ -28,6 +29,7 @@ export enum DataEventSignature {
 export enum MetricsSignature {
   CheckSuite = "check-suite",
   WorkflowJob = "workflow-job",
+  TestCoverage = "test-coverage",
   CodeReviewInvolvement = "code-review-involvement",
   ToolingUsage = "tooling-usage",
   ReleaseVersions = "release-versions",
@@ -36,7 +38,7 @@ export enum MetricsSignature {
 
 interface DataEventPayloadMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
-  [DataEventSignature.WorkflowJob]: WorkflowJobTestCoveragePayload;
+  [DataEventSignature.TestCoverage]: WorkflowJobTestCoveragePayload;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
   [DataEventSignature.PullRequest]: PullRequestClosedEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
@@ -44,7 +46,7 @@ interface DataEventPayloadMap {
 
 interface DataEventOutputMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
-  [DataEventSignature.WorkflowJob]: WorkflowJobTestCoverageOutput;
+  [DataEventSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
   [DataEventSignature.PullRequest]:
     | PullRequestClosedOutput

@@ -1,7 +1,7 @@
 import { logger } from "../../core";
 import { decode } from "js-base64";
 import { keys, includes, find, propEq, toLower} from "ramda";
-import { DataEvent } from "../../interfaces";
+import { DataEvent, MetricsSignature } from "../../interfaces";
 import {
   WorkflowJobTestCoveragePayload,
   WorkflowJobTestCoverageOutput,
@@ -73,6 +73,8 @@ export const collectWorkflowsTestCoverageMetrics = async (
     test_coverage
   };
 
+  console.log(output);
+
   logger.success(
     `Collected metrics for "${dataEvent.dataEventSignature}": %s`,
     keys(output).join(", ")
@@ -80,8 +82,9 @@ export const collectWorkflowsTestCoverageMetrics = async (
 
   return {
     ...dataEvent,
-    repo: payload.repository.name,
-    owner: "",
+    metricsSignature: MetricsSignature.TestCoverage,
+    repo,
+    owner,
     output,
   };
 };
