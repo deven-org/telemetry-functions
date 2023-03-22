@@ -1,7 +1,5 @@
 import { DataEvent, DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
-import { encode } from "js-base64";
-import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
 import mockedWorkflowJobTestCoverage from "./fixtures/mocked-workflow-job-test-coverage.json";
 
 let octokitResponse = {};
@@ -28,7 +26,7 @@ jest.mock("../../../core/logger.ts", () => ({
   },
 }));
 
-describe("Workflows", () => {
+describe("Test_Coverage", () => {
   it("event gets signed as workflow_job event", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
@@ -38,11 +36,30 @@ describe("Workflows", () => {
     const output = await handler(eventBody);
 
     expect(
-      output.filter(o => o.metricsSignature === MetricsSignature.WorkflowJob)
+      output.filter(o => o.metricsSignature === MetricsSignature.TestCoverage)
     ).toMatchObject([
       {
         created_at: expect.any(Number),
         output: {},
+        dataEventSignature: DataEventSignature.WorkflowJob,
+      },
+    ]);
+  });
+
+  it("event has the word 'test' in workflow_name",async () => {
+    const eventBody = {
+      eventSignature: "workflow_job",
+      ...mockedWorkflowJobTestCoverage,
+    };
+
+    const output = await handler(eventBody);
+
+    expect(
+      output.filter(o => o.metricsSignature === MetricsSignature.TestCoverage)
+    ).toMatchObject([
+      {
+        created_at: expect.any(Number),
+        output: {workflow_name: 'Unit Test'},
         dataEventSignature: DataEventSignature.WorkflowJob,
       },
     ]);
@@ -54,69 +71,25 @@ describe("Workflows", () => {
       ...mockedWorkflowJobTestCoverage,
     };
 
-    octokitResponse = {
-      data: {
-        content: encode(JSON.stringify(mockedPackageWithDocSkeleton)),
-      },
-    };
-
     const output: [] = await handler(eventBody);
 
     expect(
-      output.filter((o: DataEvent) => o.metricsSignature === MetricsSignature.WorkflowJob)
+      output.filter((o: DataEvent) => o.metricsSignature === MetricsSignature.TestCoverage)
     ).toMatchObject([
       {
         created_at: expect.any(Number),
         output: {
           repository: mockedWorkflowJobTestCoverage.repository.name,
-          completed_at: 1679311634000,
-          created_at: 1679311618000,
-          started_at: 1679311624000,
-          status: "completed",
-          workflow_name: "Parse Data",
-          duration: 10000,
-          steps: [
-            {
-              name: "Set up job",
-              status: "completed",
-              conclusion: "success",
-              number: 1,
-              started_at: 1679311623000,
-              completed_at: 1679311625000,
-            },
-            {
-              completed_at: 1679311626000,
-              conclusion: "success",
-              duration: 1000,
-              name: "Check out repository code",
-              number: 2,
-              started_at: 1679311625000,
-              status: "completed",
-            },
-          ],
-          packages: {
-            dependencies: {
-              "@netlify/functions": "^1.4.0",
-              "@octokit/rest": "^19.0.7",
-              dotenv: "^16.0.3",
-              "js-base64": "^3.7.5",
-            },
-            devDependencies: {
-              "@types/jest": "^29.4.1",
-              "@types/node": "^18.13.0",
-              "deven-documentation-skeleton": "^2.0.0",
-              moment: "^2.29.4",
-              netlify: "^13.1.2",
-              "netlify-cli": "^13.0.1",
-              ramda: "^0.28.0",
-              semver: "^7.3.8",
-              signale: "^1.4.0",
-              "ts-jest": "^29.0.5",
-            },
-          },
+          workflow_name: "Unit Test",
+          hasTestWokflowFailed: false,
+          hasTestStepFailed: false,
+          test_step_duration: 11000,
+          test_step_status: "completed",
+          test_step_conclusion: "success"
+          
         },
         dataEventSignature: DataEventSignature.WorkflowJob,
-        metricsSignature: MetricsSignature.WorkflowJob,
+        metricsSignature: MetricsSignature.TestCoverage,
       },
     ]);
   });

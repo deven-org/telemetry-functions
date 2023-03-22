@@ -22,6 +22,7 @@ export type WorkflowJobCompletedPayload = {
     workflow_name: string;
     run_attempt: number;
     steps: WorkflowJobStep[];
+    conclusion: string;
   };
 };
 export type WorkflowJobCompletedOutput = any;

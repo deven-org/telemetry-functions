@@ -14,13 +14,11 @@ import {
 
 import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
 import {
-  WorkflowJobTestCoveragePayload,
   WorkflowJobTestCoverageOutput,
 } from "./metrics/test_coverage/interfaces";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
-  TestCoverage = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
   PullRequest = "pull-request",
   CheckSuite = "check-suite",
@@ -38,15 +36,15 @@ export enum MetricsSignature {
 
 interface DataEventPayloadMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
-  [DataEventSignature.TestCoverage]: WorkflowJobTestCoveragePayload;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
   [DataEventSignature.PullRequest]: PullRequestClosedEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
 }
 
 interface DataEventOutputMap {
-  [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
-  [DataEventSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
+  [DataEventSignature.WorkflowJob]: 
+    | WorkflowJobCompletedOutput
+    | WorkflowJobTestCoverageOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
   [DataEventSignature.PullRequest]:
     | PullRequestClosedOutput
