@@ -1,6 +1,6 @@
 import { CheckSuiteEvent, PullRequestClosedEvent } from "./github.interfaces";
 import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
-import { PullRquestClosedOutput } from "./metrics/code_review_involvement/interfaces";
+import { PullRequestClosedOutput } from "./metrics/code_review_involvement/interfaces";
 import { ReleaseVersionsOutput } from "./metrics/release_versions/interfaces";
 import {
   ToolingUsageOutput,
@@ -11,6 +11,8 @@ import {
   WorkflowJobCompletedOutput,
   WorkflowJobCompletedPayload,
 } from "./metrics/workflows/interfaces";
+
+import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
@@ -25,6 +27,7 @@ export enum MetricsSignature {
   CodeReviewInvolvement = "code-review-involvement",
   ToolingUsage = "tooling-usage",
   ReleaseVersions = "release-versions",
+  CommitsPerPr = "commits-per-pr",
 }
 
 interface DataEventPayloadMap {
@@ -38,8 +41,9 @@ interface DataEventOutputMap {
   [DataEventSignature.WorkflowJob]: WorkflowJobCompletedOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
   [DataEventSignature.PullRequest]:
-    | PullRquestClosedOutput
-    | ReleaseVersionsOutput;
+    | PullRequestClosedOutput
+    | ReleaseVersionsOutput
+    | CommitsPerPrOutput;
   [DataEventSignature.CheckSuite]: CheckSuiteMetricsOutput;
 }
 

@@ -25,7 +25,7 @@ export type PullRequestClosedPayload = {
     };
   };
 };
-export type PullRquestClosedOutput = {
+export type PullRequestClosedOutput = {
   repo: string;
   owner: string;
   number: number;
@@ -42,4 +42,5 @@ export type PullRquestClosedOutput = {
   has_been_merged_by_author: boolean;
   requested_reviewers: number;
   requested_teams: number;
+  packages: any;
 };
