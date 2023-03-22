@@ -31,7 +31,7 @@ export enum MetricsSignature {
   CodeReviewInvolvement = "code-review-involvement",
   ToolingUsage = "tooling-usage",
   ReleaseVersions = "release-versions",
-  CommitsPerPr = "CommitsPerPr",
+  CommitsPerPr = "commits-per-pr",
 }
 
 interface DataEventPayloadMap {
