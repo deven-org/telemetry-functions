@@ -7,7 +7,6 @@ import octokit from "../../core/octokit";
 import { PullRequestClosedEvent } from "../../github.interfaces";
 import moment from "moment";
 import { CommitsPerPrOutput } from "./interfaces";
-import { pathToFileURL } from "url";
 
 export const collectCommitsPerPrMetrics = async (
   dataEvent: DataEvent
