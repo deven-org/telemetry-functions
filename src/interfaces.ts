@@ -19,6 +19,7 @@ import {
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
+  TestCoverage = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
   PullRequest = "pull-request",
   CheckSuite = "check-suite",
