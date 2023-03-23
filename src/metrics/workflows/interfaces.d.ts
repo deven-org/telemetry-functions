@@ -15,6 +15,7 @@ export type WorkflowJobCompletedPayload = {
     };
   };
   workflow_job: {
+    id: number;
     completed_at: string;
     started_at: string;
     created_at: string;

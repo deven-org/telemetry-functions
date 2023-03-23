@@ -1,10 +1,9 @@
-
 export type WorkflowJobTestCoverageOutput = {
-  repository: string,
-  workflow_name: string,
-  hasTestWokflowFailed: boolean,
-  hasTestStepFailed: boolean,
-  test_step_duration: number | undefined,
-  test_step_status: string | undefined,
-  test_step_conclusion: string | undefined
+  id: number;
+  status: string;
+  conclusion: string;
+  is_workflow_name_about_test: boolean;
+  steps_about_test: object[];
+  has_failed_steps: boolean;
+  total_tests_duration: number;
 };

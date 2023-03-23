@@ -1,8 +1,12 @@
-import { DataEvent, DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEvent,
+  DataEventSignature,
+  MetricsSignature,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
-import mockedWorkflowJobTestCoverage from "./fixtures/mocked-workflow-job-test-coverage.json";
+import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
 
-let octokitResponse = {};
+const octokitResponse = {};
 
 jest.mock("./../../../core/octokit.ts", () => ({
   __esModule: true,
@@ -30,13 +34,13 @@ describe("Test_Coverage", () => {
   it("event gets signed as workflow_job event", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
-      ...mockedWorkflowJobTestCoverage,
+      ...mockedWorkflowJobCompleted,
     };
 
     const output = await handler(eventBody);
 
     expect(
-      output.filter(o => o.metricsSignature === MetricsSignature.TestCoverage)
+      output.filter((o) => o.metricsSignature === MetricsSignature.TestCoverage)
     ).toMatchObject([
       {
         created_at: expect.any(Number),
@@ -46,50 +50,81 @@ describe("Test_Coverage", () => {
     ]);
   });
 
-  it("event has the word 'test' in workflow_name",async () => {
+  it("returns collected metrics (no tests)", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
-      ...mockedWorkflowJobTestCoverage,
-    };
-
-    const output = await handler(eventBody);
-
-    expect(
-      output.filter(o => o.metricsSignature === MetricsSignature.TestCoverage)
-    ).toMatchObject([
-      {
-        created_at: expect.any(Number),
-        output: {workflow_name: 'Unit Test'},
-        dataEventSignature: DataEventSignature.WorkflowJob,
-      },
-    ]);
-  });
-
-  it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobTestCoverage,
+      ...mockedWorkflowJobCompleted,
     };
 
     const output: [] = await handler(eventBody);
 
     expect(
-      output.filter((o: DataEvent) => o.metricsSignature === MetricsSignature.TestCoverage)
-    ).toMatchObject([
+      output.filter(
+        (o) =>
+          (o as DataEvent).metricsSignature === MetricsSignature.TestCoverage
+      )
+    ).toStrictEqual([
       {
         created_at: expect.any(Number),
-        output: {
-          repository: mockedWorkflowJobTestCoverage.repository.name,
-          workflow_name: "Unit Test",
-          hasTestWokflowFailed: false,
-          hasTestStepFailed: false,
-          test_step_duration: 11000,
-          test_step_status: "completed",
-          test_step_conclusion: "success"
-          
-        },
         dataEventSignature: DataEventSignature.WorkflowJob,
         metricsSignature: MetricsSignature.TestCoverage,
+        output: {
+          id: 12126810024,
+          status: "completed",
+          conclusion: "failure",
+          is_workflow_name_about_test: false,
+          steps_about_test: [],
+          has_failed_steps: false,
+          total_tests_duration: 0,
+        },
+        repo: "telemetry-data",
+        owner: "deven-org",
+      },
+    ]);
+  });
+
+  it("returns collected metrics (with tests)", async () => {
+    const eventBody = {
+      eventSignature: "workflow_job",
+      ...mockedWorkflowJobCompleted,
+    };
+
+    mockedWorkflowJobCompleted.workflow_job.workflow_name = "Just teStIng...";
+    mockedWorkflowJobCompleted.workflow_job.steps[0].name = "Run some tests";
+    mockedWorkflowJobCompleted.workflow_job.steps[0].conclusion = "failure";
+    const output: [] = await handler(eventBody);
+
+    expect(
+      output.filter(
+        (o) =>
+          (o as DataEvent).metricsSignature === MetricsSignature.TestCoverage
+      )
+    ).toStrictEqual([
+      {
+        created_at: expect.any(Number),
+        dataEventSignature: DataEventSignature.WorkflowJob,
+        metricsSignature: MetricsSignature.TestCoverage,
+        output: {
+          id: 12126810024,
+          status: "completed",
+          conclusion: "failure",
+          is_workflow_name_about_test: true,
+          steps_about_test: [
+            {
+              completed_at: "2023-03-20T11:27:05.000Z",
+              conclusion: "failure",
+              duration: 2000,
+              name: "Run some tests",
+              number: 1,
+              started_at: "2023-03-20T11:27:03.000Z",
+              status: "completed",
+            },
+          ],
+          has_failed_steps: true,
+          total_tests_duration: 2000,
+        },
+        repo: "telemetry-data",
+        owner: "deven-org",
       },
     ]);
   });

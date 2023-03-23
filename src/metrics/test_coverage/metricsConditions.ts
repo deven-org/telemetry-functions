@@ -13,7 +13,6 @@ const isSignedAsWorkflowJobTestCoverage = (dataEvent: DataEvent) => {
   ) {
     return false;
   }
-
   return true;
 };
 
