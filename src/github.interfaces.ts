@@ -11,7 +11,19 @@ export interface User {
   login: string;
   id: number;
   node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
   url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
   type: string;
   site_admin: boolean;
 }
@@ -187,4 +199,40 @@ export interface CheckSuiteCompletedEvent extends CheckSuiteEvent {
   organization: any;
   repository: Repository;
   sender: User;
+}
+
+export type CommitsInPullRequest = CommitInPullRequest[];
+interface CommitInPullRequest {
+  commit: Commit;
+  author: Author;
+  committer: User;
+  parents: Tree[];
+}
+
+interface Commit {
+  url: string;
+  author: Author;
+  committer: Author;
+  message: string;
+  tree: Tree;
+  comment_count: number;
+  verification: Verification;
+}
+
+interface Verification {
+  verified: boolean;
+  reason: string;
+  signature?: any;
+  payload?: any;
+}
+
+interface Tree {
+  url: string;
+  sha: string;
+}
+
+interface Author {
+  name: string;
+  email: string;
+  date: string;
 }

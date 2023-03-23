@@ -1,8 +1,6 @@
-import { logger } from "../../core";
 import { decode } from "js-base64";
-import { keys } from "ramda";
 import { DataEvent, MetricsSignature } from "../../interfaces";
-import { PullRquestClosedOutput } from "./interfaces";
+import { PullRequestClosedOutput } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
 import { PullRequestClosedEvent } from "../../github.interfaces";
@@ -48,7 +46,7 @@ export const collectCodeReviewInvolvementMetrics = async (
     );
     packages = JSON.parse(decode(getPackageJson.data["content"]));
   } catch (e) {}
-  const output: PullRquestClosedOutput = {
+  const output: PullRequestClosedOutput = {
     repo,
     owner,
     number,
@@ -65,6 +63,7 @@ export const collectCodeReviewInvolvementMetrics = async (
     has_been_merged_by_author,
     requested_reviewers,
     requested_teams,
+    packages,
   };
 
   return {
