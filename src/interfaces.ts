@@ -14,12 +14,17 @@ import {
 
 import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
 import { WorkflowJobTestCoverageOutput } from "./metrics/test_coverage/interfaces";
+import {
+  DeploymentOutput,
+  DeploymentPayload,
+} from "./metrics/deployments/interfaces";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
   PullRequest = "pull-request",
   CheckSuite = "check-suite",
+  Deployment = "deployment",
 }
 
 export enum MetricsSignature {
@@ -30,6 +35,7 @@ export enum MetricsSignature {
   ToolingUsage = "tooling-usage",
   ReleaseVersions = "release-versions",
   CommitsPerPr = "CommitsPerPr",
+  Deployment = "deployment",
 }
 
 interface DataEventPayloadMap {
@@ -37,6 +43,7 @@ interface DataEventPayloadMap {
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
   [DataEventSignature.PullRequest]: PullRequestClosedEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
+  [DataEventSignature.Deployment]: DeploymentPayload;
 }
 
 interface DataEventOutputMap {
@@ -49,6 +56,7 @@ interface DataEventOutputMap {
     | ReleaseVersionsOutput
     | CommitsPerPrOutput;
   [DataEventSignature.CheckSuite]: CheckSuiteMetricsOutput;
+  [DataEventSignature.Deployment]: DeploymentOutput;
 }
 
 export type EnhancedDataEvent = Omit<DataEvent, "payload">;

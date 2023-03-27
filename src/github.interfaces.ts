@@ -236,3 +236,27 @@ interface Author {
   email: string;
   date: string;
 }
+
+export interface Deployment {
+  task: string;
+  payload: any;
+  original_environment: string;
+  environment: string;
+  description: string;
+  creator: Creator;
+  created_at: string;
+  updated_at: string;
+  statuses_url: string;
+  repository_url: string;
+  transient_environment: boolean;
+  production_environment: boolean;
+  repository: Repository;
+}
+
+interface Creator {
+  login: string;
+  id: number;
+  node_id: string;
+  type: string;
+  site_admin: boolean;
+}
