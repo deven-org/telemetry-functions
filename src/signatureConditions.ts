@@ -17,6 +17,8 @@ export const isCheckSuite = allPass([propEq("check_suite", "eventSignature")]);
 
 export const isDeployment = allPass([propEq("eventSignature", "deployment")]);
 
+export const isDeployment = allPass([propEq("eventSignature", "deployment")]);
+
 export default [
   [isToolingUsed, DataEventSignature.ToolingUsage],
   [isWorkflowJob, DataEventSignature.WorkflowJob],
