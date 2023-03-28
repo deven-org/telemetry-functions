@@ -1,7 +1,4 @@
 # Project Background
-
-This chapter should provide the user with information about historical decisions, where you have started from and what you've learned until now. This chapter is optional, but the longer your project is active the more important it becomes. We highly encourage you to use it as an opportunity to record all your knowledge and experiences you gathered in this project. Please provide a short introduction here.
-
 ## Content
 
 - [Background](#background)
@@ -10,12 +7,14 @@ This chapter should provide the user with information about historical decisions
 
 ## Background
 
-Please write down when and how everything started. What were the main ideas, how many people were included, what was the goal of the project?
+In order to meet the goals of DEVEN Telemetry, the project needed a way to accept data events in the form of webhooks from Github, classify the event type, extract the applicable metrics, and push the relevant data to a private repository. **Telemetry-functions** solves this problem and serves as the mid layer in the DEVEN Telemetry project, sitting between the Github OAuth App and the private data repository. 
+
+DEVEN Telemetry will eventually provide services to projects utilizing on Github, Bitbucket, and Gitlab version control software. This repository is specifically focused on Github, as it is currently used by two client projects which will be early adopters of the DEVEN Telemetry service.
 
 ## Strategy
 
-This section should be all about the strategy your project is based on an how it might have changed in the past. You could also use e.g. links to presentations and files or add screenshots to visualize the goald you are aiming for and how you want to achieve it.
+The project uses [Netlify](https://www.netlify.com/) as a provider of serverless functions. Netlify hosts the telemetry-functions service and provides an endpoint to receive a POST request when certain events happen. The free tier includes 125,000 requests per month and 100 hours of run time. 
 
 ## Tech Changes
 
-Have you ever had major changes regarding tech decision? Maybe you've started by using React but later on changed to a different framework that fits better to the projects needs? Or you changed from one naming convention to another? Explain why these decisions were made.
+Getting project- and repository-level data from Github is possible through two different types of integrations, [*Github Apps*](https://docs.github.com/en/apps/creating-github-apps/creating-github-apps/about-apps#about-github-apps) and [*Github OAuth Apps*](https://docs.github.com/en/apps/creating-github-apps/creating-github-apps/about-apps#about-oauth-apps) (hereinafter referred to as *OAuth Apps*). Github Apps act on their own behalf, while OAuth Apps act on behalf of a user. This means that Github Apps are *installed* on organizations and personal accounts, while OAuth Apps are *invited*. With project requirements stating that nothing should be installed in clients' organizations or repositories, the team chose to create an OAuth App to gather data. 
