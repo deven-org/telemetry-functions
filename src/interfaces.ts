@@ -13,9 +13,7 @@ import {
 } from "./metrics/workflows/interfaces";
 
 import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
-import {
-  WorkflowJobTestCoverageOutput,
-} from "./metrics/test_coverage/interfaces";
+import { WorkflowJobTestCoverageOutput } from "./metrics/test_coverage/interfaces";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
@@ -42,7 +40,7 @@ interface DataEventPayloadMap {
 }
 
 interface DataEventOutputMap {
-  [DataEventSignature.WorkflowJob]: 
+  [DataEventSignature.WorkflowJob]:
     | WorkflowJobCompletedOutput
     | WorkflowJobTestCoverageOutput;
   [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
