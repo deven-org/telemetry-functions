@@ -6,7 +6,7 @@
 - [Why Do We Write Tests](#why-do-we-write-tests)
 - [Our Goal in Testing](#our-goal-in-testing)
 - [TDD (Test-driven development)](#tdd-test-driven-development)
-- [Tooling](#tooling)
+- [Tooling](#tooling---testing-libraries-installed)
 - [How to install Jest](#how-to-install-jest)
 - [How to write tests](#how-to-write-tests)
 - [How to run tests](#how-to-run-tests)
@@ -22,17 +22,14 @@ In future other testing types like Integration Testing, Performance Testing can 
 We write tests to verify that our software works as intended and to catch bugs and errors before they pushed and make it into production. Testing helps us catch issues early in the development process, which can save us time and resources in the long run. It also helps ensure that our software meets the requirements.
 
 ## Our Goal in Testing
-Our goal is to write automated unit tests for each module or function in our codebase to ensure that it works as intended and the changes do not introduce regressions. The minimum code coverage of unit tests should be ** 70% **. To achieve this goal, we follow a comprehensive testing strategy of TDD (Test-driven development) process.
+Our goal is to write automated unit tests for each module or function in our codebase to ensure that it works as intended and the changes do not introduce regressions. The minimum code coverage of unit tests should be **70%**. To achieve this goal, we follow a comprehensive testing strategy of TDD (Test-driven development) process.
 
 ## TDD (Test-driven development)
 **telemetry-functions** follows TDD (Test-driven development) process, a method of implementing software programming that interlaces unit testing, programming and refactoring on source code, to eusure the quality, reliability, and functionality of the software.
 
 Test-driven development (TDD) is a software development approach where developers write automated tests before writing the code. The idea is to write a test case that fails initially and then write the code to make the test pass. The process is repeated for each new feature or change to the codebase.
 
-## Different kind of tests
-This section should display all the different kinds of tests that you write in your project. Explain what each kind of test is for and why you use them in your project. You can also give an outlook on new tests that should be added in the future of your project. If you have a QA in place, also mention what kind of tests they perform and add contact persons.
-
-## Tooling - Testing Libraries
+## Tooling - Testing Libraries Installed
 **Jest** - a JavaScript testing framework is testing library used to write the test cases,  It allows you to write tests with an approachable, familiar and feature-rich API that gives you results quickly
 
 ## How to install Jest
