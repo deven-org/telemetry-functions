@@ -95,6 +95,6 @@ When you run npm run test without any arguments, Jest will run all the test suit
 
 To run the test and to create a test coverage report
 
-**_npm run test:coverage_**
+**_`npm run test:coverage`_**
 
 Also note that you can pass additional arguments to Jest using -- followed by the argument(s) you want to pass. For example, you could run npm run test  --coverage to generate a test coverage report.
