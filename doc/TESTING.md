@@ -37,7 +37,7 @@ Install the jest package (and optional typings) to the existing project's packag
 
 npm install --save-dev jest @types/jest
 
-When cloning the project the package.json have the library in dev dependency which installs Jest with "npm install" in the project's root directoty.
+When cloning the project, the package.json has the library in dev dependency which installs Jest with `npm install` in the project's root directory.
 
 ## How to write tests
 
