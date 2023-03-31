@@ -1,8 +1,7 @@
 # Testing
- This document explains project's testing strategy, including why we write tests and what is our goals are in testing and the tooling library used to write the test cases
 
 ## Content
-- [Different kind of tests](#different-kind-of-tests)
+- [Different Test Types](#different-test-types)
 - [Why Do We Write Tests](#why-do-we-write-tests)
 - [Our Goal in Testing](#our-goal-in-testing)
 - [TDD (Test-driven development)](#tdd-test-driven-development)
@@ -11,17 +10,16 @@
 - [How to write tests](#how-to-write-tests)
 - [How to run tests](#how-to-run-tests)
 
-## Different kind of tests
+## Different Test Types
 In this project Unit Testing is the only type of testing done in the development process to ensure that a section of an application (known as the "unit") meets its design
 
-Unit Testing - The main objective of unit testing is to isolate written code to test and determine if it works as intended. This testing method is also the first level of software testing, which is performed before other testing methods such as integration testing
+Unit Testing - The main objective of unit testing is to isolate written code to test and determine if it works as intended. 
 
 In future other testing types like Integration Testing, Performance Testing can be added in the Continuous Integration process.
 
-## Why Do We Write Tests
+## Testing Strategy 
 We write tests to verify that our software works as intended and to catch bugs and errors before they pushed and make it into production. Testing helps us catch issues early in the development process, which can save us time and resources in the long run. It also helps ensure that our software meets the requirements.
 
-## Our Goal in Testing
 Our goal is to write automated unit tests for each module or function in our codebase to ensure that it works as intended and the changes do not introduce regressions. The minimum code coverage of unit tests should be **70%**. To achieve this goal, we follow a comprehensive testing strategy of TDD (Test-driven development) process.
 
 ## TDD (Test-driven development)
@@ -33,9 +31,9 @@ Test-driven development (TDD) is a software development approach where developer
 **Jest** - a JavaScript testing framework is testing library used to write the test cases,  It allows you to write tests with an approachable, familiar and feature-rich API that gives you results quickly
 
 ## How to install Jest
-Install the jest package (and optional typings) to the existing project's package.json by the bellow command
+Install the jest package (and optional typings) to the existing project's package.json by the below command
 
-npm install --save-dev jest @types/jest
+`npm install --save-dev jest @types/jest`
 
 When cloning the project, the package.json has the library in dev dependency which installs Jest with `npm install` in the project's root directory.
 
