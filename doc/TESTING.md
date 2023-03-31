@@ -89,7 +89,7 @@ To run the test in development environment
 
 **_npm run test:dev_**
 
-This is defined as jest --watch, which will execute Jest in "watch" mode.
+This is defined as `jest --watch`, which will execute Jest in "watch" mode.
 
 When you run npm run test without any arguments, Jest will run all the test suites once and then exit. However, when you run npm run test:dev, Jest will enter "watch" mode and continuously watch for changes to your test files or the code being tested. When a file changes, Jest will re-run the affected tests. This makes it faster and more convenient to develop and test your code.
 
