@@ -2,25 +2,24 @@
 
 ## Content
 - [Different Test Types](#different-test-types)
-- [Why Do We Write Tests](#why-do-we-write-tests)
-- [Our Goal in Testing](#our-goal-in-testing)
+- [Testing Strategy](#testing-strategy)
 - [TDD (Test-driven development)](#tdd-test-driven-development)
-- [Tooling](#tooling---testing-libraries-installed)
+- [Tooling - Testing Libraries Installed](#tooling---testing-libraries-installed)
 - [How to install Jest](#how-to-install-jest)
 - [How to write tests](#how-to-write-tests)
 - [How to run tests](#how-to-run-tests)
 
 ## Different Test Types
-In this project Unit Testing is the only type of testing done in the development process to ensure that a section of an application (known as the "unit") meets its design
+In this project, Unit Testing is used to ensure that a section of an application (known as the "unit") meets its intended goal.
 
 Unit Testing - The main objective of unit testing is to isolate written code to test and determine if it works as intended. 
 
 In future other testing types like Integration Testing, Performance Testing can be added in the Continuous Integration process.
 
 ## Testing Strategy 
-We write tests to verify that our software works as intended and to catch bugs and errors before they pushed and make it into production. Testing helps us catch issues early in the development process, which can save us time and resources in the long run. It also helps ensure that our software meets the requirements.
+The tests are written to verify whether the software works as intended and to catch bugs and errors before they pushed and make it into production. Testing helps us catch issues early in the development process.
 
-Our goal is to write automated unit tests for each module or function in our codebase to ensure that it works as intended and the changes do not introduce regressions. The minimum code coverage of unit tests should be **70%**. To achieve this goal, we follow a comprehensive testing strategy of TDD (Test-driven development) process.
+The goal is to write automated unit tests for each module or function in the codebase to ensure that it works as intended and the changes do not introduce regressions. The minimum code coverage of unit tests should be **70%**. To achieve this goal, we follow a comprehensive testing strategy of TDD (Test-driven development) process.
 
 ## TDD (Test-driven development)
 **telemetry-functions** follows TDD (Test-driven development) process, a method of implementing software programming that interlaces unit testing, programming and refactoring on source code, to eusure the quality, reliability, and functionality of the software.
@@ -41,15 +40,15 @@ When cloning the project, the package.json has the library in dev dependency whi
 
 Jest is configured by default to look for .js, .jsx, .ts and .tsx files inside of __tests__ folders, as well as any files with a suffix of .test or .spec (this includes files called test or spec).
 
-Our project have __tests__ folders which have *.test.ts files that will contain our test cases and fixtures folder having all the payload mocks used in test cases.
+The project has  __tests__ folders which have *.test.ts files that will contain the test cases and fixtures folder having all the payload mocks used in test cases.
 
 To write a test case we first define the outcomes that we must validate to ensure that the functionality is working correctly.
 
-- To group test cases in Jest into a test suite we can use the describe() function. It takes a suite name string and handler function as the first two arguments.
- - In Jest we use the it() function. It takes a test name string and handler function as the first two arguments.
- - An expectation is created with the expect() function. It returns an object of matcher methods (toMatchObject()) with which we assert something expected about the tested value.
+- To group test cases in Jest into a test suite we can use the `describe()` function. It takes a suite name (string) and a handler function as the first two arguments.
+ - In Jest we use the `it()` function. It takes a test name (string) and a handler function as the first two arguments.
+ - An expectation is created with the `expect()` function. It returns an object of matcher methods `toMatchObject()` with which we assert something expected about the tested value.
 
-Example:
+Example: A test to check if the function returns "foo" for multiples of 3
 ```
 // fooBar.test.ts
 const fooBar = require("./fooBar");
@@ -79,13 +78,13 @@ The project's package.json is updated with the  following test script that calls
 
 To run the Jest testing library
 
-**_npm run test_**
+**_`npm run test`_**
 
-In this case, npm run test is defined as jest in the package.json scripts, which will execute the Jest testing library
+In this case, `npm run test` is defined as jest in the package.json scripts, which will execute the Jest testing library
 
 To run the test in development environment
 
-**_npm run test:dev_**
+**_`npm run test:dev`_**
 
 This is defined as `jest --watch`, which will execute Jest in "watch" mode.
 
