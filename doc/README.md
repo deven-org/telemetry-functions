@@ -1,91 +1,104 @@
-# Project Title
+# telemetry-functions
 
-## Content
+[![Issues](https://img.shields.io/github/issues-raw/deven-org/telemetry-functions.svg?maxAge=25000)](https://github.com/deven-org/telemetry-functions/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/deven-org/telemetry-functions.svg?style=flat)](https://github.com/deven-org/telemetry-functions/pulls)
+[![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat)](https://github.com/deven-org/telemetry-functions/blob/main/doc/CODEOFCONDUCT.md)  
+[![GitHub contributors](https://img.shields.io/github/contributors/deven-org/telemetry-functions.svg?style=flat)](https://github.com/deven-org/telemetry-functions/)
 
-- [Project Title](#project-title)
-  - [Content](#content)
-- [Introduction](#introduction)
-- [Quick Start](#quick-start)
+## Contents
+
+- [telemetry-functions](#telemetry-functions)
+  - [Contents](#contents)
+  - [Introduction](#introduction)
   - [Requirements](#requirements)
   - [How to start](#how-to-start)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Setup](#setup)
+    - [Usage](#usage)
   - [How to test](#how-to-test)
-- [License](#license)
-- [How to continue](#how-to-continue)
+  - [Contributing](#contributing)
+  - [License](#license)
 
-# Introduction
+## Introduction
 
-Please welcome your user and give a short introduction of your project.
-
-# Quick Start
-
-This section is meant to enable people to start the project locally in the most quick and easy way possible without needing to go through the whole Contribute Page.
-Consider using Code Snippets and Screenshots as well as a links to different documentation chapters like the Contribute page to give access to further information. Also think about the most common problems and provide solutions. Please add a short introduction here.
+Telemetry-Functions is the middle layer of the DEVEN Telemetry project, which is designed to collect anonymized, automized metrics using Git SaaS based bots to inform about how teams can improve development retention, productivity and satisfaction for more effectiveness. Telemetry-functions serves as the bridge between the Github OAuth App, which allows access to the raw data, and the private data repository, where the collected data is stored.
 
 ## Requirements
 
-Please list all the requirements the user has to fullfill to be able to run your code.
-Consider adding links to other tech documentations of possible dependencies to help users meet the requirements.We've added two examples of how you could structure this section:
-
-1. This setup is working for all operating system, testing on Windows 8, Windows 8.1, Windows 10, Mac and Linux.
-This project is a Node.js package. You need Node Version 4 or higher and npm Version 2 or higher, check your installed version with node -v and npm -v.
-
-
-
-2. To run our code you have to meet the following requirements:
-
-- Node.js v16.17.X <br>
-   (for more information check out the [Node.js Documentation](https://nodejs.org/en/docs/))
-- ...
+This project is a Node.js package. You need Node version 16 or higher in order to run it. (for more information check out the Node.js documentation [here](https://nodejs.org/en/docs/)).
 
 ## How to start
 
-In this section you're supposed to provide the user with a step by step guide on how to install and use your project. We've added an example below to give you an idea of how you could structure your guide.
+### Prerequisites
 
-1. First, create a folder and a package.json file
+If you don't have NPM installed, please install it first.
+
+- npm
+
+  ```sh
+  npm install npm@latest -g
+  ```
+
+In addition, you'll need to log in to Github in your browser.
+
+### Installation
+
+1. Clone the repo
+
    ```sh
-   $ mkdir my-app
-   $ cd my-app
-   $ npm init -y
+   git clone https://github.com/deven-org/telemetry-functions.git
    ```
 
-2. Next, install the app and save it as dependency
+2. In the command line, navigate to the project directory.
+3. Install NPM packages
 
    ```sh
-   $ npm install --save app-name
+   npm install
    ```
 
-3. Now start up your app
+### Setup
 
-   ```sh
-   $ npm start
-   ```
+1. Open the `env.template` file and copy the list of environment variables and their default values. These include:
 
-</details>
-<br>
+- REPO_NAME
+- REPO_OWNER
+- REPO_PATH
+- TARGET_BRANCH
+- GITHUB_ACCESS_TOKEN
+- COMMITTER_NAM
+- COMMITTER_EMAIL
+- AUTHOR_NAME
+- AUTHOR_EMAIL
+
+2. Create a new file in the root directory named `.env` and paste the list of environment variables in, exactly as it appears in the env.template file.
+
+### Usage
+
+1. In the command line, start the Netlify function with:
+
+```sh
+  netlify functions:serve
+```
 
 ## How to test
 
-Please provide a short explanation on how and where to run your tests. You can also add a link to the Testing page to give further information. Also check out the following example to see one possibility to structure this section.
-
-Example:
-
-Local Setup
-
-
-```sh
-$ git clone project-name
-$ cd project
-$ npm install
-```
 The project test suite is run with
+
 ```sh
-$ npm test
+   npm test
 ```
 
-# License
-Please add in this section what kind of licence your project uses.
+While developing, it may be more convenient to run tests automatically when project files are updated. This can be run with
 
+```sh
+  npm test:dev
+```
 
-# How to continue
+## Contributing
 
-In this section you're free to provide the user with any kind of link or information you think is helpful to them when they arrive at your project - just keep in mind to use neutral and unbiased language through out your documentation to make everyone feel welcome at your project. If you need further tips and tricks on how to write documentation, check out our Best Practices Page.
+Contributions are welcome! Please see the [contribution guidelines](./doc/CONTRIBUTE.md) for more information.
+
+## License
+
+Telemetry Functions is MIT licensed.
