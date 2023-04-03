@@ -1,4 +1,8 @@
-import { DataEvent, DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEvent,
+  DataEventSignature,
+  MetricsSignature,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
@@ -38,7 +42,7 @@ describe("Workflows", () => {
     const output = await handler(eventBody);
 
     expect(
-      output.filter(o => o.metricsSignature === MetricsSignature.WorkflowJob)
+      output.filter((o) => o.metricsSignature === MetricsSignature.WorkflowJob)
     ).toMatchObject([
       {
         created_at: expect.any(Number),
@@ -63,7 +67,9 @@ describe("Workflows", () => {
     const output: [] = await handler(eventBody);
 
     expect(
-      output.filter((o: DataEvent) => o.metricsSignature === MetricsSignature.WorkflowJob)
+      output.filter(
+        (o: DataEvent) => o.metricsSignature === MetricsSignature.WorkflowJob
+      )
     ).toMatchObject([
       {
         created_at: expect.any(Number),
