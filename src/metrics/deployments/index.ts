@@ -4,9 +4,13 @@ import {
   MetricsSignature,
 } from "../../interfaces";
 import octokit from "../../core/octokit";
-// import { PullRequestClosedEvent } from "../../github.interfaces";
 import moment from "moment";
 import { DeploymentOutput, DeploymentPayload } from "./interfaces";
+import { decode } from "js-base64";
+
+let timeSinceLastDeploy: number;
+let version: string;
+let duration: number;
 
 export const collectDeploymentMetrics = async (
   dataEvent: DataEvent
@@ -16,7 +20,8 @@ export const collectDeploymentMetrics = async (
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
   const env = payload.deployment.environment;
-  const deployTime = moment.utc(payload.deployment.created_at).valueOf();
+  const createdTime = moment.utc(payload.deployment.created_at).valueOf();
+  const updatedTime = moment.utc(payload.deployment.updated_at).valueOf();
 
   try {
     const request = await octokit.request(
@@ -28,28 +33,41 @@ export const collectDeploymentMetrics = async (
     );
 
     const deployment = request.data.find((o) => o.environment === env);
+    const lastCommitTime = moment.utc(deployment?.created_at).valueOf();
+    timeSinceLastDeploy = createdTime - lastCommitTime;
+    duration = updatedTime - createdTime;
+  } catch (error) {
+    console.log("error: ", error);
+    timeSinceLastDeploy = 0;
+    duration = 0;
+  }
 
-    console.log({ deployment });
+  try {
+    const response = await octokit.request(
+      "GET /repos/{owner}/{repo}/contents/{path}",
+      {
+        owner: owner,
+        repo: repo,
+        path: "package.json",
+      }
+    );
+    const content = JSON.parse(decode(response.data["content"]));
+    version = content.version;
+  } catch (error) {
+    version = "";
+  }
 
-    // const data = request.data;
-    // numberOfCommits = data.length;
-
-    // commit_timestamps = data.map(
-    //   ({ commit }) => moment.utc(commit.author?.date).valueOf() || []
-    // );
-  } catch (error) {}
-
-  // const output: CommitsPerPrOutput = {
-  //   commits: numberOfCommits,
-  //   additions,
-  //   deletions,
-  //   commit_timestamps,
-  //   pull_number: payload.pull_request.number,
-  // };
+  const output: DeploymentOutput = {
+    env,
+    deployTime: createdTime,
+    timeSinceLastDeploy,
+    version,
+    duration,
+  };
 
   return {
     ...dataEvent,
-    // output,
+    output,
     repo: repo,
     owner: owner,
     metricsSignature: MetricsSignature.Deployment,
