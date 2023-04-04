@@ -56,7 +56,7 @@
     "netlify": "^13.1.2",
     "netlify-cli": "^13.0.1",
     "prettier": "^2.8.4",
-    "ramda": "^0.28.0",
+    "ramda": "^0.29.0",
     "semver": "^7.3.8",
     "signale": "^1.4.0",
     "ts-jest": "^29.0.5"

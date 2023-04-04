@@ -2,17 +2,18 @@ import { DataEventSignature } from "./interfaces";
 import { allPass, propEq } from "ramda";
 
 export const isToolingUsed = allPass([
-  propEq("eventSignature", "toolingUsage"),
+  propEq("toolingUsage", "eventSignature"),
 ]);
+
 export const isWorkflowJob = allPass([
-  propEq("eventSignature", "workflow_job"),
+  propEq("workflow_job", "eventSignature"),
 ]);
 
 export const isPullRequest = allPass([
-  propEq("eventSignature", "pull_request"),
+  propEq("pull_request", "eventSignature"),
 ]);
 
-export const isCheckSuite = allPass([propEq("eventSignature", "check_suite")]);
+export const isCheckSuite = allPass([propEq("check_suite", "eventSignature")]);
 
 export default [
   [isToolingUsed, DataEventSignature.ToolingUsage],

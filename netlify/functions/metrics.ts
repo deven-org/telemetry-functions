@@ -1,19 +1,49 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { handler as collectMetricsHandler } from "../../src/handler";
-
-const getEventBody = (event) => JSON.parse(String(event.body));
+import {
+  path,
+  pipe,
+  filter,
+  pick,
+  isNotNil,
+  values,
+  head,
+  either,
+  always,
+  assoc,
+} from "ramda";
+import { RawEvent } from "../../src/interfaces";
 
 const handler: Handler = async (event: HandlerEvent) => {
   try {
-    const eventSignature = event.headers["x-github-event"] || "unknown";
-    const body = getEventBody(event);
-    await collectMetricsHandler({ eventSignature, ...body });
+    const getBodyFromHandlerEvent: (HandlerEvent) => string = pipe(
+      path(["body"]),
+      String,
+      JSON.parse
+    );
+
+    const getEventNameFromHandlerEvent: (HandlerEvent) => string = pipe(
+      path(["headers"]),
+      pick(["x-github-event", "x-deven-event"]),
+      filter(isNotNil),
+      values,
+      either(head, always("unknown"))
+    );
+
+    const getRawEventFromHandlerEvent: (HandlerEvent) => RawEvent = pipe(
+      getBodyFromHandlerEvent,
+      assoc("eventSignature", getEventNameFromHandlerEvent(event))
+    );
+
+    const rawEvent: RawEvent = getRawEventFromHandlerEvent(event);
+
+    const result: any = await collectMetricsHandler(rawEvent);
+
     return {
       statusCode: 200,
-      body: "success",
+      body: JSON.stringify(result),
     };
   } catch (e: any) {
-    console.log(e);
     return {
       statusCode: 500,
       body: e && e.message ? e.message : e,
