@@ -1,7 +1,7 @@
 import { createDataEvent, getRejectionReason, logger } from ".";
-import { cond, pipe, clone, T, always } from "ramda";
+import { cond, pipe, clone, T, always, allPass, propEq } from "ramda";
 import { LogInfos, LogWarnings } from "../shared/logMessages";
-import { DataEventSignature, DataEvent } from "../interfaces";
+import { DataEventSignature, DataEvent, RawEvent } from "../interfaces";
 import signatureConditions from "../signatureConditions";
 
 const createSignedDataEvent =
@@ -25,7 +25,7 @@ const signDataEvent = cond([
   [T, always(false)],
 ]);
 
-export const addSignature = (data: any): Promise<DataEvent> => {
+export const addSignature = (data: RawEvent): Promise<DataEvent> => {
   return new Promise((res, rej) => {
     const signedDataEvent = pipe(clone, signDataEvent)(data);
 

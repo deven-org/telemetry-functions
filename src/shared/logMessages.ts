@@ -16,5 +16,5 @@ export enum LogWarnings {
 }
 
 export enum LogSuccess {
-  metricsCollected = "The following metrics were collected from the '%s' event:",
+  metricsCollected = "Metrics have been collected for: %s.",
 }
