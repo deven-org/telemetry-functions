@@ -53,6 +53,11 @@ interface DataEventOutputMap {
 
 export type EnhancedDataEvent = Omit<DataEvent, "payload">;
 
+export interface RawEvent {
+  eventSignature: string;
+  action?: string;
+}
+
 export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   dataEventSignature: T;
   payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
