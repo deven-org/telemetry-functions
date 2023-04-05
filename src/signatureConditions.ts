@@ -15,9 +15,7 @@ export const isPullRequest = allPass([
 
 export const isCheckSuite = allPass([propEq("check_suite", "eventSignature")]);
 
-export const isDeployment = allPass([propEq("eventSignature", "deployment")]);
-
-export const isDeployment = allPass([propEq("eventSignature", "deployment")]);
+export const isDeployment = allPass([propEq("deployment", "eventSignature")]);
 
 export default [
   [isToolingUsed, DataEventSignature.ToolingUsage],

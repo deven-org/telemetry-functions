@@ -41,6 +41,7 @@ describe("Deployments", () => {
     };
 
     const output = await handler(eventBody);
+
     expect(
       output.filter(
         (o: DataEvent) => o.metricsSignature === MetricsSignature.Deployment
