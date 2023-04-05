@@ -6,6 +6,7 @@ import codeReviewInvolvementMetricsConditions from "./metrics/code_review_involv
 import checkSuiteMetricsConditions from "./metrics/check_suite/metricsConditions";
 import releaseVersionsMetricsConditions from "./metrics/release_versions/metricsConditions";
 import commitsPerPrMetricsConditions from "./metrics/commits_per_pr/metricsConditions";
+import deploymentMetricsConditions from "./metrics/deployments/metricsConditions";
 
 const conditions: Conditions = [
   ...toolingUsageMetricsConditions,
@@ -15,6 +16,7 @@ const conditions: Conditions = [
   ...checkSuiteMetricsConditions,
   ...releaseVersionsMetricsConditions,
   ...commitsPerPrMetricsConditions,
+  ...deploymentMetricsConditions,
 ];
 
 export default conditions;
