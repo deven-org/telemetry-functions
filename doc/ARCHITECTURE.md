@@ -99,7 +99,7 @@ This event occurs when there is activity relating to a job in a GitHub Actions w
 - Github doc [Workflow Job Webhook](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job)
 
 
-### The Metrics Collected
+###  Metrics Collected
 The following metrics are collected from the webhook events
 
 - CheckSuite Metrics
