@@ -1,29 +1,55 @@
-export interface WorkflowJobStep {
-  name: string;
+export type WorkflowJobCompletedOutput = {
+  /** X The GitHub repository name */
+  repository: string;
+
+  /** X UNIX timestamp of job creation time */
+  created_at: number;
+
+  /** X UNIX timestamp of job start time */
+  started_at: number;
+
+  /** X UNIX timestamp of job completion time */
+  completed_at: number;
+
+  /** Job run duration in ms */
+  duration: number;
+
+  /** X Job status (always "completed" due to condition) */
   status: string;
-  conclusion: string;
-  number: number;
-  started_at: string;
-  completed_at: string;
-}
-export type WorkflowJobCompletedPayload = {
-  action: string;
-  repository: {
+
+  /** The name of the workflow this job was executed in */
+  workflow_name: string;
+
+  /** The workflow run attempt (>1 means it got restarted) */
+  run_attempt: number;
+
+  /** List of steps that were executed as part of the job */
+  steps: Array<{
+    /** Step name */
     name: string;
-    owner: {
-      login: string;
-    };
-  };
-  workflow_job: {
-    id: number;
-    completed_at: string;
-    started_at: string;
-    created_at: string;
+
+    /** X Step status (always "completed" due to condition) */
     status: string;
-    workflow_name: string;
-    run_attempt: number;
-    steps: WorkflowJobStep[];
+
+    /** Step conclusion, see github docs */
     conclusion: string;
-  };
+
+    /** Step number */
+    number: number;
+
+    /** X Unix timestamp of step execution start */
+    started_at: number;
+
+    /** X Unix timestamp of step execution end */
+    completed_at: number;
+
+    /** Step duration in ms */
+    duration: number;
+  }>;
+
+  /**
+   * Full content of the root package.json at the source repo's default branch
+   * NOTE: type is guessed since the json file might contain anythingn
+   */
+  packages: object; // package.json contents
 };
-export type WorkflowJobCompletedOutput = any;

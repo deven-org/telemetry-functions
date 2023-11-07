@@ -1,12 +1,10 @@
 export enum LogErrors {
   collectMetricsSignatureNotRecognized = "No collect-metrics function found for this event.",
-  wrongResolvedEnhancedEvents = "Enhanced Events are invalid.",
 }
 
 export enum LogInfos {
   eventReceived = "Received '%s' event",
   eventSigned = "Event has been signed as: '%s'",
-  startCollectingMetrics = "Trying to collect metrics...",
 }
 
 export enum LogWarnings {

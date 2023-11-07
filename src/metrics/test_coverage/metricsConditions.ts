@@ -1,23 +1,14 @@
-import { collectWorkflowsTestCoverageMetrics } from ".";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
-import { WorkflowJobCompletedPayload } from "../workflows/interfaces";
+import { WorkflowJobCompletedEvent } from "../../github.interfaces.ts";
+import { DataEvent, DataEventSignature } from "../../interfaces.ts";
 
-const isSignedAsWorkflowJobTestCoverage = (dataEvent: DataEvent) => {
+export const isSignedAsWorkflowJobTestCoverage = (dataEvent: DataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.WorkflowJob) {
     return false;
   } else {
   }
 
-  if (
-    (dataEvent.payload as WorkflowJobCompletedPayload).action !== "completed"
-  ) {
+  if ((dataEvent.payload as WorkflowJobCompletedEvent).action !== "completed") {
     return false;
   }
   return true;
 };
-
-const conditions: Conditions = [
-  [isSignedAsWorkflowJobTestCoverage, collectWorkflowsTestCoverageMetrics],
-];
-
-export default conditions;

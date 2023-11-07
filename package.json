@@ -37,7 +37,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@netlify/functions": "^1.4.0",
+    "@netlify/functions": "^2.3.0",
+    "@netlify/edge-functions": "^2.2.0",
     "@octokit/rest": "^19.0.7",
     "dotenv": "^16.0.3",
     "js-base64": "^3.7.5"

@@ -1,9 +1,5 @@
 import { logger } from "../../core";
-import {
-  DataEvent,
-  EnhancedDataEvent,
-  MetricsSignature,
-} from "../../interfaces";
+import { DataEvent, MetricData, MetricsSignature } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
 import { keys, pipe, mergeAll, includes } from "ramda";
 import octokit from "../../core/octokit";
@@ -12,7 +8,7 @@ import { LogWarnings } from "../../shared/logMessages";
 
 export const collectToolingUsageMetrics = async (
   dataEvent: DataEvent
-): Promise<EnhancedDataEvent> => {
+): Promise<MetricData> => {
   const payload = dataEvent.payload as ToolingUsagePayload;
 
   let output: ToolingUsageOutput;
@@ -78,10 +74,11 @@ export const collectToolingUsageMetrics = async (
   output.hasDocChapters = hasDocChapters;
 
   return {
-    ...dataEvent,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.ToolingUsage,
-    output,
-    repo: payload.repo,
     owner: payload.owner,
+    repo: payload.repo,
+    output,
   };
 };

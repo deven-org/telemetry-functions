@@ -1,32 +1,27 @@
-import { getRejectionReason, logger } from ".";
-import { clone } from "ramda";
-import metricsConditions from "../metricsConditions";
+import { logger } from ".";
+import { metrics } from "../metrics";
 import { LogSuccess, LogWarnings } from "../shared/logMessages";
-import { DataEvent, EnhancedDataEvent } from "../interfaces";
+import { CheckedMetricsDataEvent, MetricData } from "../interfaces";
 
 export const collectMetrics = async (
-  dataEvent: DataEvent
-): Promise<EnhancedDataEvent[]> => {
-  const collectedMetrics: EnhancedDataEvent[] = [];
+  dataEvent: CheckedMetricsDataEvent
+): Promise<MetricData[]> => {
+  Object.freeze(dataEvent);
+  const collectedMetricData: MetricData[] = [];
 
-  for (const [condition, collect] of metricsConditions) {
-    const clonedDataEvent = clone(dataEvent);
-    if (condition(clonedDataEvent)) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { payload, ...metrics } = (await collect(
-        clonedDataEvent
-      )) as DataEvent;
-      collectedMetrics.push(metrics);
-      logger.success(LogSuccess.metricsCollected, metrics.metricsSignature);
-    }
+  for (const metric of dataEvent.metricsToApply) {
+    const collectFn = metrics[metric];
+    const metricData = await collectFn(dataEvent);
+    collectedMetricData.push(metricData);
+    logger.success(LogSuccess.metricsCollected, metricData.metricsSignature);
   }
 
-  if (collectedMetrics.length === 0) {
-    throw getRejectionReason({
+  if (collectedMetricData.length === 0) {
+    throw {
       level: "skip",
       message: LogWarnings.collectMetricsSignatureNotRecognized,
-    });
+    };
   }
 
-  return collectedMetrics;
+  return collectedMetricData;
 };

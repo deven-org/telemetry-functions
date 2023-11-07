@@ -1,13 +1,13 @@
 import { decode } from "js-base64";
-import { DataEvent, MetricsSignature } from "../../interfaces";
-import { PullRequestClosedOutput } from "./interfaces";
+import { DataEvent, MetricData, MetricsSignature } from "../../interfaces";
+import { CodeReviewInvolvementOutput } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
 import { PullRequestClosedEvent } from "../../github.interfaces";
 
 export const collectCodeReviewInvolvementMetrics = async (
   dataEvent: DataEvent
-): Promise<DataEvent> => {
+): Promise<MetricData> => {
   const payload = dataEvent.payload as PullRequestClosedEvent;
 
   const repo = payload.repository.name;
@@ -46,7 +46,7 @@ export const collectCodeReviewInvolvementMetrics = async (
     );
     packages = JSON.parse(decode(getPackageJson.data["content"]));
   } catch (e) {}
-  const output: PullRequestClosedOutput = {
+  const output: CodeReviewInvolvementOutput = {
     repo,
     owner,
     number,
@@ -67,10 +67,11 @@ export const collectCodeReviewInvolvementMetrics = async (
   };
 
   return {
-    ...dataEvent,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.CodeReviewInvolvement,
-    repo,
     owner,
+    repo,
     output,
   };
 };

@@ -1,54 +1,22 @@
-import { Handler, HandlerEvent } from "@netlify/functions";
-import { handler as collectMetricsHandler } from "../../src/handler";
-import {
-  path,
-  pipe,
-  filter,
-  pick,
-  isNotNil,
-  values,
-  head,
-  either,
-  always,
-  assoc,
-} from "ramda";
-import { RawEvent } from "../../src/interfaces";
+import { errorCatcher, ErrorForCatcher, storeData } from "../../src/core";
+import { collectMetrics } from "../../src/core/collectMetrics";
 
-const handler: Handler = async (event: HandlerEvent) => {
+export default async (req: Request) => {
+  // Read the metrics event (CheckedMetricsDataEvent) from the request
+  const body = await req.json();
+
   try {
-    const getBodyFromHandlerEvent: (HandlerEvent) => string = pipe(
-      path(["body"]),
-      String,
-      JSON.parse
-    );
+    // Collect all metrics that apply to the event
+    const collectedMetrics = await collectMetrics(body);
 
-    const getEventNameFromHandlerEvent: (HandlerEvent) => string = pipe(
-      path(["headers"]),
-      pick(["x-github-event", "x-deven-event"]),
-      filter(isNotNil),
-      values,
-      either(head, always("unknown"))
-    );
+    if (collectedMetrics.length > 0) {
+      await storeData(collectedMetrics);
 
-    const getRawEventFromHandlerEvent: (HandlerEvent) => RawEvent = pipe(
-      getBodyFromHandlerEvent,
-      assoc("eventSignature", getEventNameFromHandlerEvent(event))
-    );
-
-    const rawEvent: RawEvent = getRawEventFromHandlerEvent(event);
-
-    const result: any = await collectMetricsHandler(rawEvent);
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result),
-    };
-  } catch (e: any) {
-    return {
-      statusCode: 500,
-      body: e && e.message ? e.message : e,
-    };
+      return new Response("Metrics collected", { status: 200 });
+    }
+  } catch (e) {
+    errorCatcher(e as ErrorForCatcher);
   }
 };
 
-export { handler };
+export const config = { path: "/metrics" };

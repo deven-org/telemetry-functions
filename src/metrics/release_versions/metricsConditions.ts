@@ -1,8 +1,7 @@
-import { collectReleaseVersionsMetrics } from ".";
-import { PullRequestClosedEvent } from "../../github.interfaces";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import { PullRequestClosedEvent } from "../../github.interfaces.ts";
+import { DataEvent, DataEventSignature } from "../../interfaces.ts";
 
-const isSignedAsPullRequestClosed = (dataEvent: DataEvent) => {
+export const isSignedAsReleaseVersion = (dataEvent: DataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
     return false;
   } else {
@@ -14,9 +13,3 @@ const isSignedAsPullRequestClosed = (dataEvent: DataEvent) => {
 
   return true;
 };
-
-const conditions: Conditions = [
-  [isSignedAsPullRequestClosed, collectReleaseVersionsMetrics],
-];
-
-export default conditions;

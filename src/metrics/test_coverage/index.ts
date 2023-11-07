@@ -1,15 +1,15 @@
 import { toLower, pipe, test } from "ramda";
-import { DataEvent, MetricsSignature } from "../../interfaces";
-import { WorkflowJobCompletedPayload } from "../workflows/interfaces";
+import { DataEvent, MetricData, MetricsSignature } from "../../interfaces";
 import { WorkflowJobTestCoverageOutput } from "./interfaces";
 import moment from "moment";
+import { WorkflowJobCompletedEvent } from "../../github.interfaces";
 
 const includesTestInString = pipe(toLower, test(/test/));
 
 export const collectWorkflowsTestCoverageMetrics = async (
   dataEvent: DataEvent
-): Promise<DataEvent> => {
-  const payload = dataEvent.payload as WorkflowJobCompletedPayload;
+): Promise<MetricData> => {
+  const payload = dataEvent.payload as WorkflowJobCompletedEvent;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -46,10 +46,11 @@ export const collectWorkflowsTestCoverageMetrics = async (
   };
 
   return {
-    ...dataEvent,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.TestCoverage,
-    repo,
     owner,
+    repo,
     output,
   };
 };

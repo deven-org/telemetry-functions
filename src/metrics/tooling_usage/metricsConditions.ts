@@ -1,11 +1,4 @@
-import { collectToolingUsageMetrics } from ".";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import { DataEvent, DataEventSignature } from "../../interfaces.ts";
 
-const isSignedAsToolingUsage = (dataEvent: DataEvent) =>
+export const isSignedAsToolingUsage = (dataEvent: DataEvent) =>
   dataEvent.dataEventSignature === DataEventSignature.ToolingUsage;
-
-const conditions: Conditions = [
-  [isSignedAsToolingUsage, collectToolingUsageMetrics],
-];
-
-export default conditions;

@@ -5,9 +5,6 @@ export interface ErrorForCatcher {
   message: string;
 }
 
-export const getRejectionReason = (error: ErrorForCatcher): ErrorForCatcher =>
-  error;
-
 export const errorCatcher = (error: ErrorForCatcher) => {
   if (!error.level) {
     logger.error(error);

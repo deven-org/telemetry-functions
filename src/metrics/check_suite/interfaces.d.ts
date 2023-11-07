@@ -1,4 +1,4 @@
-import { PullRequest } from "../../github.interfaces";
+import { PullRequest } from "../../github.interfaces.ts";
 
 export interface CheckSuiteMetricsOutput {
   pull_requests: PullRequest[];

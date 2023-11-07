@@ -1,41 +1,53 @@
-import { createDataEvent, getRejectionReason, logger } from ".";
-import { cond, pipe, clone, T, always, allPass, propEq } from "ramda";
-import { LogInfos, LogWarnings } from "../shared/logMessages";
-import { DataEventSignature, DataEvent, RawEvent } from "../interfaces";
-import signatureConditions from "../signatureConditions";
+import moment from "moment";
+// import { logger } from "./logger.ts";
+import { DataEvent, DataEventSignature } from "../interfaces.ts";
+import { LogInfos, LogWarnings } from "../shared/logMessages.ts";
 
-const createSignedDataEvent =
-  (signature: DataEventSignature) => (data: any) => {
-    logger.info(LogInfos.eventSigned, signature);
+export interface RawEvent {
+  eventSignature: string;
+  action?: string;
+}
+const createSignedDataEvent = (data: any) => {
+  const signature = getDataEventSignature(data.eventSignature);
+  // logger.info(LogInfos.eventSigned, signature);
 
-    return createDataEvent({
-      dataEventSignature: signature,
-      output: {},
-      payload: data,
-      owner: "",
-      repo: "",
-    });
+  return {
+    dataEventSignature: signature,
+    metricsToApply: [],
+    output: {},
+    payload: data,
+    created_at: moment().valueOf(),
+    owner: "",
+    repo: "",
   };
+};
 
-const signDataEvent = cond([
-  ...signatureConditions.map((item) => [
-    item[0],
-    createSignedDataEvent(item[1]),
-  ]),
-  [T, always(false)],
-]);
+const getDataEventSignature = (eventSignature: string): DataEventSignature => {
+  switch (eventSignature) {
+    case "toolingUsage":
+      return DataEventSignature.ToolingUsage;
+    case "workflow_job":
+      return DataEventSignature.WorkflowJob;
+    case "pull_request":
+      return DataEventSignature.PullRequest;
+    case "check_suite":
+      return DataEventSignature.CheckSuite;
+    case "deployment":
+      return DataEventSignature.Deployment;
+    default:
+      throw new Error("Missing event signature in raw event data");
+  }
+};
 
 export const addSignature = (data: RawEvent): Promise<DataEvent> => {
   return new Promise((res, rej) => {
-    const signedDataEvent = pipe(clone, signDataEvent)(data);
+    const signedDataEvent = createSignedDataEvent(data);
 
     signedDataEvent
       ? res(signedDataEvent)
-      : rej(
-          getRejectionReason({
-            level: "skip",
-            message: LogWarnings.signingEventSignatureNotRecognized,
-          })
-        );
+      : rej({
+          level: "skip",
+          message: LogWarnings.signingEventSignatureNotRecognized,
+        });
   });
 };
