@@ -60,7 +60,7 @@ export interface Repository {
   forks_count: number;
   stargazers_count: number;
   watchers: number;
-  watchers_counnt: number;
+  watchers_count: number;
   size: number;
   default_branch: string;
   open_issues: number;

@@ -75,11 +75,14 @@ In addition, you'll need to log in to Github in your browser.
 
 ### Usage
 
-1. In the command line, start the Netlify function with:
+In the command line, start a Netlify development server:
 
 ```sh
-  netlify functions:serve
+  netlify dev
 ```
+
+This way, both edge-functions and functions also in combination can be tested. The edge-function runs first and passes its result to the function with the same name / on the same configured path by calling `context.next`.
+To mock github events [Postman](https://www.postman.com/) can be used.
 
 ## How to test
 

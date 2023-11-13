@@ -1,13 +1,9 @@
 import octokit from "../../core/octokit";
 import "../../core/collectMetrics";
 import "../../core/addSignature";
-import {
-  DataEventSignature,
-  EnhancedDataEvent,
-  MetricsSignature,
-} from "../../interfaces";
-import { handler } from "../../handler";
 import "../logger";
+import { storeData } from "../storeData";
+import { DataEventSignature, MetricsSignature } from "../../interfaces";
 
 jest.mock("../logger", () => ({
   __esModule: true,
@@ -24,62 +20,6 @@ jest.mock("../logger", () => ({
   },
 }));
 
-const dataSignatureResponse = {
-  dataEventSignature: DataEventSignature.WorkflowJob,
-  created_at: 100,
-  output: {},
-  payload: {
-    foo: "foo",
-    bar: "bar",
-  },
-  owner: "owner",
-  repo: "repo",
-};
-
-jest.mock("../../core/addSignature", () => ({
-  __esModule: true,
-  addSignature: () => {
-    return new Promise((res) => {
-      res(dataSignatureResponse);
-    });
-  },
-}));
-
-const collectMetricsResponse: (
-  | EnhancedDataEvent
-  | Promise<EnhancedDataEvent>
-)[] = [
-  {
-    dataEventSignature: DataEventSignature.WorkflowJob,
-    metricsSignature: MetricsSignature.WorkflowJob,
-    created_at: 100,
-    output: {
-      foo: "foo",
-      bar: "bar",
-    },
-    owner: "owner",
-    repo: "repo",
-  },
-  new Promise((res) =>
-    res({
-      dataEventSignature: DataEventSignature.WorkflowJob,
-      metricsSignature: MetricsSignature.WorkflowJob,
-      created_at: 100,
-      output: {
-        foo: "foo",
-        bar: "bar",
-      },
-      owner: "owner",
-      repo: "repo",
-    })
-  ),
-];
-
-jest.mock("../../core/collectMetrics", () => ({
-  __esModule: true,
-  collectMetrics: () => collectMetricsResponse,
-}));
-
 jest.mock("../../core/octokit", () => ({
   __esModule: true,
   default: {
@@ -89,12 +29,48 @@ jest.mock("../../core/octokit", () => ({
 
 describe("storeData", () => {
   it("pushes the enhanced data event to the data repo as json file", async () => {
-    const event = {
-      foo: "foo",
-      bar: "bar",
-      eventSignature: "event-signature",
-    };
-    await handler(event);
+    const event = [
+      {
+        dataEventSignature: DataEventSignature.WorkflowJob,
+        metricsSignature: MetricsSignature.WorkflowJob,
+        created_at: 100,
+        output: {
+          repository: "test-repo-1",
+          created_at: 4000,
+          started_at: 4000,
+          completed_at: 5000,
+          duration: 1000,
+          status: "completed",
+          workflow_name: "workflow-name-1",
+          run_attempt: 1,
+          steps: [],
+          packages: {},
+        },
+        owner: "owner",
+        repo: "repo",
+      },
+      {
+        dataEventSignature: DataEventSignature.ToolingUsage,
+        metricsSignature: MetricsSignature.ToolingUsage,
+        created_at: 100,
+        output: {
+          repository: "test-repo",
+          created_at: 7000,
+          started_at: 7000,
+          completed_at: 9000,
+          duration: 2000,
+          status: "completed",
+          workflow_name: "workflow-name-2",
+          run_attempt: 1,
+          steps: [],
+          packages: {},
+        },
+        owner: "owner",
+        repo: "repo",
+      },
+    ];
+
+    await storeData(event);
 
     expect(octokit.request).toHaveBeenCalledTimes(2);
     expect(octokit.request).toHaveBeenNthCalledWith(

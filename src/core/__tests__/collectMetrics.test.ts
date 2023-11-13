@@ -1,7 +1,8 @@
 import { collectMetrics } from "../collectMetrics";
 
 import "../logger";
-import { DataEvent, DataEventSignature } from "../../interfaces";
+import { CheckedMetricsDataEvent, DataEventSignature } from "../../interfaces";
+import { WorkflowJobCompletedEvent } from "../../github.interfaces";
 
 jest.mock("../logger", () => ({
   __esModule: true,
@@ -17,22 +18,23 @@ jest.mock("../logger", () => ({
     skip: jest.fn(),
   },
 }));
-
-jest.mock("../../metricsConditions", () => ({
+jest.mock("../../metrics", () => ({
   __esModule: true,
-  default: [[() => true, (args) => ({ it: "works", ...args })]],
+  metrics: { ["test-metric"]: (args) => ({ it: "works", ...args }) },
 }));
+
 describe("collectMetrics", () => {
   it("collects metrics and returns an array of promises, containing the metrics", async () => {
     const event = {
       dataEventSignature: "foo-signature" as DataEventSignature,
-      output: {},
+      payload: {} as WorkflowJobCompletedEvent,
       created_at: 100,
-      owner: "",
-      repo: "",
+      metricsToApply: ["test-metric"],
     };
 
-    const collectedMetrics = await collectMetrics(event as DataEvent);
+    const collectedMetrics = await collectMetrics(
+      event as CheckedMetricsDataEvent
+    );
     const result = await Promise.all(collectedMetrics);
 
     expect(result[0]).toMatchObject({ it: "works", ...event });

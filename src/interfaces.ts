@@ -55,12 +55,7 @@ export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
   created_at: number;
 }
 
-export interface CheckedMetricsDataEvent<
-  T extends DataEventSignature = DataEventSignature
-> {
-  dataEventSignature: T;
-  payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
-  created_at: number;
+export interface CheckedMetricsDataEvent extends DataEvent {
   metricsToApply: MetricsSignature[];
 }
 
