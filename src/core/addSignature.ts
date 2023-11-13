@@ -1,5 +1,5 @@
 import { createDataEvent, getRejectionReason, logger } from ".";
-import { cond, pipe, clone, T, always, allPass, propEq } from "ramda";
+import { cond, pipe, clone, T, always } from "ramda";
 import { LogInfos, LogWarnings } from "../shared/logMessages";
 import { DataEventSignature, DataEvent, RawEvent } from "../interfaces";
 import signatureConditions from "../signatureConditions";
