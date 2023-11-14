@@ -37,27 +37,27 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@netlify/functions": "^1.4.0",
+    "@netlify/functions": "^2.4.0",
     "@octokit/rest": "^19.0.7",
     "dotenv": "^16.0.3",
     "js-base64": "^3.7.5"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.4.4",
+    "@deven-org/documentation-skeleton": "^2.1.0",
     "@types/jest": "^29.4.1",
     "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "cli-table3": "^0.6.3",
-    "deven-documentation-skeleton": "^2.0.0",
     "eslint": "^8.36.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.0",
     "moment": "^2.29.4",
-    "netlify": "^13.1.2",
-    "netlify-cli": "^13.0.1",
+    "netlify": "^13.1.10",
+    "netlify-cli": "^17.3.1",
     "prettier": "^2.8.4",
     "ramda": "^0.29.0",
-    "semver": "^7.3.8",
+    "semver": "^7.5.4",
     "signale": "^1.4.0",
     "ts-jest": "^29.0.5"
   }
