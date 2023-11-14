@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.9.0](https://github.com/deven-org/telemetry-functions/compare/v1.8.0...v1.9.0) (2023-11-14)
+
+
+### Features
+
+* doc added for webhook events ([#86](https://github.com/deven-org/telemetry-functions/issues/86)) ([2dfff52](https://github.com/deven-org/telemetry-functions/commit/2dfff5239fd7abf0759c67bc181463bc400a4c00))
+* doc testing added ([#84](https://github.com/deven-org/telemetry-functions/issues/84)) ([2c5b972](https://github.com/deven-org/telemetry-functions/commit/2c5b972f24f2ac89e78f9cef9fc266a44f7254b0))
+* enable no-explicit-any lint rule ([266fa80](https://github.com/deven-org/telemetry-functions/commit/266fa80809f4ecfd914b36923e089e8ba9e1727a))
+* **test-coverage:** add tests metrics ([b777767](https://github.com/deven-org/telemetry-functions/commit/b7777676c499e0ec33cdfade2840bf6a5cd728b3))
+
+
+### Bug Fixes
+
+* minor fixes, ramda update ([35be744](https://github.com/deven-org/telemetry-functions/commit/35be744594edd309fb3a0c86f7412e615b55d4fb))
+* remove unused imports ([98d671e](https://github.com/deven-org/telemetry-functions/commit/98d671e1fd89754476cccb366983df572ac1fd93))
+
 ## [1.8.0](https://github.com/deven-org/telemetry-functions/compare/v1.7.0...v1.8.0) (2023-03-21)
 
 
