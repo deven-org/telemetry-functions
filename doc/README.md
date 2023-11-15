@@ -26,7 +26,7 @@ Telemetry-Functions is the middle layer of the DEVEN Telemetry project, which is
 
 ## Requirements
 
-This project is a Node.js package. You need Node version 16 or higher in order to run it. (for more information check out the Node.js documentation [here](https://nodejs.org/en/docs/)).
+This project is a Node.js package. You need Node version 18 or higher in order to run it. (for more information check out the Node.js documentation [here](https://nodejs.org/en/docs/)).
 
 ## How to start
 
