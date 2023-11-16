@@ -1,31 +1,4 @@
-export type PullRequestClosedPayload = {
-  action: "closed";
-  number: number;
-  repository: {
-    name: string;
-    owner: {
-      login: string;
-    };
-  };
-  pull_request: {
-    user: {
-      login: string;
-    };
-    created_at: string;
-    updated_at: string;
-    closed_at: string;
-    merged_at: string;
-    comments: number;
-    review_comments: number;
-    changed_files: number;
-    requested_reviewers: string[];
-    requested_teams: string[];
-    merged_by: {
-      login: string;
-    };
-  };
-};
-export type PullRequestClosedOutput = {
+export type CodeReviewInvolvementOutput = {
   repo: string;
   owner: string;
   number: number;

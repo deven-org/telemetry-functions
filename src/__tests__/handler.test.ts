@@ -56,9 +56,6 @@ describe("handler", () => {
     expect(spyOnCollectMetrics).toBeCalledWith({
       created_at: expect.any(Number),
       dataEventSignature: "deven-tooling-usage",
-      owner: "",
-      repo: "",
-      output: {},
       payload: {
         foo: "foo",
         bar: "bar",
@@ -94,14 +91,11 @@ describe("handler", () => {
     expect(spyOnStoreData).toBeCalledWith({
       created_at: expect.any(Number),
       dataEventSignature: "deven-tooling-usage",
-      output: {},
-      owner: "",
       payload: {
         bar: "bar",
         eventSignature: "toolingUsage",
         foo: "foo",
       },
-      repo: "",
     });
   });
 });

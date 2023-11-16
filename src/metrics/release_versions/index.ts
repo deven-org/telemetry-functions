@@ -1,11 +1,15 @@
 import { PullRequestClosedEvent } from "../../github.interfaces";
-import { DataEvent, MetricsSignature } from "../../interfaces";
+import {
+  SignedDataEvent,
+  MetricsSignature,
+  MetricData,
+} from "../../interfaces";
 import { getReleaseByTitle } from "./getReleaseByTitle";
 import { ReleaseVersionsOutput } from "./interfaces";
 
 export const collectReleaseVersionsMetrics = async (
-  dataEvent: DataEvent
-): Promise<DataEvent> => {
+  dataEvent: SignedDataEvent
+): Promise<MetricData> => {
   const payload = dataEvent.payload as PullRequestClosedEvent;
 
   const repo = payload.repository.name;
@@ -19,10 +23,11 @@ export const collectReleaseVersionsMetrics = async (
   };
 
   return {
-    ...dataEvent,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.ReleaseVersions,
-    repo,
     owner,
+    repo,
     output,
   };
 };

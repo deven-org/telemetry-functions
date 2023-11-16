@@ -1,5 +1,5 @@
 import {
-  DataEvent,
+  MetricData,
   DataEventSignature,
   MetricsSignature,
 } from "../../../interfaces";
@@ -40,7 +40,7 @@ describe("Code Reviews Involvement", () => {
     const output = await handler(eventBody);
     expect(
       output.filter(
-        (o: DataEvent) =>
+        (o: MetricData) =>
           o.metricsSignature === MetricsSignature.CodeReviewInvolvement
       )
     ).toMatchObject([
@@ -62,7 +62,7 @@ describe("Code Reviews Involvement", () => {
 
     expect(
       output.filter(
-        (o: DataEvent) =>
+        (o: MetricData) =>
           o.metricsSignature === MetricsSignature.CodeReviewInvolvement
       )
     ).toMatchObject([
