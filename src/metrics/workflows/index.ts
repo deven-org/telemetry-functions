@@ -1,18 +1,18 @@
-import { logger } from "../../core";
 import { decode } from "js-base64";
-import { keys } from "ramda";
-import { DataEvent, MetricsSignature } from "../../interfaces";
 import {
-  WorkflowJobCompletedOutput,
-  WorkflowJobCompletedPayload,
-} from "./interfaces";
+  SignedDataEvent,
+  MetricsSignature,
+  MetricData,
+} from "../../interfaces";
+import { WorkflowJobCompletedOutput } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
+import { WorkflowJobCompletedEvent } from "../../github.interfaces";
 
 export const collectWorkflowsMetrics = async (
-  dataEvent: DataEvent
-): Promise<DataEvent> => {
-  const payload = dataEvent.payload as WorkflowJobCompletedPayload;
+  dataEvent: SignedDataEvent
+): Promise<MetricData> => {
+  const payload = dataEvent.payload as WorkflowJobCompletedEvent;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -60,10 +60,11 @@ export const collectWorkflowsMetrics = async (
   };
 
   return {
-    ...dataEvent,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.WorkflowJob,
-    repo,
     owner,
+    repo,
     output,
   };
 };

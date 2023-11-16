@@ -2,20 +2,18 @@ import { getRejectionReason, logger } from ".";
 import { clone } from "ramda";
 import metricsConditions from "../metricsConditions";
 import { LogSuccess, LogWarnings } from "../shared/logMessages";
-import { DataEvent, EnhancedDataEvent } from "../interfaces";
+import { MetricData, SignedDataEvent } from "../interfaces";
 
 export const collectMetrics = async (
-  dataEvent: DataEvent
-): Promise<EnhancedDataEvent[]> => {
-  const collectedMetrics: EnhancedDataEvent[] = [];
+  dataEvent: SignedDataEvent
+): Promise<MetricData[]> => {
+  const collectedMetrics: MetricData[] = [];
 
   for (const [condition, collect] of metricsConditions) {
     const clonedDataEvent = clone(dataEvent);
     if (condition(clonedDataEvent)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { payload, ...metrics } = (await collect(
-        clonedDataEvent
-      )) as DataEvent;
+      const metrics = await collect(clonedDataEvent);
       collectedMetrics.push(metrics);
       logger.success(LogSuccess.metricsCollected, metrics.metricsSignature);
     }

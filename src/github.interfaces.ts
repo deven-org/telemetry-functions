@@ -60,7 +60,7 @@ export interface Repository {
   forks_count: number;
   stargazers_count: number;
   watchers: number;
-  watchers_counnt: number;
+  watchers_count: number;
   size: number;
   default_branch: string;
   open_issues: number;
@@ -260,3 +260,39 @@ interface Creator {
   type: string;
   site_admin: boolean;
 }
+
+export type DeploymentCreatedEvent = {
+  action: "created";
+  repository: Repository;
+  deployment: Deployment;
+};
+
+interface WorkflowJobStep {
+  name: string;
+  status: string;
+  conclusion: string;
+  number: number;
+  started_at: string;
+  completed_at: string;
+}
+
+export type WorkflowJobCompletedEvent = {
+  action: string;
+  repository: {
+    name: string;
+    owner: {
+      login: string;
+    };
+  };
+  workflow_job: {
+    id: number;
+    completed_at: string;
+    started_at: string;
+    created_at: string;
+    status: string;
+    workflow_name: string;
+    run_attempt: number;
+    steps: WorkflowJobStep[];
+    conclusion: string;
+  };
+};

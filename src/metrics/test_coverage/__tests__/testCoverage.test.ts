@@ -1,5 +1,5 @@
 import {
-  DataEvent,
+  MetricData,
   DataEventSignature,
   MetricsSignature,
 } from "../../../interfaces";
@@ -61,7 +61,7 @@ describe("Test_Coverage", () => {
     expect(
       output.filter(
         (o) =>
-          (o as DataEvent).metricsSignature === MetricsSignature.TestCoverage
+          (o as MetricData).metricsSignature === MetricsSignature.TestCoverage
       )
     ).toStrictEqual([
       {
@@ -97,7 +97,7 @@ describe("Test_Coverage", () => {
     expect(
       output.filter(
         (o) =>
-          (o as DataEvent).metricsSignature === MetricsSignature.TestCoverage
+          (o as MetricData).metricsSignature === MetricsSignature.TestCoverage
       )
     ).toStrictEqual([
       {

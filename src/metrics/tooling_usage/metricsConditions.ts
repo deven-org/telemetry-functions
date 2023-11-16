@@ -1,7 +1,11 @@
 import { collectToolingUsageMetrics } from ".";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import {
+  Conditions,
+  SignedDataEvent,
+  DataEventSignature,
+} from "../../interfaces";
 
-const isSignedAsToolingUsage = (dataEvent: DataEvent) =>
+const isSignedAsToolingUsage = (dataEvent: SignedDataEvent) =>
   dataEvent.dataEventSignature === DataEventSignature.ToolingUsage;
 
 const conditions: Conditions = [

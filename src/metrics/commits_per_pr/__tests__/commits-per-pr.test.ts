@@ -1,5 +1,5 @@
 import {
-  DataEvent,
+  MetricData,
   DataEventSignature,
   MetricsSignature,
 } from "../../../interfaces";
@@ -71,7 +71,7 @@ describe("Commits Per PR", () => {
     const output = await handler(eventBody);
     expect(
       output.filter(
-        (o: DataEvent) => o.metricsSignature === MetricsSignature.CommitsPerPr
+        (o: MetricData) => o.metricsSignature === MetricsSignature.CommitsPerPr
       )
     ).toMatchObject([
       {
@@ -92,7 +92,7 @@ describe("Commits Per PR", () => {
 
     expect(
       output.filter(
-        (o: DataEvent) => o.metricsSignature === MetricsSignature.CommitsPerPr
+        (o: MetricData) => o.metricsSignature === MetricsSignature.CommitsPerPr
       )
     ).toStrictEqual([
       {

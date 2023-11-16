@@ -1,13 +1,17 @@
 import { collectDeploymentMetrics } from ".";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
-import { DeploymentPayload } from "./interfaces";
+import { DeploymentCreatedEvent } from "../../github.interfaces";
+import {
+  Conditions,
+  SignedDataEvent,
+  DataEventSignature,
+} from "../../interfaces";
 
-const isSignedAsDeployment = (dataEvent: DataEvent) => {
+const isSignedAsDeployment = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.Deployment) {
     return false;
   }
 
-  if ((dataEvent.payload as DeploymentPayload).action !== "created") {
+  if ((dataEvent.payload as DeploymentCreatedEvent).action !== "created") {
     return false;
   }
 

@@ -1,13 +1,15 @@
-import { logger } from "../../core";
-import { keys } from "ramda";
-import { DataEvent, MetricsSignature } from "../../interfaces";
+import {
+  SignedDataEvent,
+  MetricsSignature,
+  MetricData,
+} from "../../interfaces";
 import { CheckSuiteCompletedEvent } from "../../github.interfaces";
 import { CheckSuiteMetricsOutput } from "./interfaces";
 import moment from "moment";
 
-export const collectCodeReviewInvolvementMetrics = async (
-  dataEvent: DataEvent
-): Promise<DataEvent> => {
+export const collectCheckSuiteMetrics = async (
+  dataEvent: SignedDataEvent
+): Promise<MetricData> => {
   const payload = dataEvent.payload as CheckSuiteCompletedEvent;
 
   const pull_requests = payload.check_suite.pull_requests;
@@ -27,10 +29,11 @@ export const collectCodeReviewInvolvementMetrics = async (
   };
 
   return {
-    ...dataEvent,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.CheckSuite,
-    repo: payload.repository.name,
     owner: payload.repository.owner.login,
+    repo: payload.repository.name,
     output,
   };
 };

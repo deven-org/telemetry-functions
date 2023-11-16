@@ -1,15 +1,12 @@
 import { Base64 } from "js-base64";
 import { logger } from ".";
-import { EnhancedDataEvent } from "../interfaces";
+import { MetricData } from "../interfaces";
 import octokit from "./octokit";
 
-export const storeData = async (
-  enhancedDataEvents: (EnhancedDataEvent | Promise<EnhancedDataEvent>)[]
-) => {
-  if (!enhancedDataEvents) return false;
-  const resolvedEnhancedDataEvents = await Promise.all(enhancedDataEvents);
+export const storeData = async (metricData: MetricData[]) => {
+  if (!metricData) return false;
 
-  for (const data of resolvedEnhancedDataEvents) {
+  for (const data of metricData) {
     logger.pending(
       `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
     );
@@ -41,5 +38,5 @@ export const storeData = async (
       console.log(e);
     }
   }
-  return resolvedEnhancedDataEvents;
+  return metricData;
 };

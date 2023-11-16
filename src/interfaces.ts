@@ -1,23 +1,20 @@
-import { CheckSuiteEvent, PullRequestClosedEvent } from "./github.interfaces";
+import {
+  CheckSuiteEvent,
+  DeploymentCreatedEvent,
+  PullRequestClosedEvent,
+  WorkflowJobCompletedEvent,
+} from "./github.interfaces";
 import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
-import { PullRequestClosedOutput } from "./metrics/code_review_involvement/interfaces";
+import { CodeReviewInvolvementOutput } from "./metrics/code_review_involvement/interfaces";
 import { ReleaseVersionsOutput } from "./metrics/release_versions/interfaces";
 import {
   ToolingUsageOutput,
   ToolingUsagePayload,
 } from "./metrics/tooling_usage/interfaces";
-
-import {
-  WorkflowJobCompletedOutput,
-  WorkflowJobCompletedPayload,
-} from "./metrics/workflows/interfaces";
-
+import { WorkflowJobCompletedOutput } from "./metrics/workflows/interfaces";
 import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
 import { WorkflowJobTestCoverageOutput } from "./metrics/test_coverage/interfaces";
-import {
-  DeploymentOutput,
-  DeploymentPayload,
-} from "./metrics/deployments/interfaces";
+import { DeploymentOutput } from "./metrics/deployments/interfaces";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
@@ -39,51 +36,49 @@ export enum MetricsSignature {
 }
 
 interface DataEventPayloadMap {
-  [DataEventSignature.WorkflowJob]: WorkflowJobCompletedPayload;
+  [DataEventSignature.WorkflowJob]: WorkflowJobCompletedEvent;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
   [DataEventSignature.PullRequest]: PullRequestClosedEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
-  [DataEventSignature.Deployment]: DeploymentPayload;
+  [DataEventSignature.Deployment]: DeploymentCreatedEvent;
 }
 
-interface DataEventOutputMap {
-  [DataEventSignature.WorkflowJob]:
-    | WorkflowJobCompletedOutput
-    | WorkflowJobTestCoverageOutput;
-  [DataEventSignature.ToolingUsage]: ToolingUsageOutput;
-  [DataEventSignature.PullRequest]:
-    | PullRequestClosedOutput
-    | ReleaseVersionsOutput
-    | CommitsPerPrOutput;
-  [DataEventSignature.CheckSuite]: CheckSuiteMetricsOutput;
-  [DataEventSignature.Deployment]: DeploymentOutput;
+interface MetricsSignatureOutputMap {
+  [MetricsSignature.CheckSuite]: CheckSuiteMetricsOutput;
+  [MetricsSignature.CodeReviewInvolvement]: CodeReviewInvolvementOutput;
+  [MetricsSignature.CommitsPerPr]: CommitsPerPrOutput;
+  [MetricsSignature.Deployment]: DeploymentOutput;
+  [MetricsSignature.ReleaseVersions]: ReleaseVersionsOutput;
+  [MetricsSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
+  [MetricsSignature.ToolingUsage]: ToolingUsageOutput;
+  [MetricsSignature.WorkflowJob]: WorkflowJobCompletedOutput;
 }
-
-export type EnhancedDataEvent = Omit<DataEvent, "payload">;
 
 export interface RawEvent {
   eventSignature: string;
   action?: string;
 }
 
-export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
+export interface SignedDataEvent<
+  T extends DataEventSignature = DataEventSignature
+> {
   dataEventSignature: T;
   payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
-  output: T extends keyof DataEventOutputMap ? DataEventOutputMap[T] : never;
-  metricsSignature?: MetricsSignature;
   created_at: number;
 }
 
-export interface DataEvent<T extends DataEventSignature = DataEventSignature> {
-  dataEventSignature: T;
-  payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
-  output: T extends keyof DataEventOutputMap ? DataEventOutputMap[T] : never;
+export interface MetricData<T extends MetricsSignature = MetricsSignature> {
+  dataEventSignature: DataEventSignature;
+  output: T extends keyof MetricsSignatureOutputMap
+    ? MetricsSignatureOutputMap[T]
+    : never;
   owner: string;
   repo: string;
   created_at: number;
+  metricsSignature: T;
 }
 
 export type Conditions = [
-  (any) => boolean,
-  (any) => DataEvent | EnhancedDataEvent | Promise<EnhancedDataEvent>
+  (event: SignedDataEvent) => boolean,
+  (event: SignedDataEvent) => Promise<MetricData>
 ][];
