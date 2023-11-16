@@ -1,21 +1,22 @@
 import {
-  DataEvent,
-  EnhancedDataEvent,
+  SignedDataEvent,
   MetricsSignature,
+  MetricData,
 } from "../../interfaces";
 import octokit from "../../core/octokit";
 import moment from "moment";
-import { DeploymentOutput, DeploymentPayload } from "./interfaces";
+import { DeploymentOutput } from "./interfaces";
 import { decode } from "js-base64";
+import { DeploymentCreatedEvent } from "../../github.interfaces";
 
 let timeSinceLastDeploy: number;
 let version: string;
 let duration: number;
 
 export const collectDeploymentMetrics = async (
-  dataEvent: DataEvent
-): Promise<EnhancedDataEvent> => {
-  const payload = dataEvent.payload as DeploymentPayload;
+  dataEvent: SignedDataEvent
+): Promise<MetricData> => {
+  const payload = dataEvent.payload as DeploymentCreatedEvent;
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
@@ -66,10 +67,11 @@ export const collectDeploymentMetrics = async (
   };
 
   return {
-    ...dataEvent,
-    output,
-    repo: repo,
-    owner: owner,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.Deployment,
+    owner: owner,
+    repo: repo,
+    output,
   };
 };

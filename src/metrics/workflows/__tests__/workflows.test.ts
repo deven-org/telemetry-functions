@@ -1,5 +1,5 @@
 import {
-  DataEvent,
+  MetricData,
   DataEventSignature,
   MetricsSignature,
 } from "../../../interfaces";
@@ -68,7 +68,7 @@ describe("Workflows", () => {
 
     expect(
       output.filter(
-        (o: DataEvent) => o.metricsSignature === MetricsSignature.WorkflowJob
+        (o: MetricData) => o.metricsSignature === MetricsSignature.WorkflowJob
       )
     ).toMatchObject([
       {

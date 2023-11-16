@@ -1,8 +1,12 @@
-import { collectCodeReviewInvolvementMetrics } from ".";
+import { collectCheckSuiteMetrics } from ".";
 import { CheckSuiteCompletedEvent } from "../../github.interfaces";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import {
+  Conditions,
+  SignedDataEvent,
+  DataEventSignature,
+} from "../../interfaces";
 
-const isSignedAsCheckSuiteCompleted = (dataEvent: DataEvent) => {
+const isSignedAsCheckSuiteCompleted = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.CheckSuite) {
     return false;
   } else {
@@ -16,7 +20,7 @@ const isSignedAsCheckSuiteCompleted = (dataEvent: DataEvent) => {
 };
 
 const conditions: Conditions = [
-  [isSignedAsCheckSuiteCompleted, collectCodeReviewInvolvementMetrics],
+  [isSignedAsCheckSuiteCompleted, collectCheckSuiteMetrics],
 ];
 
 export default conditions;

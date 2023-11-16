@@ -1,8 +1,12 @@
 import { collectCodeReviewInvolvementMetrics } from ".";
 import { PullRequestClosedEvent } from "../../github.interfaces";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import {
+  Conditions,
+  SignedDataEvent,
+  DataEventSignature,
+} from "../../interfaces";
 
-const isSignedAsPullRequestClosed = (dataEvent: DataEvent) => {
+const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
     return false;
   } else {

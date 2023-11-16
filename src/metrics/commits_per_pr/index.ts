@@ -1,7 +1,7 @@
 import {
-  DataEvent,
-  EnhancedDataEvent,
+  SignedDataEvent,
   MetricsSignature,
+  MetricData,
 } from "../../interfaces";
 import octokit from "../../core/octokit";
 import { PullRequestClosedEvent } from "../../github.interfaces";
@@ -9,8 +9,8 @@ import moment from "moment";
 import { CommitsPerPrOutput } from "./interfaces";
 
 export const collectCommitsPerPrMetrics = async (
-  dataEvent: DataEvent
-): Promise<EnhancedDataEvent> => {
+  dataEvent: SignedDataEvent
+): Promise<MetricData> => {
   const payload = dataEvent.payload as PullRequestClosedEvent;
 
   const owner = payload.repository.owner.login;
@@ -49,10 +49,11 @@ export const collectCommitsPerPrMetrics = async (
   };
 
   return {
-    ...dataEvent,
-    output,
-    repo: repo,
-    owner: owner,
+    created_at: dataEvent.created_at,
+    dataEventSignature: dataEvent.dataEventSignature,
     metricsSignature: MetricsSignature.CommitsPerPr,
+    owner: owner,
+    repo: repo,
+    output,
   };
 };

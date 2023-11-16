@@ -1,16 +1,18 @@
 import { collectWorkflowsMetrics } from ".";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
-import { WorkflowJobCompletedPayload } from "./interfaces";
+import { WorkflowJobCompletedEvent } from "../../github.interfaces";
+import {
+  Conditions,
+  SignedDataEvent,
+  DataEventSignature,
+} from "../../interfaces";
 
-const isSignedAsWorkflowJob = (dataEvent: DataEvent) => {
+const isSignedAsWorkflowJob = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.WorkflowJob) {
     return false;
   } else {
   }
 
-  if (
-    (dataEvent.payload as WorkflowJobCompletedPayload).action !== "completed"
-  ) {
+  if ((dataEvent.payload as WorkflowJobCompletedEvent).action !== "completed") {
     return false;
   }
 

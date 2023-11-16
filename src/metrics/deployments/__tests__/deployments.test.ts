@@ -1,5 +1,5 @@
 import {
-  DataEvent,
+  MetricData,
   DataEventSignature,
   MetricsSignature,
 } from "../../../interfaces";
@@ -44,7 +44,7 @@ describe("Deployments", () => {
 
     expect(
       output.filter(
-        (o: DataEvent) => o.metricsSignature === MetricsSignature.Deployment
+        (o: MetricData) => o.metricsSignature === MetricsSignature.Deployment
       )
     ).toMatchObject([
       {

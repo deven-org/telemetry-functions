@@ -1,8 +1,12 @@
 import { collectCommitsPerPrMetrics } from ".";
-import { Conditions, DataEvent, DataEventSignature } from "../../interfaces";
+import {
+  Conditions,
+  SignedDataEvent,
+  DataEventSignature,
+} from "../../interfaces";
 import { PullRequestClosedEvent } from "./../../github.interfaces";
 
-const isSignedAsCommitsPerPr = (dataEvent: DataEvent) => {
+const isSignedAsCommitsPerPr = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
     return false;
   }
