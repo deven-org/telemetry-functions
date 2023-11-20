@@ -6,7 +6,7 @@ import {
 } from "../../interfaces";
 import { PullRequestClosedEvent } from "./../../github.interfaces";
 
-const isSignedAsCommitsPerPr = (dataEvent: SignedDataEvent) => {
+export const isSignedAsCommitsPerPr = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
     return false;
   }

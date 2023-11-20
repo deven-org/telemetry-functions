@@ -6,10 +6,9 @@ import {
   DataEventSignature,
 } from "../../interfaces";
 
-const isSignedAsCheckSuiteCompleted = (dataEvent: SignedDataEvent) => {
+export const isSignedAsCheckSuiteCompleted = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.CheckSuite) {
     return false;
-  } else {
   }
 
   if ((dataEvent.payload as CheckSuiteCompletedEvent).action !== "completed") {

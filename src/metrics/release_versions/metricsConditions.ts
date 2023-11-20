@@ -6,10 +6,9 @@ import {
   DataEventSignature,
 } from "../../interfaces";
 
-const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
+export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
     return false;
-  } else {
   }
 
   if ((dataEvent.payload as PullRequestClosedEvent).action !== "closed") {

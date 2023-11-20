@@ -6,10 +6,11 @@ import {
   DataEventSignature,
 } from "../../interfaces";
 
-const isSignedAsWorkflowJobTestCoverage = (dataEvent: SignedDataEvent) => {
+export const isSignedAsWorkflowJobTestCoverage = (
+  dataEvent: SignedDataEvent
+) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.WorkflowJob) {
     return false;
-  } else {
   }
 
   if ((dataEvent.payload as WorkflowJobCompletedEvent).action !== "completed") {
