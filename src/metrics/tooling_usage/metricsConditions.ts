@@ -5,7 +5,7 @@ import {
   DataEventSignature,
 } from "../../interfaces";
 
-const isSignedAsToolingUsage = (dataEvent: SignedDataEvent) =>
+export const isSignedAsToolingUsage = (dataEvent: SignedDataEvent) =>
   dataEvent.dataEventSignature === DataEventSignature.ToolingUsage;
 
 const conditions: Conditions = [
