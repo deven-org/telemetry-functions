@@ -1,4 +1,3 @@
-export * from "./createDataEvent";
 export * from "./addSignature";
 export * from "./storeData";
 export * from "./logger";

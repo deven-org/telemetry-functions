@@ -1,4 +1,4 @@
-import { getRejectionReason, logger } from ".";
+import { getErrorForCatcher, logger } from ".";
 import { clone } from "ramda";
 import metricsConditions from "../metricsConditions";
 import { LogSuccess, LogWarnings } from "../shared/logMessages";
@@ -20,7 +20,7 @@ export const collectMetrics = async (
   }
 
   if (collectedMetrics.length === 0) {
-    throw getRejectionReason({
+    throw getErrorForCatcher({
       level: "skip",
       message: LogWarnings.collectMetricsSignatureNotRecognized,
     });

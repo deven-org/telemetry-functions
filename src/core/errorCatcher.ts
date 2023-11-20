@@ -1,11 +1,19 @@
+import {
+  LogErrors,
+  LogInfos,
+  LogSuccess,
+  LogWarnings,
+} from "../shared/logMessages";
 import { logger } from "./logger";
 
+type ErrorLevel = "error" | "warn" | "skip";
+
 export interface ErrorForCatcher {
-  level: "error" | "warn" | "skip";
-  message: string;
+  level: ErrorLevel;
+  message: LogErrors | LogInfos | LogSuccess | LogWarnings;
 }
 
-export const getRejectionReason = (error: ErrorForCatcher): ErrorForCatcher =>
+export const getErrorForCatcher = (error: ErrorForCatcher): ErrorForCatcher =>
   error;
 
 export const errorCatcher = (error: ErrorForCatcher) => {
