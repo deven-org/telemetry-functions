@@ -6,7 +6,7 @@ import {
   DataEventSignature,
 } from "../../interfaces";
 
-const isSignedAsDeployment = (dataEvent: SignedDataEvent) => {
+export const isSignedAsDeployment = (dataEvent: SignedDataEvent) => {
   if (dataEvent.dataEventSignature !== DataEventSignature.Deployment) {
     return false;
   }
