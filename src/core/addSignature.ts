@@ -1,4 +1,5 @@
-import { createDataEvent, getRejectionReason, logger } from ".";
+import moment from "moment";
+import { getErrorForCatcher, logger } from ".";
 import { cond, pipe, clone, T, always } from "ramda";
 import { LogInfos, LogWarnings } from "../shared/logMessages";
 import { DataEventSignature, SignedDataEvent, RawEvent } from "../interfaces";
@@ -8,10 +9,11 @@ const createSignedDataEvent =
   (signature: DataEventSignature) => (data: any) => {
     logger.info(LogInfos.eventSigned, signature);
 
-    return createDataEvent({
+    return {
       dataEventSignature: signature,
       payload: data,
-    });
+      created_at: moment().valueOf(),
+    };
   };
 
 const signDataEvent = cond([
@@ -29,7 +31,7 @@ export const addSignature = (data: RawEvent): Promise<SignedDataEvent> => {
     signedDataEvent
       ? res(signedDataEvent)
       : rej(
-          getRejectionReason({
+          getErrorForCatcher({
             level: "skip",
             message: LogWarnings.signingEventSignatureNotRecognized,
           })
