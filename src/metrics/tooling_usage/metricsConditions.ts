@@ -4,9 +4,18 @@ import {
   SignedDataEvent,
   DataEventSignature,
 } from "../../interfaces";
+import { validateEventSignature } from "../../shared/validateEventSignature";
+import { ToolingUsagePayload } from "./interfaces";
 
-export const isSignedAsToolingUsage = (dataEvent: SignedDataEvent) =>
-  dataEvent.dataEventSignature === DataEventSignature.ToolingUsage;
+export const isSignedAsToolingUsage = (dataEvent: SignedDataEvent) => {
+  if (!validateEventSignature(dataEvent, DataEventSignature.ToolingUsage)) {
+    return false;
+  }
+
+  dataEvent.payload satisfies ToolingUsagePayload;
+
+  return true;
+};
 
 const conditions: Conditions = [
   [isSignedAsToolingUsage, collectToolingUsageMetrics],

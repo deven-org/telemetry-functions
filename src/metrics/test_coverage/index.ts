@@ -4,16 +4,18 @@ import {
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
-import { WorkflowJobTestCoverageOutput } from "./interfaces";
+import {
+  TestCoveragePayload,
+  WorkflowJobTestCoverageOutput,
+} from "./interfaces";
 import moment from "moment";
-import { WorkflowJobCompletedEvent } from "../../github.interfaces";
 
 const includesTestInString = pipe(toLower, test(/test/));
 
 export const collectWorkflowsTestCoverageMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
-  const payload = dataEvent.payload as WorkflowJobCompletedEvent;
+  const payload = dataEvent.payload as TestCoveragePayload;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;

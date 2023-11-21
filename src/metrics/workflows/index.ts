@@ -4,15 +4,14 @@ import {
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
-import { WorkflowJobCompletedOutput } from "./interfaces";
+import { WorkflowsOutput, WorkflowsPayload } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
-import { WorkflowJobCompletedEvent } from "../../github.interfaces";
 
 export const collectWorkflowsMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
-  const payload = dataEvent.payload as WorkflowJobCompletedEvent;
+  const payload = dataEvent.payload as WorkflowsPayload;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -25,6 +24,8 @@ export const collectWorkflowsMetrics = async (
   const run_attempt = payload.workflow_job.run_attempt;
   const steps = payload.workflow_job.steps.map((step) => ({
     ...step,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Null is not possible here for completed jobs
+    conclusion: step.conclusion!,
     started_at: moment.utc(step.started_at).valueOf(),
     completed_at: moment.utc(step.completed_at).valueOf(),
     duration:
@@ -46,7 +47,7 @@ export const collectWorkflowsMetrics = async (
   } catch (e) {
     packages = [];
   }
-  const output: WorkflowJobCompletedOutput = {
+  const output: WorkflowsOutput = {
     repository: repo,
     completed_at,
     created_at,

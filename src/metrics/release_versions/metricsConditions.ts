@@ -1,19 +1,22 @@
 import { collectReleaseVersionsMetrics } from ".";
-import { PullRequestClosedEvent } from "../../github.interfaces";
 import {
   Conditions,
   SignedDataEvent,
   DataEventSignature,
 } from "../../interfaces";
+import { validateEventSignature } from "../../shared/validateEventSignature";
+import { ReleaseVersionsPayload } from "./interfaces";
 
 export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
-  if (dataEvent.dataEventSignature !== DataEventSignature.PullRequest) {
+  if (!validateEventSignature(dataEvent, DataEventSignature.PullRequest)) {
     return false;
   }
 
-  if ((dataEvent.payload as PullRequestClosedEvent).action !== "closed") {
+  if (dataEvent.payload.action !== "closed") {
     return false;
   }
+
+  dataEvent.payload satisfies ReleaseVersionsPayload;
 
   return true;
 };

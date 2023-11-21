@@ -1,9 +1,3 @@
-import {
-  CheckSuiteEvent,
-  DeploymentCreatedEvent,
-  PullRequestClosedEvent,
-  WorkflowJobCompletedEvent,
-} from "./github.interfaces";
 import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
 import { CodeReviewInvolvementOutput } from "./metrics/code_review_involvement/interfaces";
 import { ReleaseVersionsOutput } from "./metrics/release_versions/interfaces";
@@ -11,10 +5,16 @@ import {
   ToolingUsageOutput,
   ToolingUsagePayload,
 } from "./metrics/tooling_usage/interfaces";
-import { WorkflowJobCompletedOutput } from "./metrics/workflows/interfaces";
+import { WorkflowsOutput } from "./metrics/workflows/interfaces";
 import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
 import { WorkflowJobTestCoverageOutput } from "./metrics/test_coverage/interfaces";
 import { DeploymentOutput } from "./metrics/deployments/interfaces";
+import {
+  PullRequestEvent,
+  WorkflowJobEvent,
+  CheckSuiteEvent,
+  DeploymentEvent,
+} from "@octokit/webhooks-types";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
@@ -22,6 +22,7 @@ export enum DataEventSignature {
   PullRequest = "pull-request",
   CheckSuite = "check-suite",
   Deployment = "deployment",
+  Unknown = "unknown",
 }
 
 export enum MetricsSignature {
@@ -36,11 +37,12 @@ export enum MetricsSignature {
 }
 
 interface DataEventPayloadMap {
-  [DataEventSignature.WorkflowJob]: WorkflowJobCompletedEvent;
+  [DataEventSignature.WorkflowJob]: WorkflowJobEvent;
   [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
-  [DataEventSignature.PullRequest]: PullRequestClosedEvent;
+  [DataEventSignature.PullRequest]: PullRequestEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
-  [DataEventSignature.Deployment]: DeploymentCreatedEvent;
+  [DataEventSignature.Deployment]: DeploymentEvent;
+  [DataEventSignature.Unknown]: unknown;
 }
 
 interface MetricsSignatureOutputMap {
@@ -51,7 +53,7 @@ interface MetricsSignatureOutputMap {
   [MetricsSignature.ReleaseVersions]: ReleaseVersionsOutput;
   [MetricsSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
   [MetricsSignature.ToolingUsage]: ToolingUsageOutput;
-  [MetricsSignature.WorkflowJob]: WorkflowJobCompletedOutput;
+  [MetricsSignature.WorkflowJob]: WorkflowsOutput;
 }
 
 export interface RawEvent {

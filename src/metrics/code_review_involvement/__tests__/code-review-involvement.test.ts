@@ -5,6 +5,8 @@ import {
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
+import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+import { clone } from "ramda";
 
 const octokitResponse = {};
 
@@ -31,6 +33,12 @@ jest.mock("../../../core/logger.ts", () => ({
 }));
 
 describe("Code Reviews Involvement", () => {
+  const FAKE_NOW = 1700000000000;
+
+  beforeAll(() => {
+    jest.useFakeTimers({ now: FAKE_NOW });
+  });
+
   it("event gets signed as pull_request event", async () => {
     const eventBody = {
       eventSignature: "pull_request",
@@ -67,7 +75,7 @@ describe("Code Reviews Involvement", () => {
       )
     ).toMatchObject([
       {
-        created_at: expect.any(Number),
+        created_at: FAKE_NOW,
         output: {
           repo: "repo_name",
           owner: "owner",
@@ -90,5 +98,41 @@ describe("Code Reviews Involvement", () => {
         dataEventSignature: DataEventSignature.PullRequest,
       },
     ]);
+  });
+
+  it("handles a range of mocked pull_request events", async () => {
+    const fixtures = getWebhookEventFixtureList("pull_request");
+
+    // There's no merged examples yet
+    // Add some merged Fixtures so we have any output
+    const unmergedFixtures = clone(
+      fixtures.filter((ex) => ex.action === "closed" && !ex.pull_request.merged)
+    );
+    unmergedFixtures.forEach((fixture) => {
+      fixture.pull_request.merged = true;
+      fixture.pull_request.merged_at = fixture.pull_request.closed_at;
+      fixture.pull_request.merged_by = fixture.pull_request.user;
+      fixtures.push(fixture);
+    });
+
+    const output = await Promise.all(
+      fixtures.map((fix) =>
+        handler({
+          eventSignature: "pull_request",
+          ...fix,
+        })
+      )
+    );
+
+    output.forEach((output, i) => {
+      // Early error if our fixtures got updated - regenerate the snapshots!
+      expect(fixtures[i]).toMatchSnapshot(`pull_request fixture[${i}] INPUT`);
+      expect(
+        output?.filter(
+          (out) =>
+            out.metricsSignature === MetricsSignature.CodeReviewInvolvement
+        )
+      ).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
+    });
   });
 });

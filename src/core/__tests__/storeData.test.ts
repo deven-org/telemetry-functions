@@ -8,8 +8,8 @@ import {
 } from "../../interfaces";
 import { handler } from "../../handler";
 import "../logger";
-import { WorkflowJobCompletedEvent } from "../../github.interfaces";
-import { WorkflowJobCompletedOutput } from "../../metrics/workflows/interfaces";
+import { WorkflowsOutput } from "../../metrics/workflows/interfaces";
+import { getWebhookEventFixture } from "../../__tests__/fixtures/github-webhook-events";
 
 jest.mock("../logger", () => ({
   __esModule: true,
@@ -26,14 +26,13 @@ jest.mock("../logger", () => ({
   },
 }));
 
-const payload: Partial<WorkflowJobCompletedEvent> = {
-  action: "foo",
-};
-
 const dataSignatureResponse = {
   dataEventSignature: DataEventSignature.WorkflowJob,
   created_at: 100,
-  payload,
+  payload: getWebhookEventFixture(
+    "workflow_job",
+    (ex) => ex.action === "completed"
+  ),
 };
 
 jest.mock("../../core/addSignature", () => ({
@@ -45,7 +44,7 @@ jest.mock("../../core/addSignature", () => ({
   },
 }));
 
-const output: WorkflowJobCompletedOutput = {
+const output: WorkflowsOutput = {
   repository: "repo",
   created_at: 4000,
   started_at: 4000,
