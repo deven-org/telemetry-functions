@@ -1,4 +1,5 @@
-import { collectCodeReviewInvolvementMetrics } from ".";
+import { collectDocumentationUpdatedMetrics } from ".";
+import { DocumentationUpdatedPayload } from "./interfaces";
 import {
   Conditions,
   SignedDataEvent,
@@ -6,9 +7,8 @@ import {
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validateEventSignature";
 import { validatePrWasMerged } from "../../shared/validatePrWasMerged";
-import { CodeReviewInvolvementPayload } from "./interfaces";
 
-export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
+export const isSignedAsPullRequestMerged = (dataEvent: SignedDataEvent) => {
   if (!validateEventSignature(dataEvent, DataEventSignature.PullRequest)) {
     return false;
   }
@@ -17,19 +17,17 @@ export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
     return false;
   }
 
-  // TODO: should merged but not-closed PRs also get recorded?
-  // Would need adapting of the metric code!
   if (!validatePrWasMerged(dataEvent.payload)) {
     return false;
   }
 
-  dataEvent.payload satisfies CodeReviewInvolvementPayload;
+  dataEvent.payload satisfies DocumentationUpdatedPayload;
 
   return true;
 };
 
 const conditions: Conditions = [
-  [isSignedAsPullRequestClosed, collectCodeReviewInvolvementMetrics],
+  [isSignedAsPullRequestMerged, collectDocumentationUpdatedMetrics],
 ];
 
 export default conditions;
