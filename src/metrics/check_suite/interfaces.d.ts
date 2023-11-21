@@ -1,7 +1,12 @@
-import { PullRequest } from "../../github.interfaces";
+import {
+  CheckRunPullRequest,
+  CheckSuiteCompletedEvent,
+} from "@octokit/webhooks-types";
+
+export type CheckSuitePayload = CheckSuiteCompletedEvent;
 
 export interface CheckSuiteMetricsOutput {
-  pull_requests: PullRequest[];
+  pull_requests: CheckRunPullRequest[];
   created_at: number;
   conclusion: string;
   is_app_owner: boolean;

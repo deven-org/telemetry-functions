@@ -1,3 +1,7 @@
+import { WorkflowJobCompletedEvent } from "@octokit/webhooks-types";
+
+export type TestCoveragePayload = WorkflowJobCompletedEvent;
+
 export type WorkflowJobTestCoverageOutput = {
   id: number;
   status: string;

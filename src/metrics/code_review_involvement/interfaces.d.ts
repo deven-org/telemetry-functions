@@ -1,3 +1,7 @@
+import { MergedPullRequestClosedEvent } from "../../github.interfaces";
+
+export type CodeReviewInvolvementPayload = MergedPullRequestClosedEvent;
+
 export type CodeReviewInvolvementOutput = {
   repo: string;
   owner: string;

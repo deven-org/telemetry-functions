@@ -1,3 +1,4 @@
+import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
 import { DataEventSignature, SignedDataEvent } from "../../../interfaces";
 import { ToolingUsagePayload } from "../interfaces";
 import { isSignedAsToolingUsage } from "../metricsConditions";
@@ -6,7 +7,7 @@ describe("Tooling Usage metric condition: isSignedAsToolingUsage", () => {
   it("returns false if event is not signed as ToolingUsage", async () => {
     const event: SignedDataEvent = {
       dataEventSignature: DataEventSignature.WorkflowJob,
-      payload: {} as ToolingUsagePayload,
+      payload: getWebhookEventFixture("workflow_job"),
       created_at: 100,
     };
 

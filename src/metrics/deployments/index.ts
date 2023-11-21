@@ -5,9 +5,8 @@ import {
 } from "../../interfaces";
 import octokit from "../../core/octokit";
 import moment from "moment";
-import { DeploymentOutput } from "./interfaces";
+import { DeploymentOutput, DeploymentPayload } from "./interfaces";
 import { decode } from "js-base64";
-import { DeploymentCreatedEvent } from "../../github.interfaces";
 
 let timeSinceLastDeploy: number;
 let version: string;
@@ -16,7 +15,7 @@ let duration: number;
 export const collectDeploymentMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
-  const payload = dataEvent.payload as DeploymentCreatedEvent;
+  const payload = dataEvent.payload as DeploymentPayload;
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;

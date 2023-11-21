@@ -7,6 +7,7 @@ import { handler } from "../../../handler";
 import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
 import mockedDeploymentList from "./fixtures/mocked-deployment-list.json";
 import { DeploymentOutput } from "../interfaces";
+import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
 const octokitResponse = {
   data: mockedDeploymentList,
@@ -35,6 +36,12 @@ jest.mock("../../../core/logger.ts", () => ({
 }));
 
 describe("Deployments", () => {
+  const FAKE_NOW = 1700000000000;
+
+  beforeAll(() => {
+    jest.useFakeTimers({ now: FAKE_NOW });
+  });
+
   it("event gets signed as deployment event", async () => {
     const eventBody = {
       ...mockedDeploymentEvent,
@@ -48,7 +55,7 @@ describe("Deployments", () => {
       )
     ).toMatchObject([
       {
-        created_at: expect.any(Number),
+        created_at: FAKE_NOW,
         output: {},
         dataEventSignature: DataEventSignature.Deployment,
       },
@@ -99,5 +106,28 @@ describe("Deployments", () => {
     expect(
       output.filter((o: DeploymentOutput) => o.timeSinceLastDeploy)
     ).toEqual([]);
+  });
+
+  it("handles a range of mocked deployment events", async () => {
+    const fixtures = getWebhookEventFixtureList("deployment");
+
+    const output = await Promise.all(
+      fixtures.map((fix) =>
+        handler({
+          eventSignature: "deployment",
+          ...fix,
+        })
+      )
+    );
+
+    output.forEach((output, i) => {
+      // Early error if our fixtures got updated - regenerate the snapshots!
+      expect(fixtures[i]).toMatchSnapshot(`deployment fixture[${i}] INPUT`);
+      expect(
+        output?.filter(
+          (out) => out.metricsSignature === MetricsSignature.Deployment
+        )
+      ).toMatchSnapshot(`deployment fixture[${i}] OUTPUT`);
+    });
   });
 });

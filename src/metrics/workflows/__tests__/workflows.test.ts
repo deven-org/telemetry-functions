@@ -7,6 +7,7 @@ import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
 import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
+import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
 let octokitResponse = {};
 
@@ -33,6 +34,12 @@ jest.mock("../../../core/logger.ts", () => ({
 }));
 
 describe("Workflows", () => {
+  const FAKE_NOW = 1700000000000;
+
+  beforeAll(() => {
+    jest.useFakeTimers({ now: FAKE_NOW });
+  });
+
   it("event gets signed as workflow_job event", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
@@ -45,7 +52,7 @@ describe("Workflows", () => {
       output.filter((o) => o.metricsSignature === MetricsSignature.WorkflowJob)
     ).toMatchObject([
       {
-        created_at: expect.any(Number),
+        created_at: FAKE_NOW,
         output: {},
         dataEventSignature: DataEventSignature.WorkflowJob,
       },
@@ -72,7 +79,7 @@ describe("Workflows", () => {
       )
     ).toMatchObject([
       {
-        created_at: expect.any(Number),
+        created_at: FAKE_NOW,
         output: {
           repository: mockedWorkflowJobCompleted.repository.name,
           completed_at: 1679311634000,
@@ -126,5 +133,28 @@ describe("Workflows", () => {
         metricsSignature: MetricsSignature.WorkflowJob,
       },
     ]);
+  });
+
+  it("handles a range of mocked workflow_job events", async () => {
+    const fixtures = getWebhookEventFixtureList("workflow_job");
+
+    const output = await Promise.all(
+      fixtures.map((fix) =>
+        handler({
+          eventSignature: "workflow_job",
+          ...fix,
+        })
+      )
+    );
+
+    output.forEach((output, i) => {
+      // Early error if our fixtures got updated - regenerate the snapshots!
+      expect(fixtures[i]).toMatchSnapshot(`workflow_job fixture[${i}] INPUT`);
+      expect(
+        output?.filter(
+          (out) => out.metricsSignature === MetricsSignature.WorkflowJob
+        )
+      ).toMatchSnapshot(`workflow_job fixture[${i}] OUTPUT`);
+    });
   });
 });

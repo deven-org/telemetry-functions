@@ -6,6 +6,7 @@ import {
 import { handler } from "../../../handler";
 
 import mockedCheckSuite from "./fixtures/mocked-pull-request-closed.json";
+import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
 const octokitResponse = {};
 
@@ -32,6 +33,12 @@ jest.mock("../../../core/logger.ts", () => ({
 }));
 
 describe("Release versions", () => {
+  const FAKE_NOW = 1700000000000;
+
+  beforeAll(() => {
+    jest.useFakeTimers({ now: FAKE_NOW });
+  });
+
   it("event gets signed as pull_request event", async () => {
     const eventBody = {
       eventSignature: "pull_request",
@@ -80,5 +87,28 @@ describe("Release versions", () => {
         created_at: expect.any(Number),
       },
     ]);
+  });
+
+  it("handles a range of mocked pull_request events", async () => {
+    const fixtures = getWebhookEventFixtureList("pull_request");
+
+    const output = await Promise.all(
+      fixtures.map((fix) =>
+        handler({
+          eventSignature: "pull_request",
+          ...fix,
+        })
+      )
+    );
+
+    output.forEach((output, i) => {
+      // Early error if our fixtures got updated - regenerate the snapshots!
+      expect(fixtures[i]).toMatchSnapshot(`pull_request fixture[${i}] INPUT`);
+      expect(
+        output?.filter(
+          (out) => out.metricsSignature === MetricsSignature.ReleaseVersions
+        )
+      ).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
+    });
   });
 });

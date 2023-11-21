@@ -3,18 +3,18 @@ import {
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
-import { CheckSuiteCompletedEvent } from "../../github.interfaces";
-import { CheckSuiteMetricsOutput } from "./interfaces";
+import { CheckSuiteMetricsOutput, CheckSuitePayload } from "./interfaces";
 import moment from "moment";
 
 export const collectCheckSuiteMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
-  const payload = dataEvent.payload as CheckSuiteCompletedEvent;
+  const payload = dataEvent.payload as CheckSuitePayload;
 
   const pull_requests = payload.check_suite.pull_requests;
   const created_at = moment.utc(payload.check_suite.created_at).valueOf();
-  const conclusion = payload.check_suite.conclusion;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is never null for completed events
+  const conclusion = payload.check_suite.conclusion!;
   const is_app_owner = payload?.installation ? true : false;
   const updated_at = moment.utc(payload.check_suite.updated_at).valueOf();
   const duration = updated_at - created_at;
