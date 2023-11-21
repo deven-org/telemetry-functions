@@ -15,6 +15,7 @@ import {
   CheckSuiteEvent,
   DeploymentEvent,
 } from "@octokit/webhooks-types";
+import { DocumentationUpdatedOutput } from "./metrics/documentation_updated/interfaces";
 
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
@@ -34,6 +35,7 @@ export enum MetricsSignature {
   ReleaseVersions = "release-versions",
   CommitsPerPr = "commits-per-pr",
   Deployment = "deployment",
+  DocumentationUpdated = "documentation-updated",
 }
 
 interface DataEventPayloadMap {
@@ -50,6 +52,7 @@ interface MetricsSignatureOutputMap {
   [MetricsSignature.CodeReviewInvolvement]: CodeReviewInvolvementOutput;
   [MetricsSignature.CommitsPerPr]: CommitsPerPrOutput;
   [MetricsSignature.Deployment]: DeploymentOutput;
+  [MetricsSignature.DocumentationUpdated]: DocumentationUpdatedOutput;
   [MetricsSignature.ReleaseVersions]: ReleaseVersionsOutput;
   [MetricsSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
   [MetricsSignature.ToolingUsage]: ToolingUsageOutput;

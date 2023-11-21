@@ -17,6 +17,11 @@
       - [Asynchronous collection](#asynchronous-collection)
     - [Conclusion](#conclusion)
   - [Data duplication](#data-duplication)
+  - [Webhook Events](#webhook-events)
+    - [check\_suite](#check_suite)
+    - [pull\_request](#pull_request)
+    - [workflow\_job](#workflow_job)
+    - [Metrics Collected](#metrics-collected)
 
 ## Overall Structure
 
@@ -85,27 +90,29 @@ More details about when each webhook event occurs and link to documentation are 
 ### check_suite
 
 This event used to collect CheckSuite Metrics and occurs when there is activity relating to a check suite. More information about what the payload contains and the APIs to manage check suites are available in the following link
+
 - Github doc [CheckSuite Webhook](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#check_suite)
 
 ### pull_request
 
-This event occurs when there is activity on a pull request. For more information, about  what the payload contains and the APIs to manage pull requests, check the following link
+This event occurs when there is activity on a pull request. For more information, about what the payload contains and the APIs to manage pull requests, check the following link
+
 - Github doc [Pull Requests Webhook](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
 
 ### workflow_job
 
-This event occurs when there is activity relating to a job in a GitHub Actions workflow. For more information about  what the payload contains and  the API to manage workflow jobs, check the following link
+This event occurs when there is activity relating to a job in a GitHub Actions workflow. For more information about what the payload contains and the API to manage workflow jobs, check the following link
 
 - Github doc [Workflow Job Webhook](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job)
 
+### Metrics Collected
 
-###  Metrics Collected
 The following metrics are collected from the webhook events
 
 - CheckSuite Metrics
+
   - Event used - check-suite
-  
-  
+
     ```
     //Output
     {
@@ -117,23 +124,26 @@ The following metrics are collected from the webhook events
       duration: number;
     }
     ```
+
 - Test Coverage Metrics
+
   - Event used - workflow-job
 
-      ```
-      //Output
-      {
-        id: number;
-        status: string;
-        conclusion: string;
-        is_workflow_name_about_test: boolean;
-        steps_about_test: object[];
-        has_failed_steps: boolean;
-        total_tests_duration: number;
-      };
-      ```
+    ```
+    //Output
+    {
+      id: number;
+      status: string;
+      conclusion: string;
+      is_workflow_name_about_test: boolean;
+      steps_about_test: object[];
+      has_failed_steps: boolean;
+      total_tests_duration: number;
+    };
+    ```
 
 - Release Versions Metrics
+
   - Event used - pull-request
 
     ```
@@ -145,6 +155,7 @@ The following metrics are collected from the webhook events
     ```
 
 - Commits Per Pr Metrics
+
   - Event used - pull-request
 
     ```
@@ -157,7 +168,9 @@ The following metrics are collected from the webhook events
       pull_number: number;
     }
     ```
+
 - Tooling Usage Metrics
+
   - No event used, metrics collected from repo's package json
 
     ```
@@ -170,5 +183,20 @@ The following metrics are collected from the webhook events
         owner: string;
         hasValidPackageJson: boolean;
         hasDocChapters: boolean;
+      }
+    ```
+
+- Documentation Updated Metrics
+
+  - Event used - merged pull-request
+  - Expecting that most documentation (especially when documentation-skeleton is used) is done in `.md` files, the metric tracks how many `.md` files have been changed with each pull request.
+
+    ```
+    //Output
+      {
+        repo: string;
+        owner: string;
+        number: number;
+        mdFilesChanged: number;
       }
     ```
