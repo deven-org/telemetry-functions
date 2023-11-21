@@ -4,15 +4,17 @@ import {
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
-import { CodeReviewInvolvementOutput } from "./interfaces";
+import {
+  CodeReviewInvolvementOutput,
+  CodeReviewInvolvementPayload,
+} from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
-import { PullRequestClosedEvent } from "../../github.interfaces";
 
 export const collectCodeReviewInvolvementMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
-  const payload = dataEvent.payload as PullRequestClosedEvent;
+  const payload = dataEvent.payload as CodeReviewInvolvementPayload;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;

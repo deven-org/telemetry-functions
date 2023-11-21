@@ -1,17 +1,17 @@
+import octokit from "../../core/octokit";
+import moment from "moment";
+
 import {
   SignedDataEvent,
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
-import octokit from "../../core/octokit";
-import { PullRequestClosedEvent } from "../../github.interfaces";
-import moment from "moment";
-import { CommitsPerPrOutput } from "./interfaces";
+import { CommitsPerPrOutput, CommitsPerPrPayload } from "./interfaces";
 
 export const collectCommitsPerPrMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
-  const payload = dataEvent.payload as PullRequestClosedEvent;
+  const payload = dataEvent.payload as CommitsPerPrPayload;
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;

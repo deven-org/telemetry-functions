@@ -1,19 +1,22 @@
 import { collectCheckSuiteMetrics } from ".";
-import { CheckSuiteCompletedEvent } from "../../github.interfaces";
 import {
   Conditions,
   SignedDataEvent,
   DataEventSignature,
 } from "../../interfaces";
+import { validateEventSignature } from "../../shared/validateEventSignature";
+import { CheckSuitePayload } from "./interfaces";
 
 export const isSignedAsCheckSuiteCompleted = (dataEvent: SignedDataEvent) => {
-  if (dataEvent.dataEventSignature !== DataEventSignature.CheckSuite) {
+  if (!validateEventSignature(dataEvent, DataEventSignature.CheckSuite)) {
     return false;
   }
 
-  if ((dataEvent.payload as CheckSuiteCompletedEvent).action !== "completed") {
+  if (dataEvent.payload.action !== "completed") {
     return false;
   }
+
+  dataEvent.payload satisfies CheckSuitePayload;
 
   return true;
 };

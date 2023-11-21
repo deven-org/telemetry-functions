@@ -31,6 +31,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:dev": "jest --watch",
+    "test:update-snapshots": "jest -u",
     "doc:install": "deven-documentation-skeleton install",
     "doc:check": "deven-documentation-skeleton check",
     "doc:update": "deven-documentation-skeleton update",
@@ -45,6 +46,8 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^17.4.4",
     "@deven-org/documentation-skeleton": "^2.1.0",
+    "@octokit/webhooks-examples": "^7.3.1",
+    "@octokit/webhooks-types": "^7.3.1",
     "@types/jest": "^29.4.1",
     "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
