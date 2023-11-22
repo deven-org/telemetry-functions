@@ -40,17 +40,10 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
   });
 
   it("returns true if event is signed as closed PullRequest and merged", async () => {
-    // There's no merged example data yet, we'll have to craft one
-
     const fixture = getWebhookEventFixture(
       "pull_request",
-      (ex) => ex.action === "closed" && !ex.pull_request.merged
+      (ex) => ex.action === "closed" && ex.pull_request.merged
     );
-
-    // there's no merged example yet, we'll have to make one from an unmerged one
-    fixture.pull_request.merged = true;
-    fixture.pull_request.merged_at = fixture.pull_request.closed_at;
-    fixture.pull_request.merged_by = fixture.pull_request.user;
 
     const event: SignedDataEvent = {
       dataEventSignature: DataEventSignature.PullRequest,
