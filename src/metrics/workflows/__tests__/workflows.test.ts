@@ -81,7 +81,6 @@ describe("Workflows", () => {
       {
         created_at: FAKE_NOW,
         output: {
-          repository: mockedWorkflowJobCompleted.repository.name,
           completed_at: 1679311634000,
           created_at: 1679311618000,
           started_at: 1679311624000,
@@ -108,26 +107,6 @@ describe("Workflows", () => {
               status: "completed",
             },
           ],
-          packages: {
-            dependencies: {
-              "@netlify/functions": "^1.4.0",
-              "@octokit/rest": "^19.0.7",
-              dotenv: "^16.0.3",
-              "js-base64": "^3.7.5",
-            },
-            devDependencies: {
-              "@types/jest": "^29.4.1",
-              "@types/node": "^18.13.0",
-              "deven-documentation-skeleton": "^2.0.0",
-              moment: "^2.29.4",
-              netlify: "^13.1.2",
-              "netlify-cli": "^13.0.1",
-              ramda: "^0.28.0",
-              semver: "^7.3.8",
-              signale: "^1.4.0",
-              "ts-jest": "^29.0.5",
-            },
-          },
         },
         dataEventSignature: DataEventSignature.WorkflowJob,
         metricsSignature: MetricsSignature.WorkflowJob,
