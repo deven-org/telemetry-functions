@@ -6,7 +6,6 @@ import {
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
-import { clone } from "ramda";
 
 const octokitResponse = {};
 
@@ -102,18 +101,6 @@ describe("Code Reviews Involvement", () => {
 
   it("handles a range of mocked pull_request events", async () => {
     const fixtures = getWebhookEventFixtureList("pull_request");
-
-    // There's no merged examples yet
-    // Add some merged Fixtures so we have any output
-    const unmergedFixtures = clone(
-      fixtures.filter((ex) => ex.action === "closed" && !ex.pull_request.merged)
-    );
-    unmergedFixtures.forEach((fixture) => {
-      fixture.pull_request.merged = true;
-      fixture.pull_request.merged_at = fixture.pull_request.closed_at;
-      fixture.pull_request.merged_by = fixture.pull_request.user;
-      fixtures.push(fixture);
-    });
 
     const output = await Promise.all(
       fixtures.map((fix) =>
