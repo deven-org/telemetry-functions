@@ -16010,7 +16010,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     "dataEventSignature": "pull-request",
     "metricsSignature": "documentation-updated",
     "output": {
-      "mdFilesChanged": 0,
+      "mdFilesChanged": 4,
       "number": 2,
       "owner": "Codertocat",
       "repo": "Hello-World",
@@ -16580,7 +16580,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     "dataEventSignature": "pull-request",
     "metricsSignature": "documentation-updated",
     "output": {
-      "mdFilesChanged": 0,
+      "mdFilesChanged": 4,
       "number": 2,
       "owner": "Codertocat",
       "repo": "Hello-World",

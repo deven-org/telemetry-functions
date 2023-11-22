@@ -7,7 +7,30 @@ import { handler } from "../../../handler";
 import mockedPrMerged from "./fixtures/mocked-pull-request-merged.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
-const octokitResponse = {};
+const octokitResponse = {
+  data: [
+    {
+      filename: "file1.txt",
+      status: "added",
+    },
+    {
+      filename: "file2.md",
+      status: "removed",
+    },
+    {
+      filename: "file3.md",
+      status: "modified",
+    },
+    {
+      filename: "doc/file4.md",
+      status: "added",
+    },
+    {
+      filename: "docs/file5.md",
+      status: "renamed",
+    },
+  ],
+};
 
 jest.mock("./../../../core/octokit.ts", () => ({
   __esModule: true,
@@ -79,7 +102,7 @@ describe("Documentation Updated", () => {
           repo: "repo_name",
           owner: "owner",
           number: 10,
-          mdFilesChanged: 0,
+          mdFilesChanged: 4,
         },
         metricsSignature: MetricsSignature.DocumentationUpdated,
         dataEventSignature: DataEventSignature.PullRequest,
