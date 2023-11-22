@@ -10,6 +10,8 @@ import {
 import octokit from "../../core/octokit";
 import { logger } from "../../core/logger";
 
+const MARKDOWN_FILE_EXTENSION = ".md";
+
 export const collectDocumentationUpdatedMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData> => {
@@ -19,11 +21,11 @@ export const collectDocumentationUpdatedMetrics = async (
   const owner = payload.repository.owner.login;
   const number = payload.number;
 
-  let mdFileNames: string[] = [];
+  let mdFilesChanged = 0;
 
   try {
     const request = await octokit.request(
-      "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits",
+      "GET /repos/{owner}/{repo}/pulls/{pull_number}/files",
       {
         owner: owner,
         repo: repo,
@@ -31,34 +33,12 @@ export const collectDocumentationUpdatedMetrics = async (
       }
     );
 
-    const data = request.data;
-
-    const commitShas = data.map((commit) => commit.sha);
-
-    for (let i = 0; i < commitShas.length; i++) {
-      const commitSha = commitShas[i];
-      const commitRequest = await octokit.request(
-        "GET /repos/{owner}/{repo}/commits/{ref}",
-        {
-          owner: owner,
-          repo: repo,
-          ref: commitSha,
-        }
-      );
-
-      const fileNames = commitRequest.data.files
-        ?.filter((file) => file.filename.endsWith(".md"))
-        .map((file) => file.filename);
-
-      if (fileNames) {
-        mdFileNames = mdFileNames.concat(fileNames);
-      }
-    }
+    mdFilesChanged = request.data.filter((file) =>
+      file.filename.endsWith(MARKDOWN_FILE_EXTENSION)
+    ).length;
   } catch (error) {
     logger.error(error);
   }
-
-  const mdFilesChanged = [...new Set(mdFileNames)].length;
 
   const output: DocumentationUpdatedOutput = {
     repo,
