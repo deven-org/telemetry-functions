@@ -1,4 +1,3 @@
-import { decode } from "js-base64";
 import {
   SignedDataEvent,
   MetricsSignature,
@@ -6,7 +5,6 @@ import {
 } from "../../interfaces";
 import { WorkflowsOutput, WorkflowsPayload } from "./interfaces";
 import moment from "moment";
-import octokit from "../../core/octokit";
 
 export const collectWorkflowsMetrics = async (
   dataEvent: SignedDataEvent
@@ -33,22 +31,7 @@ export const collectWorkflowsMetrics = async (
       moment.utc(step.started_at).valueOf(),
   }));
 
-  let packages = [];
-  try {
-    const getPackageJson = await octokit.request(
-      "GET /repos/{owner}/{repo}/contents/{path}",
-      {
-        owner: owner,
-        repo: repo,
-        path: "package.json",
-      }
-    );
-    packages = JSON.parse(decode(getPackageJson.data["content"]));
-  } catch (e) {
-    packages = [];
-  }
   const output: WorkflowsOutput = {
-    repository: repo,
     completed_at,
     created_at,
     started_at,
@@ -57,7 +40,6 @@ export const collectWorkflowsMetrics = async (
     run_attempt,
     duration,
     steps,
-    packages,
   };
 
   return {

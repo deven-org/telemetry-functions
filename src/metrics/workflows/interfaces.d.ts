@@ -3,9 +3,6 @@ import { WorkflowJobCompletedEvent } from "@octokit/webhooks-types";
 export type WorkflowsPayload = WorkflowJobCompletedEvent;
 
 export type WorkflowsOutput = {
-  /** The GitHub repository name */
-  repository: string;
-
   /** UNIX timestamp of job creation time */
   created_at: number;
 
@@ -50,10 +47,4 @@ export type WorkflowsOutput = {
     /** Step duration in ms */
     duration: number;
   }>;
-
-  /**
-   * Full content of the root package.json at the source repo's default branch
-   * NOTE: type is guessed since the json file might contain anythingn
-   */
-  packages: object; // package.json contents
 };
