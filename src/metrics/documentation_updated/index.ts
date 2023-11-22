@@ -24,8 +24,9 @@ export const collectDocumentationUpdatedMetrics = async (
   let mdFilesChanged = 0;
 
   try {
+    // The maximum per_page value is 100. In case of very large PRs we might miss some .md-files.
     const request = await octokit.request(
-      "GET /repos/{owner}/{repo}/pulls/{pull_number}/files",
+      "GET /repos/{owner}/{repo}/pulls/{pull_number}/files?per_page=100",
       {
         owner: owner,
         repo: repo,
