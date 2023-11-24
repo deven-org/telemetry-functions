@@ -19,7 +19,7 @@ export const collectDocumentationUpdatedMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const number = payload.number;
+  const pr_id = payload.pull_request.id;
 
   let mdFilesChanged = 0;
 
@@ -44,7 +44,7 @@ export const collectDocumentationUpdatedMetrics = async (
   const output: DocumentationUpdatedOutput = {
     repo,
     owner,
-    number,
+    pr_id,
     mdFilesChanged,
   };
 

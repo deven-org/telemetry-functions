@@ -3,6 +3,6 @@ import { PullRequestClosedEvent } from "@octokit/webhooks-types";
 export type ReleaseVersionsPayload = PullRequestClosedEvent;
 
 export type ReleaseVersionsOutput = {
-  pull_number: number;
+  pr_id: number;
   title: object;
 };

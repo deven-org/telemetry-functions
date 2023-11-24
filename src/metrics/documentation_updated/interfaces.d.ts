@@ -5,6 +5,6 @@ export type DocumentationUpdatedPayload = MergedPullRequestClosedEvent;
 export type DocumentationUpdatedOutput = {
   repo: string;
   owner: string;
-  number: number;
+  pr_id: number;
   mdFilesChanged: number;
 };

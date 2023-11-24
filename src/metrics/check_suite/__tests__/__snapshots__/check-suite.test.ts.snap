@@ -239,27 +239,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
       "is_app_owner": false,
       "pull_requests": [
         {
-          "base": {
-            "ref": "master",
-            "repo": {
-              "id": 186853002,
-              "name": "Hello-World",
-              "url": "https://api.github.com/repos/Codertocat/Hello-World",
-            },
-            "sha": "f95f852bd8fca8fcc58a9a2d6c842781e32a215e",
-          },
-          "head": {
-            "ref": "changes",
-            "repo": {
-              "id": 186853002,
-              "name": "Hello-World",
-              "url": "https://api.github.com/repos/Codertocat/Hello-World",
-            },
-            "sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
-          },
           "id": 279147437,
-          "number": 2,
-          "url": "https://api.github.com/repos/Codertocat/Hello-World/pulls/2",
         },
       ],
       "updated_at": 1557933674000,
@@ -737,27 +717,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
       "is_app_owner": false,
       "pull_requests": [
         {
-          "base": {
-            "ref": "master",
-            "repo": {
-              "id": 186853002,
-              "name": "Hello-World",
-              "url": "https://api.github.com/repos/Codertocat/Hello-World",
-            },
-            "sha": "f95f852bd8fca8fcc58a9a2d6c842781e32a215e",
-          },
-          "head": {
-            "ref": "changes",
-            "repo": {
-              "id": 186853002,
-              "name": "Hello-World",
-              "url": "https://api.github.com/repos/Codertocat/Hello-World",
-            },
-            "sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
-          },
           "id": 279147437,
-          "number": 2,
-          "url": "https://api.github.com/repos/Codertocat/Hello-World/pulls/2",
         },
       ],
       "updated_at": 1557933674000,
@@ -1025,27 +985,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
       "is_app_owner": false,
       "pull_requests": [
         {
-          "base": {
-            "ref": "master",
-            "repo": {
-              "id": 186853002,
-              "name": "Hello-World",
-              "url": "https://api.github.com/repos/Codertocat/Hello-World",
-            },
-            "sha": "f95f852bd8fca8fcc58a9a2d6c842781e32a215e",
-          },
-          "head": {
-            "ref": "changes",
-            "repo": {
-              "id": 186853002,
-              "name": "Hello-World",
-              "url": "https://api.github.com/repos/Codertocat/Hello-World",
-            },
-            "sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
-          },
           "id": 279147437,
-          "number": 2,
-          "url": "https://api.github.com/repos/Codertocat/Hello-World/pulls/2",
         },
       ],
       "updated_at": 1557933674000,

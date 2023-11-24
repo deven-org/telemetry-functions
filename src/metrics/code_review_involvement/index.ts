@@ -18,7 +18,7 @@ export const collectCodeReviewInvolvementMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const number = payload.number;
+  const pr_id = payload.pull_request.id;
   const created_at = moment.utc(payload.pull_request.created_at).valueOf();
   const updated_at = moment.utc(payload.pull_request.updated_at).valueOf();
   const closed_at = moment.utc(payload.pull_request.closed_at).valueOf();
@@ -55,7 +55,7 @@ export const collectCodeReviewInvolvementMetrics = async (
   const output: CodeReviewInvolvementOutput = {
     repo,
     owner,
-    number,
+    pr_id,
     created_at,
     updated_at,
     closed_at,
