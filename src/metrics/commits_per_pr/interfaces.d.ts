@@ -7,5 +7,5 @@ export interface CommitsPerPrOutput {
   additions: number;
   deletions: number;
   commit_timestamps: [];
-  pull_number: number;
+  pr_id: number;
 }

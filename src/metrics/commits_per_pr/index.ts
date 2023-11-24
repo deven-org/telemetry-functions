@@ -45,7 +45,7 @@ export const collectCommitsPerPrMetrics = async (
     additions,
     deletions,
     commit_timestamps,
-    pull_number: payload.pull_request.number,
+    pr_id: payload.pull_request.id,
   };
 
   return {

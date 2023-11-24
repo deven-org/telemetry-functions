@@ -11,7 +11,9 @@ export const collectCheckSuiteMetrics = async (
 ): Promise<MetricData> => {
   const payload = dataEvent.payload as CheckSuitePayload;
 
-  const pull_requests = payload.check_suite.pull_requests;
+  const pull_requests = payload.check_suite.pull_requests.map((pr) => {
+    return { id: pr.id };
+  });
   const created_at = moment.utc(payload.check_suite.created_at).valueOf();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is never null for completed events
   const conclusion = payload.check_suite.conclusion!;

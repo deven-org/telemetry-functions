@@ -2081,7 +2081,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     "dataEventSignature": "pull-request",
     "metricsSignature": "release-versions",
     "output": {
-      "pull_number": 2,
+      "pr_id": 279147437,
       "title": null,
     },
     "owner": "Codertocat",
@@ -2630,7 +2630,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     "dataEventSignature": "pull-request",
     "metricsSignature": "release-versions",
     "output": {
-      "pull_number": 2,
+      "pr_id": 279147437,
       "title": null,
     },
     "owner": "Codertocat",
@@ -16038,7 +16038,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     "dataEventSignature": "pull-request",
     "metricsSignature": "release-versions",
     "output": {
-      "pull_number": 2,
+      "pr_id": 279147437,
       "title": null,
     },
     "owner": "Codertocat",
@@ -16606,7 +16606,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     "dataEventSignature": "pull-request",
     "metricsSignature": "release-versions",
     "output": {
-      "pull_number": 2,
+      "pr_id": 279147437,
       "title": null,
     },
     "owner": "Codertocat",

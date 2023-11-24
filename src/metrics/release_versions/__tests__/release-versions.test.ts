@@ -77,7 +77,7 @@ describe("Release versions", () => {
     ).toMatchObject([
       {
         output: {
-          pull_number: undefined,
+          pr_id: undefined,
           title: null,
         },
         dataEventSignature: DataEventSignature.PullRequest,

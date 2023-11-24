@@ -68,7 +68,7 @@ describe("Check Suite", () => {
           created_at: 1678724577000,
           updated_at: 1678728177000,
           is_app_owner: true,
-          pull_requests: [{}, {}, {}],
+          pull_requests: [{ id: 41414141 }, { id: 42424242 }, { id: 43434343 }],
         },
         dataEventSignature: DataEventSignature.CheckSuite,
         owner: "owner_name",
