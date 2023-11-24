@@ -13,11 +13,11 @@ export const collectReleaseVersionsMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const pull_number = payload.pull_request.number;
+  const pr_id = payload.pull_request.id;
   const title = getReleaseByTitle(payload.pull_request.title);
 
   const output: ReleaseVersionsOutput = {
-    pull_number,
+    pr_id,
     title,
   };
 

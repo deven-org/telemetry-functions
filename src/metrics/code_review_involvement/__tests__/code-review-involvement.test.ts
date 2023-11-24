@@ -78,7 +78,7 @@ describe("Code Reviews Involvement", () => {
         output: {
           repo: "repo_name",
           owner: "owner",
-          number: 10,
+          pr_id: 42424242,
           created_at: 1675866904000,
           updated_at: 1675863304000,
           closed_at: 1675870504000,

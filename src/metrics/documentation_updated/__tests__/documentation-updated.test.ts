@@ -101,7 +101,7 @@ describe("Documentation Updated", () => {
         output: {
           repo: "repo_name",
           owner: "owner",
-          number: 10,
+          pr_id: 42424242,
           mdFilesChanged: 4,
         },
         metricsSignature: MetricsSignature.DocumentationUpdated,

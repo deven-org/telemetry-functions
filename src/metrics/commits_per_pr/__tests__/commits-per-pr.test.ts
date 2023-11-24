@@ -111,7 +111,7 @@ describe("Commits Per PR", () => {
           commit_timestamps: [
             1675874104000, 1675877704000, 1675881304000, 1675884904000,
           ],
-          pull_number: 10,
+          pr_id: 42424242,
         },
         owner: "owner",
         repo: "repo_name",

@@ -5,7 +5,7 @@ export type CodeReviewInvolvementPayload = MergedPullRequestClosedEvent;
 export type CodeReviewInvolvementOutput = {
   repo: string;
   owner: string;
-  number: number;
+  pr_id: number;
   created_at: number;
   updated_at: number;
   closed_at: number;
