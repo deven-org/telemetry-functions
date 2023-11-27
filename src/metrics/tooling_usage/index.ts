@@ -38,8 +38,6 @@ export const collectToolingUsageMetrics = async (
 
     output = {
       hasDocumentationSkeleton,
-      dependencies: dependencies,
-      devDependencies: devDependencies,
       owner: payload.owner,
       repo: payload.repo,
       hasValidPackageJson: true,
@@ -48,8 +46,6 @@ export const collectToolingUsageMetrics = async (
   } catch (error) {
     output = {
       hasDocumentationSkeleton: false,
-      dependencies: [],
-      devDependencies: [],
       owner: payload.owner,
       repo: payload.repo,
       hasValidPackageJson: false,
