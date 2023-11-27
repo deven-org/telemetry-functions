@@ -26,7 +26,7 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
     expect(isSignedAsPullRequestClosed(event)).toBeFalsy();
   });
 
-  it("returns false if event is a closed PullRequest but not merged", async () => {
+  it("returns true if event is a closed PullRequest but not merged", async () => {
     const event: SignedDataEvent = {
       dataEventSignature: DataEventSignature.PullRequest,
       payload: getWebhookEventFixture(
@@ -36,7 +36,7 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
       created_at: 100,
     };
 
-    expect(isSignedAsPullRequestClosed(event)).toBeFalsy();
+    expect(isSignedAsPullRequestClosed(event)).toBeTruthy();
   });
 
   it("returns true if event is signed as closed PullRequest and merged", async () => {
