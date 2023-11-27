@@ -8,7 +8,7 @@ import moment from "moment";
 
 export const collectCheckSuiteMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.CheckSuite>> => {
   const payload = dataEvent.payload as CheckSuitePayload;
 
   const pull_requests = payload.check_suite.pull_requests.map((pr) => {

@@ -11,7 +11,7 @@ import { LogWarnings } from "../../shared/logMessages";
 
 export const collectToolingUsageMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.ToolingUsage>> => {
   const payload = dataEvent.payload as ToolingUsagePayload;
 
   let output: ToolingUsageOutput;

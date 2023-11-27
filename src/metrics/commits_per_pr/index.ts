@@ -10,7 +10,7 @@ import { CommitsPerPrOutput, CommitsPerPrPayload } from "./interfaces";
 
 export const collectCommitsPerPrMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.CommitsPerPr>> => {
   const payload = dataEvent.payload as CommitsPerPrPayload;
 
   const owner = payload.repository.owner.login;
