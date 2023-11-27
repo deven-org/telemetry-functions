@@ -15,7 +15,7 @@ import { LogWarnings } from "../../shared/logMessages";
 
 export const collectCodeReviewInvolvementMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.CodeReviewInvolvement>> => {
   const payload = dataEvent.payload as CodeReviewInvolvementPayload;
 
   const repo = payload.repository.name;

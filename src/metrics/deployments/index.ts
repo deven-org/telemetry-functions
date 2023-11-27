@@ -14,7 +14,7 @@ let duration: number;
 
 export const collectDeploymentMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.Deployment>> => {
   const payload = dataEvent.payload as DeploymentPayload;
 
   const owner = payload.repository.owner.login;

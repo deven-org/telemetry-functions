@@ -8,7 +8,7 @@ import { ReleaseVersionsOutput, ReleaseVersionsPayload } from "./interfaces";
 
 export const collectReleaseVersionsMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.ReleaseVersions>> => {
   const payload = dataEvent.payload as ReleaseVersionsPayload;
 
   const repo = payload.repository.name;

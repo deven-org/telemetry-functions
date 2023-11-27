@@ -14,7 +14,7 @@ const MARKDOWN_FILE_EXTENSION = ".md";
 
 export const collectDocumentationUpdatedMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.DocumentationUpdated>> => {
   const payload = dataEvent.payload as DocumentationUpdatedPayload;
 
   const repo = payload.repository.name;

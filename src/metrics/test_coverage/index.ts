@@ -15,7 +15,7 @@ const includesTestInString = pipe(toLower, test(/test/));
 
 export const collectWorkflowsTestCoverageMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.TestCoverage>> => {
   const payload = dataEvent.payload as TestCoveragePayload;
 
   const repo = payload.repository.name;

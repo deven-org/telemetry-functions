@@ -3,13 +3,13 @@ import { WorkflowJobCompletedEvent } from "@octokit/webhooks-types";
 export type WorkflowsPayload = WorkflowJobCompletedEvent;
 
 export type WorkflowsOutput = {
-  /** UNIX timestamp of job creation time */
+  /** Job creation time (UNIX ms) */
   created_at: number;
 
-  /** UNIX timestamp of job start time */
+  /** Job start time (UNIX ms) */
   started_at: number;
 
-  /** UNIX timestamp of job completion time */
+  /** Job completion time (UNIX ms) */
   completed_at: number;
 
   /** Job run duration in ms */
@@ -18,13 +18,13 @@ export type WorkflowsOutput = {
   /** Job status (always "completed" due to condition) */
   status: string;
 
-  /** The name of the workflow this job was executed in */
+  /** The name of the workflow this job was executed in, if there is one */
   workflow_name: string | null;
 
   /** The workflow run attempt (>1 means it got restarted) */
   run_attempt: number;
 
-  /** List of steps that were executed as part of the job */
+  /** List of steps that were executed in the job that mention tests (same check as above) */
   steps: Array<{
     /** Step name */
     name: string;
@@ -38,10 +38,10 @@ export type WorkflowsOutput = {
     /** Step number */
     number: number;
 
-    /** Unix timestamp of step execution start */
+    /** Step execution start time (UNIX ms) */
     started_at: number;
 
-    /** Unix timestamp of step execution end */
+    /** Step execution completion time (UNIX ms) */
     completed_at: number;
 
     /** Step duration in ms */
