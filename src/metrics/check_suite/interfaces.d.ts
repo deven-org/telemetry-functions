@@ -3,10 +3,24 @@ import { CheckSuiteCompletedEvent } from "@octokit/webhooks-types";
 export type CheckSuitePayload = CheckSuiteCompletedEvent;
 
 export interface CheckSuiteMetricsOutput {
-  pull_requests: { id: number }[];
-  created_at: number;
+  /** Suite conclusion (see GitHub docs) */
   conclusion: string;
-  is_app_owner: boolean;
+
+  /** Check suite creation time (UNIX ms) */
+  created_at: number;
+
+  /** Check suite last updated time (UNIX ms) */
   updated_at: number;
+
+  /** duration in ms between creation and last update */
   duration: number;
+
+  /** Is check suite configured for / sent to a GitHub app? */
+  is_app_owner: boolean;
+
+  /** An array of PR IDs that match this check suite */
+  pull_requests: Array<{
+    /** Pull Request ID */
+    id: number;
+  }>;
 }

@@ -9,7 +9,7 @@ import moment from "moment";
 
 export const collectWorkflowsMetrics = async (
   dataEvent: SignedDataEvent
-): Promise<MetricData> => {
+): Promise<MetricData<MetricsSignature.WorkflowJob>> => {
   const payload = dataEvent.payload as WorkflowsPayload;
 
   const repo = payload.repository.name;

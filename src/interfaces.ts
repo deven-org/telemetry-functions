@@ -72,14 +72,28 @@ export interface SignedDataEvent<
   created_at: number;
 }
 
-export interface MetricData<T extends MetricsSignature = MetricsSignature> {
-  dataEventSignature: DataEventSignature;
-  output: T extends keyof MetricsSignatureOutputMap
-    ? MetricsSignatureOutputMap[T]
-    : never;
-  owner: string;
-  repo: string;
+export interface MetricDataEnvelope<Output extends object> {
+  /** Time that the server started processing the event (UNIX ms) */
   created_at: number;
+
+  /** The GitHub organisation / account that owns the source repo */
+  owner: string;
+
+  /** The GitHub repository name */
+  repo: string;
+
+  /** The ID of the triggering data-source, e.g. a GitHub event name */
+  dataEventSignature: DataEventSignature;
+
+  /** The ID of the collected metric, as defined by the function */
+  metricsSignature: MetricsSignature;
+
+  /** The collected data for this metric */
+  output: Output;
+}
+
+export interface MetricData<T extends MetricsSignature = MetricsSignature>
+  extends MetricDataEnvelope<MetricsSignatureOutputMap[T]> {
   metricsSignature: T;
 }
 
