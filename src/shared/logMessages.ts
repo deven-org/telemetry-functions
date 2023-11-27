@@ -10,9 +10,9 @@ export enum LogInfos {
 }
 
 export enum LogWarnings {
-  invalidPackageJson = "Package.json is invalid. Owner/Repo is: '%s'",
   signingEventSignatureNotRecognized = "It is not possible to add a signature to the event.",
   collectMetricsSignatureNotRecognized = "It is not possible to collect metrics from this event.",
+  documentationSkeletonConfigNotFound = "No documentation skeleton config file found. Owner/Repo is: '%s'",
 }
 
 export enum LogSuccess {

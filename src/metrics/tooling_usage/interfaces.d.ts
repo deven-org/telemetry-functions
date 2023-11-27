@@ -5,6 +5,5 @@ export type ToolingUsagePayload = {
 
 export interface ToolingUsageOutput {
   hasDocumentationSkeleton: boolean;
-  hasValidPackageJson: boolean;
-  hasDocChapters: boolean;
+  documentationSkeletonVersion: string | undefined;
 }
