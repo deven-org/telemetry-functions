@@ -76,9 +76,8 @@ describe("Code Reviews Involvement", () => {
       {
         created_at: FAKE_NOW,
         output: {
-          repo: "repo_name",
-          owner: "owner",
           pr_id: 42424242,
+          merged: true,
           created_at: 1675866904000,
           updated_at: 1675863304000,
           closed_at: 1675870504000,
