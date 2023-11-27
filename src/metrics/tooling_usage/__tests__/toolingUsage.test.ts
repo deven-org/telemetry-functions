@@ -1,7 +1,6 @@
 import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
-import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
 
 let octokitResponse = {};
 
@@ -35,13 +34,13 @@ describe("Tooling_Usage", () => {
 
     octokitResponse = {
       data: {
-        content: encode(JSON.stringify(mockedPackageWithDocSkeleton)),
+        content: encode(JSON.stringify({})),
       },
     };
 
-    const output: [] = await handler(eventBody);
+    const result: [] = await handler(eventBody);
 
-    expect(output).toMatchObject([
+    expect(result).toMatchObject([
       {
         created_at: expect.any(Number),
         output: {},
@@ -50,130 +49,76 @@ describe("Tooling_Usage", () => {
     ]);
   });
 
-  it("returns true if package has deven-documentation-skeleton", async () => {
+  it("returns true if deven-documentation-skeleton config file is available", async () => {
     const eventBody = {
       eventSignature: "toolingUsage",
     };
 
     octokitResponse = {
       data: {
-        content: encode(JSON.stringify(mockedPackageWithDocSkeleton)),
+        content: encode(JSON.stringify({})),
       },
     };
 
-    const output: [] = await handler(eventBody);
+    const result: [] = await handler(eventBody);
 
-    expect(output).toMatchObject([
+    expect(result).toMatchObject([
       {
         created_at: expect.any(Number),
-        output: { hasDocumentationSkeleton: true },
+        output: {
+          hasDocumentationSkeleton: true,
+          documentationSkeletonVersion: undefined,
+        },
         dataEventSignature: DataEventSignature.ToolingUsage,
         metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });
 
-  it("returns false if package does not have deven-documentation-skeleton ", async () => {
+  it("returns version if available in deven-documentation-skeleton config file", async () => {
     const eventBody = {
       eventSignature: "toolingUsage",
     };
 
-    const mockedPackageWithoutDocSkeleton = JSON.parse(
-      JSON.stringify(mockedPackageWithDocSkeleton)
-    );
-
-    delete mockedPackageWithoutDocSkeleton.devDependencies[
-      "deven-documentation-skeleton"
-    ];
-
     octokitResponse = {
       data: {
-        content: encode(JSON.stringify(mockedPackageWithoutDocSkeleton)),
+        content: encode(JSON.stringify({ version: "2.0.0" })),
       },
     };
 
-    const output = await handler(eventBody);
+    const result: [] = await handler(eventBody);
 
-    expect(output).toMatchObject([
+    expect(result).toMatchObject([
       {
         created_at: expect.any(Number),
-        output: { hasDocumentationSkeleton: false },
+        output: {
+          hasDocumentationSkeleton: true,
+          documentationSkeletonVersion: "2.0.0",
+        },
         dataEventSignature: DataEventSignature.ToolingUsage,
         metricsSignature: MetricsSignature.ToolingUsage,
       },
     ]);
   });
 
-  it("returns false if there are no devDependencies", async () => {
-    const eventBody = {
-      eventSignature: "toolingUsage",
-    };
-
-    const mockedPackageWithoutDocSkeleton = JSON.parse(
-      JSON.stringify(mockedPackageWithDocSkeleton)
-    );
-
-    delete mockedPackageWithoutDocSkeleton.devDependencies;
-    delete mockedPackageWithoutDocSkeleton.dependencies;
-
-    octokitResponse = {
-      data: {
-        content: encode(JSON.stringify(mockedPackageWithoutDocSkeleton)),
-      },
-    };
-
-    const output = await handler(eventBody);
-
-    expect(output).toMatchObject([
-      {
-        created_at: expect.any(Number),
-        output: { hasDocumentationSkeleton: false },
-        dataEventSignature: DataEventSignature.ToolingUsage,
-        metricsSignature: MetricsSignature.ToolingUsage,
-      },
-    ]);
-  });
-
-  it("return hasValidPackageJson=false if package.json is invalid", async () => {
+  it("returns false if deven-documentation-skeleton config file has not been found", async () => {
     const eventBody = {
       eventSignature: "toolingUsage",
     };
 
     octokitResponse = {
-      data: {
-        content: undefined,
-      },
+      status: 404,
     };
 
-    const output = await handler(eventBody);
+    const result = await handler(eventBody);
 
-    expect(output).toMatchObject([
+    expect(result).toMatchObject([
       {
         created_at: expect.any(Number),
-        output: { hasValidPackageJson: false },
-        dataEventSignature: DataEventSignature.ToolingUsage,
-        metricsSignature: MetricsSignature.ToolingUsage,
-      },
-    ]);
-  });
-
-  it("returns hasDocChapters=false if number of chapters are not equal to 9", async () => {
-    const eventBody = {
-      eventSignature: "toolingUsage",
-    };
-
-    octokitResponse = {
-      data: {
-        content: undefined,
-      },
-    };
-
-    const output = await handler(eventBody);
-
-    expect(output).toMatchObject([
-      {
-        created_at: expect.any(Number),
-        output: { hasDocChapters: false },
+        output: {
+          hasDocumentationSkeleton: false,
+          documentationSkeletonVersion: undefined,
+        },
         dataEventSignature: DataEventSignature.ToolingUsage,
         metricsSignature: MetricsSignature.ToolingUsage,
       },

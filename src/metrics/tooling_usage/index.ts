@@ -5,7 +5,6 @@ import {
   MetricsSignature,
 } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
-import { keys, pipe, mergeAll, includes } from "ramda";
 import octokit from "../../core/octokit";
 import { decode } from "js-base64";
 import { LogWarnings } from "../../shared/logMessages";
@@ -16,7 +15,6 @@ export const collectToolingUsageMetrics = async (
   const payload = dataEvent.payload as ToolingUsagePayload;
 
   let output: ToolingUsageOutput;
-  let hasDocChapters = false;
 
   try {
     const response = await octokit.request(
@@ -24,50 +22,27 @@ export const collectToolingUsageMetrics = async (
       {
         owner: payload.owner,
         repo: payload.repo,
-        path: "package.json",
+        path: "deven-skeleton-install.config.json",
       }
     );
-    const { dependencies, devDependencies } = JSON.parse(
-      decode(response.data["content"])
-    );
 
-    const hasDocumentationSkeleton = pipe(
-      keys,
-      includes("deven-documentation-skeleton")
-    )(mergeAll([devDependencies, dependencies]));
+    const { version } = JSON.parse(decode(response.data["content"]));
 
     output = {
-      hasDocumentationSkeleton,
-      hasValidPackageJson: true,
-      hasDocChapters,
+      hasDocumentationSkeleton: true,
+      documentationSkeletonVersion: version,
     };
   } catch (error) {
     output = {
       hasDocumentationSkeleton: false,
-      hasValidPackageJson: false,
-      hasDocChapters,
+      documentationSkeletonVersion: undefined,
     };
+
     logger.warn(
-      LogWarnings.invalidPackageJson,
+      LogWarnings.documentationSkeletonConfigNotFound,
       `${payload.owner}/${payload.repo}`
     );
   }
-
-  const response = await octokit.request(
-    "GET /repos/{owner}/{repo}/contents/{path}",
-    {
-      owner: payload.owner,
-      repo: payload.repo,
-      path: "doc",
-    }
-  );
-
-  if (response) {
-    if (Array.isArray(response.data)) {
-      hasDocChapters = response.data.length === 9;
-    }
-  }
-  output.hasDocChapters = hasDocChapters;
 
   return {
     created_at: dataEvent.created_at,
