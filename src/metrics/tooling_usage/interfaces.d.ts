@@ -5,8 +5,6 @@ export type ToolingUsagePayload = {
 
 export interface ToolingUsageOutput {
   hasDocumentationSkeleton: boolean;
-  repo: string;
-  owner: string;
   hasValidPackageJson: boolean;
   hasDocChapters: boolean;
 }
