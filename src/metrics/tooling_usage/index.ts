@@ -38,16 +38,12 @@ export const collectToolingUsageMetrics = async (
 
     output = {
       hasDocumentationSkeleton,
-      owner: payload.owner,
-      repo: payload.repo,
       hasValidPackageJson: true,
       hasDocChapters,
     };
   } catch (error) {
     output = {
       hasDocumentationSkeleton: false,
-      owner: payload.owner,
-      repo: payload.repo,
       hasValidPackageJson: false,
       hasDocChapters,
     };
