@@ -1,11 +1,10 @@
-import { MergedPullRequestClosedEvent } from "../../github.interfaces";
+import { PullRequestClosedEvent } from "@octokit/webhooks-types";
 
-export type CodeReviewInvolvementPayload = MergedPullRequestClosedEvent;
+export type CodeReviewInvolvementPayload = PullRequestClosedEvent;
 
 export type CodeReviewInvolvementOutput = {
-  repo: string;
-  owner: string;
   pr_id: number;
+  merged: boolean;
   created_at: number;
   updated_at: number;
   closed_at: number;

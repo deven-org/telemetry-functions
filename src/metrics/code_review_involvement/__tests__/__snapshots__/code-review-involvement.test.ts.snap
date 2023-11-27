@@ -2074,7 +2074,35 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
 }
 `;
 
-exports[`Code Reviews Involvement handles a range of mocked pull_request events: pull_request fixture[3] OUTPUT 1`] = `[]`;
+exports[`Code Reviews Involvement handles a range of mocked pull_request events: pull_request fixture[3] OUTPUT 1`] = `
+[
+  {
+    "created_at": 1700000000000,
+    "dataEventSignature": "pull-request",
+    "metricsSignature": "code-review-involvement",
+    "output": {
+      "changed_files": 1,
+      "closed_at": 1557933678000,
+      "comments": 0,
+      "created_at": 1557933633000,
+      "created_to_merged_duration": 0,
+      "has_been_merged_by_author": false,
+      "merged": false,
+      "merged_at": NaN,
+      "packages": [],
+      "pr_id": 279147437,
+      "requested_reviewers": 1,
+      "requested_teams": 0,
+      "review_comments": 1,
+      "total_duration": 45000,
+      "updated_at": 1557933678000,
+      "updated_to_closed": 0,
+    },
+    "owner": "Codertocat",
+    "repo": "Hello-World",
+  },
+]
+`;
 
 exports[`Code Reviews Involvement handles a range of mocked pull_request events: pull_request fixture[4] INPUT 1`] = `
 {
@@ -2609,7 +2637,35 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
 }
 `;
 
-exports[`Code Reviews Involvement handles a range of mocked pull_request events: pull_request fixture[4] OUTPUT 1`] = `[]`;
+exports[`Code Reviews Involvement handles a range of mocked pull_request events: pull_request fixture[4] OUTPUT 1`] = `
+[
+  {
+    "created_at": 1700000000000,
+    "dataEventSignature": "pull-request",
+    "metricsSignature": "code-review-involvement",
+    "output": {
+      "changed_files": 1,
+      "closed_at": 1557933678000,
+      "comments": 0,
+      "created_at": 1557933633000,
+      "created_to_merged_duration": 0,
+      "has_been_merged_by_author": false,
+      "merged": false,
+      "merged_at": NaN,
+      "packages": [],
+      "pr_id": 279147437,
+      "requested_reviewers": 1,
+      "requested_teams": 0,
+      "review_comments": 1,
+      "total_duration": 45000,
+      "updated_at": 1557933678000,
+      "updated_to_closed": 0,
+    },
+    "owner": "Codertocat",
+    "repo": "Hello-World",
+  },
+]
+`;
 
 exports[`Code Reviews Involvement handles a range of mocked pull_request events: pull_request fixture[5] INPUT 1`] = `
 {
@@ -16016,11 +16072,10 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
       "created_at": 1557933633000,
       "created_to_merged_duration": 45000,
       "has_been_merged_by_author": true,
+      "merged": true,
       "merged_at": 1557933678000,
-      "owner": "Codertocat",
       "packages": [],
       "pr_id": 279147437,
-      "repo": "Hello-World",
       "requested_reviewers": 1,
       "requested_teams": 0,
       "review_comments": 1,
@@ -16599,11 +16654,10 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
       "created_at": 1557933633000,
       "created_to_merged_duration": 45000,
       "has_been_merged_by_author": true,
+      "merged": true,
       "merged_at": 1557933678000,
-      "owner": "Codertocat",
       "packages": [],
       "pr_id": 279147437,
-      "repo": "Hello-World",
       "requested_reviewers": 1,
       "requested_teams": 0,
       "review_comments": 1,

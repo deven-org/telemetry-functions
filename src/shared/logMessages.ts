@@ -13,6 +13,7 @@ export enum LogWarnings {
   signingEventSignatureNotRecognized = "It is not possible to add a signature to the event.",
   collectMetricsSignatureNotRecognized = "It is not possible to collect metrics from this event.",
   documentationSkeletonConfigNotFound = "No documentation skeleton config file found. Owner/Repo is: '%s'",
+  packageJsonNotFound = "No package.json file found. Owner/Repo is: '%s'",
 }
 
 export enum LogSuccess {

@@ -10,6 +10,8 @@ import {
 } from "./interfaces";
 import moment from "moment";
 import octokit from "../../core/octokit";
+import { logger } from "../../core/logger";
+import { LogWarnings } from "../../shared/logMessages";
 
 export const collectCodeReviewInvolvementMetrics = async (
   dataEvent: SignedDataEvent
@@ -19,18 +21,21 @@ export const collectCodeReviewInvolvementMetrics = async (
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
   const pr_id = payload.pull_request.id;
+  const merged = payload.pull_request.merged;
   const created_at = moment.utc(payload.pull_request.created_at).valueOf();
   const updated_at = moment.utc(payload.pull_request.updated_at).valueOf();
   const closed_at = moment.utc(payload.pull_request.closed_at).valueOf();
   const merged_at = moment.utc(payload.pull_request.merged_at).valueOf();
   const total_duration = closed_at - created_at;
-  const created_to_merged_duration = merged_at - created_at;
+  const created_to_merged_duration = merged ? merged_at - created_at : 0;
   const updated_to_closed = closed_at - updated_at;
   const comments = payload.pull_request.comments;
   const review_comments = payload.pull_request.review_comments;
   const changed_files = payload.pull_request.changed_files;
   const has_been_merged_by_author =
-    payload.pull_request.user.login === payload.pull_request.merged_by.login;
+    merged && payload.pull_request.merged_by
+      ? payload.pull_request.user.login === payload.pull_request.merged_by.login
+      : false;
   const requested_reviewers = Array.isArray(
     payload.pull_request.requested_reviewers
   )
@@ -51,11 +56,13 @@ export const collectCodeReviewInvolvementMetrics = async (
       }
     );
     packages = JSON.parse(decode(getPackageJson.data["content"]));
-  } catch (e) {}
+  } catch (e) {
+    logger.warn(LogWarnings.packageJsonNotFound, `${owner}/${repo}`);
+  }
+
   const output: CodeReviewInvolvementOutput = {
-    repo,
-    owner,
     pr_id,
+    merged,
     created_at,
     updated_at,
     closed_at,
