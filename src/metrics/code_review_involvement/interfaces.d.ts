@@ -8,14 +8,14 @@ export type CodeReviewInvolvementOutput = {
   created_at: number;
   updated_at: number;
   closed_at: number;
-  merged_at: number;
+  merged_at: number | null;
   total_duration: number;
-  created_to_merged_duration: number;
+  created_to_merged_duration: number | null;
   updated_to_closed: number;
   comments: number;
   review_comments: number;
   changed_files: number;
-  has_been_merged_by_author: boolean;
+  has_been_merged_by_author: boolean | null;
   requested_reviewers: number;
   requested_teams: number;
   packages: any;
