@@ -118,12 +118,12 @@ describe("Test_Coverage", () => {
           is_workflow_name_about_test: true,
           steps_about_test: [
             {
-              completed_at: "2023-03-20T11:27:05.000Z",
+              completed_at: 1679311625000,
               conclusion: "failure",
               duration: 2000,
               name: "Run some tests",
               number: 1,
-              started_at: "2023-03-20T11:27:03.000Z",
+              started_at: 1679311623000,
               status: "completed",
             },
           ],
