@@ -17,16 +17,15 @@ const octokitResponse = {
       },
     },
     {
-      commit: {
-        author: {
-          date: "2023-02-08T17:35:04Z",
-        },
-      },
+      commit: {},
     },
     {
       commit: {
         author: {
           date: "2023-02-08T18:35:04Z",
+        },
+        committer: {
+          date: "2023-02-08T22:35:04Z",
         },
       },
     },
@@ -34,6 +33,9 @@ const octokitResponse = {
       commit: {
         author: {
           date: "2023-02-08T19:35:04Z",
+        },
+        committer: {
+          date: "2023-02-08T22:36:04Z",
         },
       },
     },
@@ -109,7 +111,22 @@ describe("Commits Per PR", () => {
           additions: 10,
           deletions: 5,
           commit_timestamps: [
-            1675874104000, 1675877704000, 1675881304000, 1675884904000,
+            {
+              authored: 1675874104000,
+              committed: null,
+            },
+            {
+              authored: null,
+              committed: null,
+            },
+            {
+              authored: 1675881304000,
+              committed: 1675895704000,
+            },
+            {
+              authored: 1675884904000,
+              committed: 1675895764000,
+            },
           ],
           pr_id: 42424242,
         },
