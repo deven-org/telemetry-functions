@@ -18,7 +18,7 @@ export const collectCommitsPerPrMetrics = async (
   const additions = payload.pull_request.additions;
   const deletions = payload.pull_request.deletions;
   let numberOfCommits = -1;
-  let commit_timestamps: any;
+  let commit_timestamps: CommitsPerPrOutput["commit_timestamps"] = [];
 
   try {
     const request = await octokit.request(
@@ -33,11 +33,17 @@ export const collectCommitsPerPrMetrics = async (
     const data = request.data;
     numberOfCommits = data.length;
 
-    commit_timestamps = data.map(
-      ({ commit }) => moment.utc(commit.author?.date).valueOf() || []
-    );
+    // Checking the author date will not reflect amendments
+    commit_timestamps = data.map(({ commit }) => ({
+      authored: commit.author?.date
+        ? moment.utc(commit.author.date).valueOf()
+        : null,
+      committed: commit.committer?.date
+        ? moment.utc(commit.committer.date).valueOf()
+        : null,
+    }));
   } catch (error) {
-    commit_timestamps = [];
+    // TODO: send error output
   }
 
   const output: CommitsPerPrOutput = {
