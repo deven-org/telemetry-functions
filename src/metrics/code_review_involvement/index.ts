@@ -25,9 +25,12 @@ export const collectCodeReviewInvolvementMetrics = async (
   const created_at = moment.utc(payload.pull_request.created_at).valueOf();
   const updated_at = moment.utc(payload.pull_request.updated_at).valueOf();
   const closed_at = moment.utc(payload.pull_request.closed_at).valueOf();
-  const merged_at = moment.utc(payload.pull_request.merged_at).valueOf();
+  const merged_at = merged
+    ? moment.utc(payload.pull_request.merged_at).valueOf()
+    : null;
   const total_duration = closed_at - created_at;
-  const created_to_merged_duration = merged ? merged_at - created_at : 0;
+  const created_to_merged_duration =
+    merged && merged_at ? merged_at - created_at : null;
   const updated_to_closed = closed_at - updated_at;
   const comments = payload.pull_request.comments;
   const review_comments = payload.pull_request.review_comments;
@@ -35,7 +38,7 @@ export const collectCodeReviewInvolvementMetrics = async (
   const has_been_merged_by_author =
     merged && payload.pull_request.merged_by
       ? payload.pull_request.user.login === payload.pull_request.merged_by.login
-      : false;
+      : null;
   const requested_reviewers = Array.isArray(
     payload.pull_request.requested_reviewers
   )
