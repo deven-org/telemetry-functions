@@ -42,8 +42,6 @@ export const collectDocumentationUpdatedMetrics = async (
   }
 
   const output: DocumentationUpdatedOutput = {
-    repo,
-    owner,
     pr_id,
     mdFilesChanged,
   };
