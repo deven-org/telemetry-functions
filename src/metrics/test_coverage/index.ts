@@ -9,6 +9,7 @@ import {
   WorkflowJobTestCoverageOutput,
 } from "./interfaces";
 import moment from "moment";
+import { WorkflowStepCompleted } from "@octokit/webhooks-types";
 
 const includesTestInString = pipe(toLower, test(/test/));
 
@@ -26,14 +27,23 @@ export const collectWorkflowsTestCoverageMetrics = async (
   const is_workflow_name_about_test = includesTestInString(
     payload.workflow_job.workflow_name
   );
-  const steps_about_test = payload.workflow_job.steps
+
+  // For completed jobs, all steps must be completed too.
+  const steps_about_test = (
+    payload.workflow_job.steps as WorkflowStepCompleted[]
+  )
     .filter((step) => includesTestInString(step.name))
-    .map((step) => ({
-      ...step,
+    .map(({ name, status, conclusion, number, started_at, completed_at }) => ({
+      name,
+      status,
+      conclusion,
+      number,
+      started_at: moment.utc(started_at).valueOf(),
+      completed_at: moment.utc(completed_at).valueOf(),
       duration:
-        moment.utc(step.completed_at).valueOf() -
-        moment.utc(step.started_at).valueOf(),
+        moment.utc(completed_at).valueOf() - moment.utc(started_at).valueOf(),
     }));
+
   const has_failed_steps =
     steps_about_test.filter((s) => s.conclusion !== "success").length > 0;
   const total_tests_duration = steps_about_test.reduce(

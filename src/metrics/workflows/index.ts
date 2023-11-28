@@ -1,3 +1,4 @@
+import { WorkflowStepCompleted } from "@octokit/webhooks-types";
 import {
   SignedDataEvent,
   MetricsSignature,
@@ -20,16 +21,20 @@ export const collectWorkflowsMetrics = async (
   const status = payload.workflow_job.status;
   const workflow_name = payload.workflow_job.workflow_name;
   const run_attempt = payload.workflow_job.run_attempt;
-  const steps = payload.workflow_job.steps.map((step) => ({
-    ...step,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- Null is not possible here for completed jobs
-    conclusion: step.conclusion!,
-    started_at: moment.utc(step.started_at).valueOf(),
-    completed_at: moment.utc(step.completed_at).valueOf(),
-    duration:
-      moment.utc(step.completed_at).valueOf() -
-      moment.utc(step.started_at).valueOf(),
-  }));
+
+  // For completed jobs, all steps must be completed too.
+  const steps = (payload.workflow_job.steps as WorkflowStepCompleted[]).map(
+    ({ name, status, conclusion, number, started_at, completed_at }) => ({
+      name,
+      status,
+      conclusion,
+      number,
+      started_at: moment.utc(started_at).valueOf(),
+      completed_at: moment.utc(completed_at).valueOf(),
+      duration:
+        moment.utc(completed_at).valueOf() - moment.utc(started_at).valueOf(),
+    })
+  );
 
   const output: WorkflowsOutput = {
     completed_at,
