@@ -99,8 +99,6 @@ describe("Documentation Updated", () => {
       {
         created_at: FAKE_NOW,
         output: {
-          repo: "repo_name",
-          owner: "owner",
           pr_id: 42424242,
           mdFilesChanged: 4,
         },
