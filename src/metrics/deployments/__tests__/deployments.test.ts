@@ -6,12 +6,9 @@ import {
 import { handler } from "../../../handler";
 import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
 import mockedDeploymentList from "./fixtures/mocked-deployment-list.json";
-import { DeploymentOutput } from "../interfaces";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
-const octokitResponse = {
-  data: mockedDeploymentList,
-};
+let octokitResponse = {};
 
 jest.mock("./../../../core/octokit.ts", () => ({
   __esModule: true,
@@ -43,15 +40,19 @@ describe("Deployments", () => {
   });
 
   it("event gets signed as deployment event", async () => {
+    octokitResponse = {
+      data: mockedDeploymentList,
+    };
     const eventBody = {
       ...mockedDeploymentEvent,
     };
 
-    const output = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(
-      output.filter(
-        (o: MetricData) => o.metricsSignature === MetricsSignature.Deployment
+      result.filter(
+        (res: MetricData) =>
+          res.metricsSignature === MetricsSignature.Deployment
       )
     ).toMatchObject([
       {
@@ -62,56 +63,29 @@ describe("Deployments", () => {
     ]);
   });
 
-  it("returns an empty array for timeSinceLastDeploy if there was no last deploy on env", async () => {
+  it("sets timeSinceLastDeploy to null if there was no previous deploy on env", async () => {
+    octokitResponse = {};
     const eventBody = {
-      eventSignature: "deployment",
-      action: "created",
-      repo: "telemetry-functions",
-      owner: "deven-org",
-      deployment: {
-        task: "deploy",
-        payload: {},
-        original_environment: "staging",
-        environment: "none",
-        description: "Deploy request from hubot",
-        creator: {
-          login: "octocat",
-          id: 1,
-          node_id: "MDQ6VXNlcjE=",
-          type: "User",
-          site_admin: false,
-        },
-        created_at: "2022-07-20T01:19:13Z",
-        updated_at: "2012-07-20T01:19:13Z",
-      },
-      repository: {
-        id: 599112999,
-        node_id: "R_kgDOI7W9Jw",
-        name: "telemetry-functions",
-        full_name: "deven-org/telemetry-functions",
-        private: false,
-        owner: {
-          login: "deven-org",
-          id: 118735834,
-          node_id: "O_kgDOBxPD2g",
-          avatar_url: "https://avatars.githubusercontent.com/u/118735834?v=4",
-          gravatar_id: "",
-          url: "https://api.github.com/users/deven-org",
-          type: "Organization",
-          site_admin: false,
-        },
-      },
+      ...mockedDeploymentEvent,
     };
-    const output = await handler(eventBody);
-    expect(
-      output.filter((o: DeploymentOutput) => o.timeSinceLastDeploy)
-    ).toEqual([]);
+
+    const result = await handler(eventBody);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      output: {
+        timeSinceLastDeploy: null,
+      },
+    });
   });
 
   it("handles a range of mocked deployment events", async () => {
+    octokitResponse = {
+      data: mockedDeploymentList,
+    };
     const fixtures = getWebhookEventFixtureList("deployment");
 
-    const output = await Promise.all(
+    const result = await Promise.all(
       fixtures.map((fix) =>
         handler({
           eventSignature: "deployment",
@@ -120,7 +94,7 @@ describe("Deployments", () => {
       )
     );
 
-    output.forEach((output, i) => {
+    result.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
       expect(fixtures[i]).toMatchSnapshot(`deployment fixture[${i}] INPUT`);
       expect(

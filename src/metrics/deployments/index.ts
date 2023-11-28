@@ -8,10 +8,6 @@ import moment from "moment";
 import { DeploymentOutput, DeploymentPayload } from "./interfaces";
 import { decode } from "js-base64";
 
-let timeSinceLastDeploy: number;
-let version: string;
-let duration: number;
-
 export const collectDeploymentMetrics = async (
   dataEvent: SignedDataEvent
 ): Promise<MetricData<MetricsSignature.Deployment>> => {
@@ -22,26 +18,33 @@ export const collectDeploymentMetrics = async (
   const env = payload.deployment.environment;
   const createdTime = moment.utc(payload.deployment.created_at).valueOf();
   const updatedTime = moment.utc(payload.deployment.updated_at).valueOf();
+  const duration = updatedTime - createdTime;
 
+  let timeSinceLastDeploy: number | null = null;
   try {
     const request = await octokit.request(
-      "GET /repos/{owner}/{repo}/deployments",
+      "GET /repos/{owner}/{repo}/deployments?environment={environment}",
       {
         owner: owner,
         repo: repo,
+        environment: env,
       }
     );
 
-    const deployment = request.data.find((o) => o.environment === env);
-    const lastCommitTime = moment.utc(deployment?.created_at).valueOf();
-    timeSinceLastDeploy = createdTime - lastCommitTime;
-    duration = updatedTime - createdTime;
+    // Make sure to get the last deployment before the current deployment
+    const deployment = request.data.find(
+      (dep) => moment.utc(dep.created_at).valueOf() < createdTime
+    );
+    // If no previous deployment was found, timeSinceLastDeploy can't be determined
+    if (deployment !== undefined) {
+      const lastCommitTime = moment.utc(deployment.created_at).valueOf();
+      timeSinceLastDeploy = createdTime - lastCommitTime;
+    }
   } catch (error) {
     console.log("error: ", error);
-    timeSinceLastDeploy = 0;
-    duration = 0;
   }
 
+  let version: string | null = null;
   try {
     const response = await octokit.request(
       "GET /repos/{owner}/{repo}/contents/{path}",
@@ -54,7 +57,7 @@ export const collectDeploymentMetrics = async (
     const content = JSON.parse(decode(response.data["content"]));
     version = content.version;
   } catch (error) {
-    version = "";
+    console.log("error: ", error);
   }
 
   const output: DeploymentOutput = {
