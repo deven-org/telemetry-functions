@@ -2083,10 +2083,22 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "output": {
       "additions": 1,
       "commit_timestamps": [
-        1675874104000,
-        1675877704000,
-        1675881304000,
-        1675884904000,
+        {
+          "authored": 1675874104000,
+          "committed": null,
+        },
+        {
+          "authored": null,
+          "committed": null,
+        },
+        {
+          "authored": 1675881304000,
+          "committed": 1675895704000,
+        },
+        {
+          "authored": 1675884904000,
+          "committed": 1675895764000,
+        },
       ],
       "commits": 4,
       "deletions": 1,
@@ -2640,10 +2652,22 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "output": {
       "additions": 1,
       "commit_timestamps": [
-        1675874104000,
-        1675877704000,
-        1675881304000,
-        1675884904000,
+        {
+          "authored": 1675874104000,
+          "committed": null,
+        },
+        {
+          "authored": null,
+          "committed": null,
+        },
+        {
+          "authored": 1675881304000,
+          "committed": 1675895704000,
+        },
+        {
+          "authored": 1675884904000,
+          "committed": 1675895764000,
+        },
       ],
       "commits": 4,
       "deletions": 1,
@@ -16056,10 +16080,22 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "output": {
       "additions": 1,
       "commit_timestamps": [
-        1675874104000,
-        1675877704000,
-        1675881304000,
-        1675884904000,
+        {
+          "authored": 1675874104000,
+          "committed": null,
+        },
+        {
+          "authored": null,
+          "committed": null,
+        },
+        {
+          "authored": 1675881304000,
+          "committed": 1675895704000,
+        },
+        {
+          "authored": 1675884904000,
+          "committed": 1675895764000,
+        },
       ],
       "commits": 4,
       "deletions": 1,
@@ -16632,10 +16668,22 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "output": {
       "additions": 1,
       "commit_timestamps": [
-        1675874104000,
-        1675877704000,
-        1675881304000,
-        1675884904000,
+        {
+          "authored": 1675874104000,
+          "committed": null,
+        },
+        {
+          "authored": null,
+          "committed": null,
+        },
+        {
+          "authored": 1675881304000,
+          "committed": 1675895704000,
+        },
+        {
+          "authored": 1675884904000,
+          "committed": 1675895764000,
+        },
       ],
       "commits": 4,
       "deletions": 1,
