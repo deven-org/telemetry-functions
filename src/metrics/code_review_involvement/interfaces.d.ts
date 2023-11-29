@@ -47,10 +47,4 @@ export type CodeReviewInvolvementOutput = {
 
   /** Number of team reviewers the author requested */
   requested_teams: number;
-
-  /**
-   * Full contents of package.json in repo root at default branch.
-   * Defaults to an empty array if package.json cannot be found (FIXME)
-   */
-  packages: unknown | [];
 };
