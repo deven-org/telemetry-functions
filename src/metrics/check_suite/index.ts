@@ -3,8 +3,8 @@ import {
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
+import { getTimestamp } from "../../shared/getTimestamp";
 import { CheckSuiteMetricsOutput, CheckSuitePayload } from "./interfaces";
-import moment from "moment";
 
 export const collectCheckSuiteMetrics = async (
   dataEvent: SignedDataEvent
@@ -14,11 +14,11 @@ export const collectCheckSuiteMetrics = async (
   const pull_requests = payload.check_suite.pull_requests.map((pr) => {
     return { id: pr.id };
   });
-  const created_at = moment.utc(payload.check_suite.created_at).valueOf();
+  const created_at = getTimestamp(payload.check_suite.created_at);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is never null for completed events
   const conclusion = payload.check_suite.conclusion!;
   const is_app_owner = payload?.installation ? true : false;
-  const updated_at = moment.utc(payload.check_suite.updated_at).valueOf();
+  const updated_at = getTimestamp(payload.check_suite.updated_at);
   const duration = updated_at - created_at;
 
   const output: CheckSuiteMetricsOutput = {

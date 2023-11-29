@@ -8,8 +8,8 @@ import {
   TestCoveragePayload,
   WorkflowJobTestCoverageOutput,
 } from "./interfaces";
-import moment from "moment";
 import { WorkflowStepCompleted } from "@octokit/webhooks-types";
+import { getTimestamp } from "../../shared/getTimestamp";
 
 const includesTestInString = pipe(toLower, test(/test/));
 
@@ -38,10 +38,9 @@ export const collectWorkflowsTestCoverageMetrics = async (
       status,
       conclusion,
       number,
-      started_at: moment.utc(started_at).valueOf(),
-      completed_at: moment.utc(completed_at).valueOf(),
-      duration:
-        moment.utc(completed_at).valueOf() - moment.utc(started_at).valueOf(),
+      started_at: getTimestamp(started_at),
+      completed_at: getTimestamp(completed_at),
+      duration: getTimestamp(completed_at) - getTimestamp(started_at),
     }));
 
   const has_failed_steps =
