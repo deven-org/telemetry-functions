@@ -1,5 +1,4 @@
 import octokit from "../../core/octokit";
-import moment from "moment";
 
 import {
   SignedDataEvent,
@@ -7,6 +6,7 @@ import {
   MetricData,
 } from "../../interfaces";
 import { CommitsPerPrOutput, CommitsPerPrPayload } from "./interfaces";
+import { getTimestamp } from "../../shared/getTimestamp";
 
 export const collectCommitsPerPrMetrics = async (
   dataEvent: SignedDataEvent
@@ -35,11 +35,9 @@ export const collectCommitsPerPrMetrics = async (
 
     // Checking the author date will not reflect amendments
     commit_timestamps = data.map(({ commit }) => ({
-      authored: commit.author?.date
-        ? moment.utc(commit.author.date).valueOf()
-        : null,
+      authored: commit.author?.date ? getTimestamp(commit.author.date) : null,
       committed: commit.committer?.date
-        ? moment.utc(commit.committer.date).valueOf()
+        ? getTimestamp(commit.committer.date)
         : null,
     }));
   } catch (error) {
