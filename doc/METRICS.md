@@ -242,38 +242,7 @@ payload.action === "closed";
   "changed_files": 6,
   "has_been_merged_by_author": true,
   "requested_reviewers": 0,
-  "requested_teams": 0,
-  "packages": {
-    "name": "deven-website",
-    "version": "0.1.0",
-    "description": "This repository contains DEVENs website",
-    "main": "docs/index.html",
-    "scripts": {
-      "start": "NODE_ENV=development eleventy --serve",
-      "build": "NODE_ENV=production npx eleventy"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/deven-org/deven-website.git"
-    },
-    "keywords": [],
-    "author": "DEVENorg",
-    "license": "MIT License",
-    "bugs": {
-      "url": "https://github.com/deven-org/deven-website/issues"
-    },
-    "homepage": "https://github.com/deven-org/deven-website#readme",
-    "devDependencies": {
-      "@11ty/eleventy": "^2.0.0",
-      "@11ty/eleventy-plugin-rss": "^1.2.0",
-      "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
-      "luxon": "^3.3.0",
-      "markdown-it": "^13.0.1",
-      "markdown-it-anchor": "^8.6.7",
-      "sass": "^1.61.0"
-    },
-    "dependencies": { "liquidjs": "^10.7.0" }
-  }
+  "requested_teams": 0
 }
 ```
 
@@ -327,12 +296,6 @@ type CodeReviewInvolvementOutput = {
 
   /** Number of team reviewers the author requested */
   requested_teams: number;
-
-  /**
-   * Full contents of package.json in repo root at default branch.
-   * Defaults to an empty array if package.json cannot be found (FIXME)
-   */
-  packages: unknown | [];
 };
 ```
 
