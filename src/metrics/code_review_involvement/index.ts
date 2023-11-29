@@ -1,4 +1,3 @@
-import { decode } from "js-base64";
 import {
   SignedDataEvent,
   MetricsSignature,
@@ -8,9 +7,6 @@ import {
   CodeReviewInvolvementOutput,
   CodeReviewInvolvementPayload,
 } from "./interfaces";
-import octokit from "../../core/octokit";
-import { logger } from "../../core/logger";
-import { LogWarnings } from "../../shared/logMessages";
 import { getTimestamp } from "../../shared/getTimestamp";
 
 export const collectCodeReviewInvolvementMetrics = async (
@@ -49,21 +45,6 @@ export const collectCodeReviewInvolvementMetrics = async (
     ? payload.pull_request.requested_teams.length
     : 0;
 
-  let packages = [];
-  try {
-    const getPackageJson = await octokit.request(
-      "GET /repos/{owner}/{repo}/contents/{path}",
-      {
-        owner: owner,
-        repo: repo,
-        path: "package.json",
-      }
-    );
-    packages = JSON.parse(decode(getPackageJson.data["content"]));
-  } catch (e) {
-    logger.warn(LogWarnings.packageJsonNotFound, `${owner}/${repo}`);
-  }
-
   const output: CodeReviewInvolvementOutput = {
     pr_id,
     merged,
@@ -80,7 +61,6 @@ export const collectCodeReviewInvolvementMetrics = async (
     has_been_merged_by_author,
     requested_reviewers,
     requested_teams,
-    packages,
   };
 
   return {
