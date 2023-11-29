@@ -1,4 +1,3 @@
-import moment from "moment";
 import { getErrorForCatcher, logger } from ".";
 import { cond, pipe, clone, T, always } from "ramda";
 import { LogInfos, LogWarnings } from "../shared/logMessages";
@@ -6,13 +5,13 @@ import { DataEventSignature, SignedDataEvent, RawEvent } from "../interfaces";
 import signatureConditions from "../signatureConditions";
 
 const createSignedDataEvent =
-  (signature: DataEventSignature) => (data: any) => {
+  (signature: DataEventSignature) => (data: unknown) => {
     logger.info(LogInfos.eventSigned, signature);
 
     return {
       dataEventSignature: signature,
       payload: data,
-      created_at: moment().valueOf(),
+      created_at: Date.now(),
     };
   };
 

@@ -5,7 +5,7 @@ import {
   MetricData,
 } from "../../interfaces";
 import { WorkflowsOutput, WorkflowsPayload } from "./interfaces";
-import moment from "moment";
+import { getTimestamp } from "../../shared/getTimestamp";
 
 export const collectWorkflowsMetrics = async (
   dataEvent: SignedDataEvent
@@ -14,9 +14,10 @@ export const collectWorkflowsMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const completed_at = moment.utc(payload.workflow_job.completed_at).valueOf();
-  const created_at = moment.utc(payload.workflow_job.created_at).valueOf();
-  const started_at = moment.utc(payload.workflow_job.started_at).valueOf();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- for completed jobs completed_at must be set
+  const completed_at = getTimestamp(payload.workflow_job.completed_at!);
+  const created_at = getTimestamp(payload.workflow_job.created_at);
+  const started_at = getTimestamp(payload.workflow_job.started_at);
   const duration = completed_at - started_at;
   const status = payload.workflow_job.status;
   const workflow_name = payload.workflow_job.workflow_name;
@@ -29,10 +30,9 @@ export const collectWorkflowsMetrics = async (
       status,
       conclusion,
       number,
-      started_at: moment.utc(started_at).valueOf(),
-      completed_at: moment.utc(completed_at).valueOf(),
-      duration:
-        moment.utc(completed_at).valueOf() - moment.utc(started_at).valueOf(),
+      started_at: getTimestamp(started_at),
+      completed_at: getTimestamp(completed_at),
+      duration: getTimestamp(completed_at) - getTimestamp(started_at),
     })
   );
 
