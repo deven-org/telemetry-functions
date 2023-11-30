@@ -1,11 +1,12 @@
-import {
-  MetricData,
-  DataEventSignature,
-  MetricsSignature,
-} from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrMerged from "./fixtures/mocked-pull-request-merged.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+
+// Only collect this metric
+jest.mock("../../../metricsConditions.ts", () =>
+  jest.requireActual("../metricsConditions")
+);
 
 const octokitResponse = {
   data: [
@@ -68,12 +69,7 @@ describe("Documentation Updated", () => {
     };
 
     const output = await handler(eventBody);
-    expect(
-      output.filter(
-        (o: MetricData) =>
-          o.metricsSignature === MetricsSignature.DocumentationUpdated
-      )
-    ).toMatchObject([
+    expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
         output: {},
@@ -90,12 +86,7 @@ describe("Documentation Updated", () => {
 
     const output: [] = await handler(eventBody);
 
-    expect(
-      output.filter(
-        (o: MetricData) =>
-          o.metricsSignature === MetricsSignature.DocumentationUpdated
-      )
-    ).toMatchObject([
+    expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
         output: {
@@ -123,12 +114,7 @@ describe("Documentation Updated", () => {
     output.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
       expect(fixtures[i]).toMatchSnapshot(`pull_request fixture[${i}] INPUT`);
-      expect(
-        output?.filter(
-          (out) =>
-            out.metricsSignature === MetricsSignature.DocumentationUpdated
-        )
-      ).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
+      expect(output).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
     });
   });
 });

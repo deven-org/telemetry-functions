@@ -1,12 +1,13 @@
-import {
-  MetricData,
-  DataEventSignature,
-  MetricsSignature,
-} from "../../../interfaces";
+import { DataEventSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
 import mockedDeploymentList from "./fixtures/mocked-deployment-list.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+
+// Only collect this metric
+jest.mock("../../../metricsConditions.ts", () =>
+  jest.requireActual("../metricsConditions")
+);
 
 let octokitResponse = {};
 
@@ -49,12 +50,7 @@ describe("Deployments", () => {
 
     const result = await handler(eventBody);
 
-    expect(
-      result.filter(
-        (res: MetricData) =>
-          res.metricsSignature === MetricsSignature.Deployment
-      )
-    ).toMatchObject([
+    expect(result).toMatchObject([
       {
         created_at: FAKE_NOW,
         output: {},
@@ -97,11 +93,7 @@ describe("Deployments", () => {
     result.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
       expect(fixtures[i]).toMatchSnapshot(`deployment fixture[${i}] INPUT`);
-      expect(
-        output?.filter(
-          (out) => out.metricsSignature === MetricsSignature.Deployment
-        )
-      ).toMatchSnapshot(`deployment fixture[${i}] OUTPUT`);
+      expect(output).toMatchSnapshot(`deployment fixture[${i}] OUTPUT`);
     });
   });
 });

@@ -2074,7 +2074,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
 }
 `;
 
-exports[`Documentation Updated handles a range of mocked pull_request events: pull_request fixture[3] OUTPUT 1`] = `[]`;
+exports[`Documentation Updated handles a range of mocked pull_request events: pull_request fixture[3] OUTPUT 1`] = `undefined`;
 
 exports[`Documentation Updated handles a range of mocked pull_request events: pull_request fixture[4] INPUT 1`] = `
 {
@@ -2609,7 +2609,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
 }
 `;
 
-exports[`Documentation Updated handles a range of mocked pull_request events: pull_request fixture[4] OUTPUT 1`] = `[]`;
+exports[`Documentation Updated handles a range of mocked pull_request events: pull_request fixture[4] OUTPUT 1`] = `undefined`;
 
 exports[`Documentation Updated handles a range of mocked pull_request events: pull_request fixture[5] INPUT 1`] = `
 {

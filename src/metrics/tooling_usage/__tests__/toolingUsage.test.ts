@@ -2,6 +2,11 @@ import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 
+// Only collect this metric
+jest.mock("../../../metricsConditions.ts", () =>
+  jest.requireActual("../metricsConditions")
+);
+
 let octokitResponse = {};
 
 jest.mock("./../../../core/octokit.ts", () => ({
