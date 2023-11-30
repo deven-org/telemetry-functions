@@ -449,6 +449,7 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
     },
     "owner": "Octocoders",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -700,6 +701,7 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
     },
     "owner": "Octocoders",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;

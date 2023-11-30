@@ -52,6 +52,7 @@ export const collectDocumentationUpdatedMetrics = async (
     metricsSignature: MetricsSignature.DocumentationUpdated,
     owner,
     repo,
+    status: "success",
     output,
   };
 };

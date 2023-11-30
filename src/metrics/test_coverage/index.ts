@@ -66,6 +66,7 @@ export const collectWorkflowsTestCoverageMetrics = async (
     metricsSignature: MetricsSignature.TestCoverage,
     owner,
     repo,
+    status: "success",
     output,
   };
 };

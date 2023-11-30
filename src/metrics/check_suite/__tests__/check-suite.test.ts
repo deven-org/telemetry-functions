@@ -75,6 +75,7 @@ describe("Check Suite", () => {
         repo: "repo_name",
         metricsSignature: MetricsSignature.CheckSuite,
         created_at: FAKE_NOW,
+        status: "success",
       },
     ]);
   });

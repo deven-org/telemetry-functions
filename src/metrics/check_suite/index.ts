@@ -36,6 +36,7 @@ export const collectCheckSuiteMetrics = async (
     metricsSignature: MetricsSignature.CheckSuite,
     owner: payload.repository.owner.login,
     repo: payload.repository.name,
+    status: "success",
     output,
   };
 };

@@ -27,6 +27,7 @@ export const collectReleaseVersionsMetrics = async (
     metricsSignature: MetricsSignature.ReleaseVersions,
     owner,
     repo,
+    status: "success",
     output,
   };
 };

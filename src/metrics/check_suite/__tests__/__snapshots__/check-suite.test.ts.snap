@@ -246,6 +246,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -470,6 +471,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -724,6 +726,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -992,6 +995,7 @@ exports[`Check Suite handles a range of mocked check_suite events: check_suite f
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
