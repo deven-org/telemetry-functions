@@ -1,7 +1,7 @@
 import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 
-import mockedCheckSuite from "./fixtures/mocked-pull-request-closed.json";
+import mockedCheckSuite from "./fixtures/mocked-tag-create-event.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
 // Only collect this metric
@@ -9,7 +9,7 @@ jest.mock("../../../metricsConditions.ts", () =>
   jest.requireActual("../metricsConditions")
 );
 
-const octokitResponse = {};
+let octokitResponse = {};
 
 jest.mock("./../../../core/octokit.ts", () => ({
   __esModule: true,
@@ -40,9 +40,9 @@ describe("Release versions", () => {
     jest.useFakeTimers({ now: FAKE_NOW });
   });
 
-  it("event gets signed as pull_request event", async () => {
+  it("event gets signed as create event", async () => {
     const eventBody = {
-      eventSignature: "pull_request",
+      eventSignature: "create",
       ...mockedCheckSuite,
     };
 
@@ -52,14 +52,14 @@ describe("Release versions", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        dataEventSignature: DataEventSignature.PullRequest,
+        dataEventSignature: DataEventSignature.TagOrBranchCreation,
       },
     ]);
   });
 
   it("returns collected metrics", async () => {
     const eventBody = {
-      eventSignature: "pull_request",
+      eventSignature: "create",
       ...mockedCheckSuite,
     };
 
@@ -68,10 +68,17 @@ describe("Release versions", () => {
     expect(output).toMatchObject([
       {
         output: {
-          pr_id: undefined,
-          title: null,
+          releaseVersion: {
+            build: [],
+            major: 1,
+            minor: 2,
+            patch: 3,
+            prerelease: [],
+            raw: "1.2.3",
+            version: "1.2.3",
+          },
         },
-        dataEventSignature: DataEventSignature.PullRequest,
+        dataEventSignature: DataEventSignature.TagOrBranchCreation,
         owner: "owner",
         repo: "repo_name",
         metricsSignature: MetricsSignature.ReleaseVersions,
@@ -80,13 +87,13 @@ describe("Release versions", () => {
     ]);
   });
 
-  it("handles a range of mocked pull_request events", async () => {
-    const fixtures = getWebhookEventFixtureList("pull_request");
+  it("handles a range of mocked create events", async () => {
+    const fixtures = getWebhookEventFixtureList("create");
 
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "pull_request",
+          eventSignature: "create",
           ...fix,
         })
       )
@@ -94,8 +101,8 @@ describe("Release versions", () => {
 
     output.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
-      expect(fixtures[i]).toMatchSnapshot(`pull_request fixture[${i}] INPUT`);
-      expect(output).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
+      expect(fixtures[i]).toMatchSnapshot(`create fixture[${i}] INPUT`);
+      expect(output).toMatchSnapshot(`create fixture[${i}] OUTPUT`);
     });
   });
 });

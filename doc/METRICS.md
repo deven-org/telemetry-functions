@@ -13,7 +13,7 @@
   - [`CommitsPerPr` for Merged or Closed Pull Requests](#commitsperpr-for-merged-or-closed-pull-requests)
   - [`deployment` for Created Deployments](#deployment-for-created-deployments)
   - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
-  - [`release-versions` for Merged or Closed Pull Requests](#release-versions-for-merged-or-closed-pull-requests)
+  - [`release-versions` for created Tags with valid semver version](#release-versions-for-created-Tags-with-valid-semver-version)
   - [`tooling-usage` for a Repository](#tooling-usage-for-a-repository)
   - [`test-coverage` for Completed Workflow Jobs](#test-coverage-for-completed-workflow-jobs)
   - [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
@@ -90,6 +90,16 @@ Metrics:
 
 - [`check-suite` for Completed Check Suites](#check-suite-for-completed-check-suites)
 
+### `create` (Github Event)
+
+This event occurs when a Git branch or tag is created.
+
+Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#create
+
+Metrics:
+- [`release-versions` for created Tags with valid semver version](#release-versions-for-merged-or-closed-pull-requests)
+
+
 ### `deployment` (GitHub Event)
 
 This event occurs when there is activity relating to deployments.
@@ -137,7 +147,6 @@ Metrics:
 - [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
 - [`CommitsPerPr` for Merged or Closed Pull Requests](#commitsperpr-for-merged-or-closed-pull-requests)
 - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
-- [`release-versions` for Merged or Closed Pull Requests](#release-versions-for-merged-or-closed-pull-requests)
 
 ### `workflow-job` (GitHub Event)
 
@@ -501,31 +510,30 @@ type DocumentationUpdatedOutput = {
 };
 ```
 
-### `release-versions` for Merged or Closed Pull Requests
+### `release-versions` for created Tags with valid semver version
 
 Triggers:
 
-- [`pull-request` (GitHub event)](#pull-request-github-event)
+- [`create` (GitHub event)](#create-github-event)
 
-Condition, detecting closed Pull Requests:
+Condition, detecting created tag with valid semver version:
 
 ```ts
-payload.action === "closed";
+payload.ref_type !== "tag" && semverClean(dataEvent.payload.ref);
 ```
 
 <details><summary>Example JSON for release-versions output</summary>
 
 ```json
 {
-  "pr_id": 279147437,
-  "title": {
-    "raw": "35.0.0",
-    "major": 35,
-    "minor": 0,
-    "patch": 0,
+  "releaseVersion": {
+    "raw": "1.2.3",
+    "major": 1,
+    "minor": 2,
+    "patch": 3,
     "prerelease": [],
     "build": [],
-    "version": "35.0.0"
+    "version": "1.2.3"
   }
 }
 ```
@@ -535,24 +543,24 @@ payload.action === "closed";
 Fields:
 
 ```ts
-type ReleaseVersionsOutput = {
-  /** Pull Request ID (not PR number) */
-  pr_id: number;
+/**
+ * See semver npm package docs for meaning of contents
+ */
+type ReleaseVersion = {
+  raw: string;
+  major: number;
+  minor: number;
+  patch: number;
+  prerelease: Array<string | number>;
+  build: string[];
+  version: string;
+}
 
+type ReleaseVersionsOutput = {
   /**
-   * Version found in PR Title (parsed by semver package coerce function)
-   * null if not parseable as semver
-   * See semver npm package docs for meaning of contents
+   * Version found in tag (parsed by semver package)
    */
-  title: null | {
-    raw: string;
-    major: number;
-    minor: number;
-    patch: number;
-    prerelease: Array<string | number>;
-    build: string[];
-    version: string;
-  };
+  releaseVersion: ReleaseVersion
 };
 ```
 

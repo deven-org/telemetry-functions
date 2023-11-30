@@ -1,23 +1,24 @@
-import { PullRequestClosedEvent } from "@octokit/webhooks-types";
+import { CreateEvent } from "@octokit/webhooks-types";
+import { SemVer } from "semver";
 
-export type ReleaseVersionsPayload = PullRequestClosedEvent;
+export type ReleaseVersionsPayload = CreateEvent;
+
+/**
+ * See semver npm package docs for meaning of contents
+ */
+export type ReleaseVersion = {
+  raw: string;
+  major: number;
+  minor: number;
+  patch: number;
+  prerelease: ReadonlyArray<string | number>;
+  build: ReadonlyArray<string>;
+  version: string;
+};
 
 export type ReleaseVersionsOutput = {
-  /** Pull Request ID (not PR number) */
-  pr_id: number;
-
   /**
-   * Version found in PR Title (parsed by semver package coerce function)
-   * null if not parseable as semver
-   * See semver npm package docs for meaning of contents
+   * Version found in tag (parsed by semver package)
    */
-  title: null | {
-    raw: string;
-    major: number;
-    minor: number;
-    patch: number;
-    prerelease: Array<string | number>;
-    build: string[];
-    version: string;
-  };
+  releaseVersion: ReleaseVersion;
 };

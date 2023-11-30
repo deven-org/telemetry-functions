@@ -1,5 +1,6 @@
 import exampleDataJson from "@octokit/webhooks-examples/api.github.com/index.json";
 import {
+  CreateEvent,
   PullRequestClosedEvent,
   PullRequestEvent,
   WebhookEvent,
@@ -7,6 +8,7 @@ import {
   WebhookEventName,
 } from "@octokit/webhooks-types";
 import { clone } from "ramda";
+import { clean as semverClean } from "semver";
 
 type ExampleData = Array<{
   name: WebhookEventName;
@@ -47,20 +49,27 @@ export function getWebhookEventFixture<T extends WebhookEventName>(
 // Applies patches to the dataset
 function addPatches(data: ExampleData): ExampleData {
   // The deep clone prevents the imported data to be mutated globally for the runtime
-  const clonedData = (clone as Clone)(data);
+  let clonedData = (clone as Clone)(data);
 
+  clonedData = addPullRequestPatches(clonedData);
+  clonedData = addCreatePatches(clonedData);
+
+  return clonedData;
+}
+
+function addPullRequestPatches(data: ExampleData): ExampleData {
   // Missing data:
   //   pull_request events with action="closed" and pull_request.merged=true
   // Patch approach:
   //   copy events with pull_request.merged=false and patch them to say they
   //   were merged by the PR author at the time the PR got closed.
 
-  const prData = clonedData.find((e) => e.name === "pull_request")?.examples as
+  const prData = data.find((e) => e.name === "pull_request")?.examples as
     | undefined
     | PullRequestEvent[];
 
   if (!prData) {
-    return clonedData;
+    return data;
   }
 
   if (prData.some((ex) => ex.action === "closed" && ex.pull_request.merged)) {
@@ -84,5 +93,45 @@ function addPatches(data: ExampleData): ExampleData {
     prData.push(mergedExample);
   }
 
-  return clonedData;
+  return data;
+}
+
+function addCreatePatches(data: ExampleData): ExampleData {
+  // Missing data:
+  //   create events with ref_type="tag" and ref as valid semver string
+  // Patch approach:
+  //   copy events with ref_type="tag" and patch
+  //   ref with a valid semver string
+
+  const createEventData = data.find((e) => e.name === "create")?.examples as
+    | undefined
+    | CreateEvent[];
+
+  if (!createEventData) {
+    return data;
+  }
+
+  if (
+    createEventData.some(
+      (ex) => ex.ref_type === "tag" && semverClean(ex.ref) !== null
+    )
+  ) {
+    console.warn(
+      "@octokit/webhooks-examples now includes examples of create tag events with semver string - manual patching is unnecessary"
+    );
+  }
+
+  const unmergedExamples = createEventData.filter(
+    (ex): ex is CreateEvent => ex.ref_type === "tag"
+  );
+
+  for (const unmergedExample of unmergedExamples) {
+    const mergedExample = (clone as Clone)(unmergedExample);
+
+    mergedExample.ref = "v1.2.3";
+
+    createEventData.push(mergedExample);
+  }
+
+  return data;
 }
