@@ -16010,7 +16010,9 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     "dataEventSignature": "pull-request",
     "metricsSignature": "documentation-updated",
     "output": {
-      "mdFilesChanged": 4,
+      "prFiles": {
+        "mdFilesChanged": 4,
+      },
       "pr_id": 279147437,
     },
     "owner": "Codertocat",
@@ -16579,7 +16581,9 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     "dataEventSignature": "pull-request",
     "metricsSignature": "documentation-updated",
     "output": {
-      "mdFilesChanged": 4,
+      "prFiles": {
+        "mdFilesChanged": 4,
+      },
       "pr_id": 279147437,
     },
     "owner": "Codertocat",

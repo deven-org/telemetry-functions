@@ -2,43 +2,17 @@ import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrMerged from "./fixtures/mocked-pull-request-merged.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+import { Mocktokit } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
 jest.mock("../../../metricsConditions.ts", () =>
   jest.requireActual("../metricsConditions")
 );
 
-const octokitResponse = {
-  data: [
-    {
-      filename: "file1.txt",
-      status: "added",
-    },
-    {
-      filename: "file2.md",
-      status: "removed",
-    },
-    {
-      filename: "file3.md",
-      status: "modified",
-    },
-    {
-      filename: "doc/file4.md",
-      status: "added",
-    },
-    {
-      filename: "docs/file5.md",
-      status: "renamed",
-    },
-  ],
-};
-
-jest.mock("./../../../core/octokit.ts", () => ({
-  __esModule: true,
-  default: {
-    request: () => octokitResponse,
-  },
-}));
+jest.mock(
+  "./../../../core/octokit.ts",
+  () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
+);
 
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
@@ -55,6 +29,29 @@ jest.mock("../../../core/logger.ts", () => ({
   },
 }));
 
+const prFilesData = [
+  {
+    filename: "file1.txt",
+    status: "added",
+  },
+  {
+    filename: "file2.md",
+    status: "removed",
+  },
+  {
+    filename: "file3.md",
+    status: "modified",
+  },
+  {
+    filename: "doc/file4.md",
+    status: "added",
+  },
+  {
+    filename: "docs/file5.md",
+    status: "renamed",
+  },
+];
+
 describe("Documentation Updated", () => {
   const FAKE_NOW = 1700000000000;
 
@@ -62,11 +59,25 @@ describe("Documentation Updated", () => {
     jest.useFakeTimers({ now: FAKE_NOW });
   });
 
+  beforeEach(() => {
+    Mocktokit.resetToDefault();
+  });
+
+  afterEach(() => {
+    expect(Mocktokit.unexpectedRequest.mock.calls).toStrictEqual([]);
+  });
+
   it("event gets signed as pull_request event", async () => {
     const eventBody = {
       eventSignature: "pull_request",
       ...mockedPrMerged,
     };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
+      async () => ({
+        headers: {},
+        data: prFilesData,
+      });
 
     const output = await handler(eventBody);
     expect(output).toMatchObject([
@@ -84,23 +95,65 @@ describe("Documentation Updated", () => {
       ...mockedPrMerged,
     };
 
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
+      async () => ({
+        headers: {},
+        data: prFilesData,
+      });
+
     const output: [] = await handler(eventBody);
 
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
+        dataEventSignature: DataEventSignature.PullRequest,
+        metricsSignature: MetricsSignature.DocumentationUpdated,
+        status: "success",
         output: {
           pr_id: 42424242,
-          mdFilesChanged: 4,
+          prFiles: {
+            mdFilesChanged: 4,
+          },
         },
-        metricsSignature: MetricsSignature.DocumentationUpdated,
+      },
+    ]);
+  });
+
+  it("sets status to networkError if prFiles fetch fails", async () => {
+    const eventBody = {
+      eventSignature: "pull_request",
+      ...mockedPrMerged,
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
+      async () => {
+        throw new Error("mocked network error");
+      };
+
+    const output: [] = await handler(eventBody);
+
+    expect(output).toMatchObject([
+      {
+        created_at: FAKE_NOW,
         dataEventSignature: DataEventSignature.PullRequest,
+        metricsSignature: MetricsSignature.DocumentationUpdated,
+        status: "networkError",
+        output: {
+          pr_id: 42424242,
+          prFiles: null,
+        },
       },
     ]);
   });
 
   it("handles a range of mocked pull_request events", async () => {
     const fixtures = getWebhookEventFixtureList("pull_request");
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
+      async () => ({
+        headers: {},
+        data: prFilesData,
+      });
 
     const output = await Promise.all(
       fixtures.map((fix) =>
