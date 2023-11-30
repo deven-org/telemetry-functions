@@ -134,6 +134,7 @@ describe("Commits Per PR", () => {
         repo: "repo_name",
         metricsSignature: MetricsSignature.CommitsPerPr,
         dataEventSignature: DataEventSignature.PullRequest,
+        status: "success",
       },
     ]);
   });

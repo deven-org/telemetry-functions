@@ -2086,6 +2086,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -2635,6 +2636,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -16043,6 +16045,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -16611,6 +16614,7 @@ exports[`Release versions handles a range of mocked pull_request events: pull_re
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;

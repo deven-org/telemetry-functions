@@ -559,6 +559,7 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
     },
     "owner": "Octocoders",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -884,6 +885,7 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
     },
     "owner": "Octocoders",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;

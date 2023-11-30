@@ -2099,6 +2099,7 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -2661,6 +2662,7 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -16082,6 +16084,7 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -16663,6 +16666,7 @@ exports[`Code Reviews Involvement handles a range of mocked pull_request events:
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;

@@ -40,7 +40,7 @@ export const collectCommitsPerPrMetrics = async (
         ? getTimestamp(commit.committer.date)
         : null,
     }));
-  } catch (error) {
+  } catch (error: unknown) {
     // TODO: send error output
   }
 
@@ -58,6 +58,7 @@ export const collectCommitsPerPrMetrics = async (
     metricsSignature: MetricsSignature.CommitsPerPr,
     owner: owner,
     repo: repo,
+    status: "success",
     output,
   };
 };
