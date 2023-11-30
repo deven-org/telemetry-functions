@@ -7,8 +7,14 @@ export type DocumentationUpdatedOutput = {
   pr_id: number;
 
   /**
-   * Number of Markdown files changed in PR
-   * This can be inexact for PRs with >100 files changed
+   * Data based on the files in the PR.
+   * null means the additional data could not be fetched (status: 'networkError')
    */
-  mdFilesChanged: number;
+  prFiles: null | {
+    /**
+     * Number of Markdown files changed in PR
+     * This can be inexact if PR has over 100 files
+     */
+    mdFilesChanged: number;
+  };
 };
