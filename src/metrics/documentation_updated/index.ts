@@ -21,29 +21,32 @@ export const collectDocumentationUpdatedMetrics = async (
   const owner = payload.repository.owner.login;
   const pr_id = payload.pull_request.id;
 
-  let mdFilesChanged = 0;
+  const prFiles: DocumentationUpdatedOutput["prFiles"] = await octokit
+    .request("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
+      owner: owner,
+      repo: repo,
+      pull_number: payload.pull_request.number,
+      per_page: 100,
+    })
+    .then(
+      function onSuccess(response) {
+        const mdFilesChanged = response.data.filter((file) =>
+          file.filename.endsWith(MARKDOWN_FILE_EXTENSION)
+        ).length;
 
-  try {
-    // The maximum per_page value is 100. In case of very large PRs we might miss some .md-files.
-    const request = await octokit.request(
-      "GET /repos/{owner}/{repo}/pulls/{pull_number}/files?per_page=100",
-      {
-        owner: owner,
-        repo: repo,
-        pull_number: payload.pull_request.number,
+        return {
+          mdFilesChanged,
+        };
+      },
+      function onError(error) {
+        logger.error(error);
+        return null;
       }
     );
 
-    mdFilesChanged = request.data.filter((file) =>
-      file.filename.endsWith(MARKDOWN_FILE_EXTENSION)
-    ).length;
-  } catch (error) {
-    logger.error(error);
-  }
-
   const output: DocumentationUpdatedOutput = {
     pr_id,
-    mdFilesChanged,
+    prFiles,
   };
 
   return {
@@ -52,7 +55,7 @@ export const collectDocumentationUpdatedMetrics = async (
     metricsSignature: MetricsSignature.DocumentationUpdated,
     owner,
     repo,
-    status: "success",
+    status: prFiles ? "success" : "networkError",
     output,
   };
 };
