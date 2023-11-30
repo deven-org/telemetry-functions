@@ -30,11 +30,13 @@ export const collectDocumentationUpdatedMetrics = async (
     })
     .then(
       function onSuccess(response) {
+        const singlePage = !response.headers.link;
         const mdFilesChanged = response.data.filter((file) =>
           file.filename.endsWith(MARKDOWN_FILE_EXTENSION)
         ).length;
 
         return {
+          over100Files: !singlePage,
           mdFilesChanged,
         };
       },
