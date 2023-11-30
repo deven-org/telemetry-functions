@@ -80,6 +80,7 @@ describe("Documentation Updated", () => {
       });
 
     const output = await handler(eventBody);
+
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
@@ -112,6 +113,40 @@ describe("Documentation Updated", () => {
         output: {
           pr_id: 42424242,
           prFiles: {
+            over100Files: false,
+            mdFilesChanged: 4,
+          },
+        },
+      },
+    ]);
+  });
+
+  it("reports over100Files if result is paginated", async () => {
+    const eventBody = {
+      eventSignature: "pull_request",
+      ...mockedPrMerged,
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
+      async () => ({
+        headers: {
+          link: '<somelink>; rel="next"',
+        },
+        data: prFilesData,
+      });
+
+    const output: [] = await handler(eventBody);
+
+    expect(output).toMatchObject([
+      {
+        created_at: FAKE_NOW,
+        dataEventSignature: DataEventSignature.PullRequest,
+        metricsSignature: MetricsSignature.DocumentationUpdated,
+        status: "success",
+        output: {
+          pr_id: 42424242,
+          prFiles: {
+            over100Files: true,
             mdFilesChanged: 4,
           },
         },
