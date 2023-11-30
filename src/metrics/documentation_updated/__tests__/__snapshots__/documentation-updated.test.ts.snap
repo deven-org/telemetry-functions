@@ -16012,6 +16012,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     "output": {
       "prFiles": {
         "mdFilesChanged": 4,
+        "over100Files": false,
       },
       "pr_id": 279147437,
     },
@@ -16583,6 +16584,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     "output": {
       "prFiles": {
         "mdFilesChanged": 4,
+        "over100Files": false,
       },
       "pr_id": 279147437,
     },

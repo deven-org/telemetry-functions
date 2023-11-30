@@ -11,9 +11,12 @@ export type DocumentationUpdatedOutput = {
    * null means the additional data could not be fetched (status: 'networkError')
    */
   prFiles: null | {
+    /** Did this PR have >100 files? */
+    over100Files: boolean;
+
     /**
      * Number of Markdown files changed in PR
-     * This can be inexact if PR has over 100 files
+     * This can be inexact if over100Files is true
      */
     mdFilesChanged: number;
   };
