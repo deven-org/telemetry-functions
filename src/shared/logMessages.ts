@@ -5,6 +5,7 @@ export enum LogErrors {
   networkErrorDeployments = "Could not fetch deployments for owner/repo/env: '%s'",
   networkErrorPackageJson = "Could not fetch package.json for owner/repo: '%s'",
   parseErrorPackageJson = "Could not parse content of package.json for owner/repo: '%s'",
+  releaseVersionsUnexpectedInvalidVersion = "Unexpected invalid Release Version",
 }
 
 export enum LogInfos {

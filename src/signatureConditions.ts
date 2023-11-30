@@ -17,10 +17,13 @@ export const isCheckSuite = allPass([propEq("check_suite", "eventSignature")]);
 
 export const isDeployment = allPass([propEq("deployment", "eventSignature")]);
 
+export const isCreate = allPass([propEq("create", "eventSignature")]);
+
 export default [
   [isToolingUsed, DataEventSignature.ToolingUsage],
   [isWorkflowJob, DataEventSignature.WorkflowJob],
   [isPullRequest, DataEventSignature.PullRequest],
   [isCheckSuite, DataEventSignature.CheckSuite],
   [isDeployment, DataEventSignature.Deployment],
+  [isCreate, DataEventSignature.TagOrBranchCreation],
 ];

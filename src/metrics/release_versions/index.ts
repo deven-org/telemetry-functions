@@ -1,10 +1,16 @@
+import { clean as semverClean } from "semver";
 import {
   SignedDataEvent,
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
-import { getReleaseByTitle } from "./getReleaseByTitle";
-import { ReleaseVersionsOutput, ReleaseVersionsPayload } from "./interfaces";
+import { getVersionByString } from "./getVersionByString";
+import {
+  ReleaseVersion,
+  ReleaseVersionsOutput,
+  ReleaseVersionsPayload,
+} from "./interfaces";
+import { LogErrors } from "../../shared/logMessages";
 
 export const collectReleaseVersionsMetrics = async (
   dataEvent: SignedDataEvent
@@ -13,12 +19,11 @@ export const collectReleaseVersionsMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const pr_id = payload.pull_request.id;
-  const title = getReleaseByTitle(payload.pull_request.title);
+
+  let version: ReleaseVersion = getVersionByString(payload.ref);
 
   const output: ReleaseVersionsOutput = {
-    pr_id,
-    title,
+    releaseVersion: version,
   };
 
   return {

@@ -10,6 +10,7 @@ import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
 import { WorkflowJobTestCoverageOutput } from "./metrics/test_coverage/interfaces";
 import { DeploymentOutput } from "./metrics/deployments/interfaces";
 import {
+  CreateEvent,
   PullRequestEvent,
   WorkflowJobEvent,
   CheckSuiteEvent,
@@ -23,6 +24,7 @@ export enum DataEventSignature {
   PullRequest = "pull-request",
   CheckSuite = "check-suite",
   Deployment = "deployment",
+  TagOrBranchCreation = "create",
   Unknown = "unknown",
 }
 
@@ -44,6 +46,7 @@ interface DataEventPayloadMap {
   [DataEventSignature.PullRequest]: PullRequestEvent;
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
   [DataEventSignature.Deployment]: DeploymentEvent;
+  [DataEventSignature.TagOrBranchCreation]: CreateEvent;
   [DataEventSignature.Unknown]: unknown;
 }
 

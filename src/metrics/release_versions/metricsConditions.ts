@@ -1,3 +1,4 @@
+import { clean as semverClean } from "semver";
 import { collectReleaseVersionsMetrics } from ".";
 import {
   Conditions,
@@ -7,12 +8,18 @@ import {
 import { validateEventSignature } from "../../shared/validateEventSignature";
 import { ReleaseVersionsPayload } from "./interfaces";
 
-export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.PullRequest)) {
+export const isSignedAsTagCreateEvent = (dataEvent: SignedDataEvent) => {
+  if (
+    !validateEventSignature(dataEvent, DataEventSignature.TagOrBranchCreation)
+  ) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "closed") {
+  if (dataEvent.payload.ref_type !== "tag") {
+    return false;
+  }
+
+  if (semverClean(dataEvent.payload.ref, { loose: true }) === null) {
     return false;
   }
 
@@ -22,7 +29,7 @@ export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
 };
 
 const conditions: Conditions = [
-  [isSignedAsPullRequestClosed, collectReleaseVersionsMetrics],
+  [isSignedAsTagCreateEvent, collectReleaseVersionsMetrics],
 ];
 
 export default conditions;
