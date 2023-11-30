@@ -2,53 +2,50 @@ import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+import { Mocktokit } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
 jest.mock("../../../metricsConditions.ts", () =>
   jest.requireActual("../metricsConditions")
 );
 
-const octokitResponse = {
-  data: [
-    {
-      commit: {
-        author: {
-          date: "2023-02-08T16:35:04Z",
-        },
-      },
-    },
-    {
-      commit: {},
-    },
-    {
-      commit: {
-        author: {
-          date: "2023-02-08T18:35:04Z",
-        },
-        committer: {
-          date: "2023-02-08T22:35:04Z",
-        },
-      },
-    },
-    {
-      commit: {
-        author: {
-          date: "2023-02-08T19:35:04Z",
-        },
-        committer: {
-          date: "2023-02-08T22:36:04Z",
-        },
-      },
-    },
-  ],
-};
+jest.mock(
+  "./../../../core/octokit.ts",
+  () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
+);
 
-jest.mock("./../../../core/octokit.ts", () => ({
-  __esModule: true,
-  default: {
-    request: () => octokitResponse,
+const commitsData = [
+  {
+    commit: {
+      author: {
+        date: "2023-02-08T16:35:04Z",
+      },
+    },
   },
-}));
+  {
+    commit: {},
+  },
+  {
+    commit: {
+      author: {
+        date: "2023-02-08T18:35:04Z",
+      },
+      committer: {
+        date: "2023-02-08T22:35:04Z",
+      },
+    },
+  },
+  {
+    commit: {
+      author: {
+        date: "2023-02-08T19:35:04Z",
+      },
+      committer: {
+        date: "2023-02-08T22:36:04Z",
+      },
+    },
+  },
+];
 
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
@@ -72,11 +69,28 @@ describe("Commits Per PR", () => {
     jest.useFakeTimers({ now: FAKE_NOW });
   });
 
+  beforeEach(() => {
+    Mocktokit.reset({
+      // endpoint to save json data
+      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
+    });
+  });
+
+  afterEach(() => {
+    expect(Mocktokit.unexpectedRequestsMade).toStrictEqual([]);
+  });
+
   it("event gets signed as pull_request event", async () => {
     const eventBody = {
       eventSignature: "pull_request",
       ...mockedPrClosed,
     };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
+      async () => ({
+        headers: {},
+        data: commitsData,
+      });
 
     const output = await handler(eventBody);
     expect(output).toMatchObject([
@@ -94,34 +108,42 @@ describe("Commits Per PR", () => {
       ...mockedPrClosed,
     };
 
-    const output: [] = await handler(eventBody);
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
+      async () => ({
+        headers: {},
+        data: commitsData,
+      });
 
-    expect(output).toStrictEqual([
+    const result: [] = await handler(eventBody);
+
+    expect(result).toStrictEqual([
       {
         created_at: FAKE_NOW,
         output: {
-          commits: 4,
+          pr_id: 42424242,
           additions: 10,
           deletions: 5,
-          commit_timestamps: [
-            {
-              authored: 1675874104000,
-              committed: null,
-            },
-            {
-              authored: null,
-              committed: null,
-            },
-            {
-              authored: 1675881304000,
-              committed: 1675895704000,
-            },
-            {
-              authored: 1675884904000,
-              committed: 1675895764000,
-            },
-          ],
-          pr_id: 42424242,
+          commits: {
+            amount: 4,
+            commit_timestamps: [
+              {
+                authored: 1675874104000,
+                committed: null,
+              },
+              {
+                authored: null,
+                committed: null,
+              },
+              {
+                authored: 1675881304000,
+                committed: 1675895704000,
+              },
+              {
+                authored: 1675884904000,
+                committed: 1675895764000,
+              },
+            ],
+          },
         },
         owner: "owner",
         repo: "repo_name",
@@ -132,8 +154,44 @@ describe("Commits Per PR", () => {
     ]);
   });
 
+  it("sets status to networkError if commits fetch fails", async () => {
+    const eventBody = {
+      eventSignature: "pull_request",
+      ...mockedPrClosed,
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
+      async () => {
+        throw new Error("mocked network error");
+      };
+
+    const result = await handler(eventBody);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      created_at: FAKE_NOW,
+      output: {
+        pr_id: 42424242,
+        additions: 10,
+        deletions: 5,
+        commits: null,
+      },
+      owner: "owner",
+      repo: "repo_name",
+      metricsSignature: MetricsSignature.CommitsPerPr,
+      dataEventSignature: DataEventSignature.PullRequest,
+      status: "networkError",
+    });
+  });
+
   it("handles a range of mocked pull_request events", async () => {
     const fixtures = getWebhookEventFixtureList("pull_request");
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
+      async () => ({
+        headers: {},
+        data: commitsData,
+      });
 
     const output = await Promise.all(
       fixtures.map((fix) =>

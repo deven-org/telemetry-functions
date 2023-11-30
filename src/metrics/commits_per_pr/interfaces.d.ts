@@ -2,6 +2,24 @@ import { PullRequestClosedEvent } from "@octokit/webhooks-types";
 
 export type CommitsPerPrPayload = PullRequestClosedEvent;
 
+export type Commits = null | {
+  /**
+   * Number of commits in closed PR
+   */
+  amount: number;
+
+  /**
+   * Timestamps of when commit author/committer created the commit.
+   */
+  commit_timestamps: {
+    /** Time commit was authored (UNIX ms) */
+    authored: number | null;
+
+    /** Time commit was committed (UNIX ms) */
+    committed: number | null;
+  }[];
+};
+
 export interface CommitsPerPrOutput {
   /** Pull Request ID (not PR number) */
   pr_id: number;
@@ -13,21 +31,8 @@ export interface CommitsPerPrOutput {
   deletions: number;
 
   /**
-   * Number of commits in closed PR
-   * -1 if PR commit list cannot be fetched from GitHub
+   * The commits of the PR.
+   * null if PR commit list cannot be fetched from GitHub (status: 'networkError')
    */
-  commits: number;
-
-  /**
-   * Timestamps of when commit author/committer created the commit.
-   *
-   * [] if commit list cannot be fetched from GitHub
-   */
-  commit_timestamps: {
-    /** Time commit was authored (UNIX ms) */
-    authored: number | null;
-
-    /** Time commit was committed (UNIX ms) */
-    committed: number | null;
-  }[];
+  commits: Commits;
 }

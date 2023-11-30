@@ -351,22 +351,26 @@ type CommitsPerPrOutput = {
   deletions: number;
 
   /**
-   * Number of commits in closed PR
-   * -1 if PR commit list cannot be fetched from GitHub
+   * The commits of the PR.
+   * null if PR commit list cannot be fetched from GitHub (status: 'networkError')
    */
-  commits: number;
+  commits: null | {
+    /**
+     * Number of commits in closed PR
+     */
+    amount: number;
 
-  /**
-   * Timestamps of when commit author/committer created the commit.
-   * [] if commit list cannot be fetched from GitHub
-   */
-  commit_timestamps: {
-    /** Time commit was authored (UNIX ms) */
-    authored: number | null;
+    /**
+     * Timestamps of when commit author/committer created the commit.
+     */
+    commit_timestamps: {
+      /** Time commit was authored (UNIX ms) */
+      authored: number | null;
 
-    /** Time commit was authored (UNIX ms) */
-    committed: number | null;
-  }[];
+      /** Time commit was committed (UNIX ms) */
+      committed: number | null;
+    }[];
+  };
 };
 ```
 
@@ -412,18 +416,39 @@ type CheckSuiteMetricsOutput = {
   duration: number;
 
   /**
-   * Version field of root package.json in repo default branch.
-   * null if the package.json cannot be fetched.
-   *
-   * NOTE: type is guessed since the json file might contain anything / not include a version
+   * Relevant information depending on previous deployments to the current environment.
+   * null if the list of deployments cannot be fetched (status: 'networkError')
    */
-  version: string | null;
+  environmentDeployments: null | {
+    /**
+     * True if fetching deployments is successful but no previous deployment
+     * to the requested environment is found.
+     */
+    isInitialDeployment: boolean;
+
+    /**
+     * Time in ms since last deployment created for the same environment.
+     * null if previous deployment creation time cannot be found.
+     */
+    timeSinceLastDeploy: number | null;
+  };
 
   /**
-   * Time in ms since last deployment created for the same environment.
-   * null if previous deployment creation time cannot be found/fetched.
+   * General information about the package.json.
+   * null if package.json cannot be fetched (status: 'networkError')
    */
-  timeSinceLastDeploy: number | null;
+  packageJson: null | {
+    /** Boolean if the retrieved package.json file is successfully parsed */
+    isParseable: boolean;
+
+    /**
+     * Version field of root package.json in repo default branch.
+     * null if there is no valid version found in package.json.
+     *
+     * NOTE: type is guessed since the json file might contain anything / not include a version
+     */
+    version: string | null;
+  };
 };
 ```
 
