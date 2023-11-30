@@ -2082,25 +2082,27 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "metricsSignature": "commits-per-pr",
     "output": {
       "additions": 1,
-      "commit_timestamps": [
-        {
-          "authored": 1675874104000,
-          "committed": null,
-        },
-        {
-          "authored": null,
-          "committed": null,
-        },
-        {
-          "authored": 1675881304000,
-          "committed": 1675895704000,
-        },
-        {
-          "authored": 1675884904000,
-          "committed": 1675895764000,
-        },
-      ],
-      "commits": 4,
+      "commits": {
+        "amount": 4,
+        "commit_timestamps": [
+          {
+            "authored": 1675874104000,
+            "committed": null,
+          },
+          {
+            "authored": null,
+            "committed": null,
+          },
+          {
+            "authored": 1675881304000,
+            "committed": 1675895704000,
+          },
+          {
+            "authored": 1675884904000,
+            "committed": 1675895764000,
+          },
+        ],
+      },
       "deletions": 1,
       "pr_id": 279147437,
     },
@@ -2652,25 +2654,27 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "metricsSignature": "commits-per-pr",
     "output": {
       "additions": 1,
-      "commit_timestamps": [
-        {
-          "authored": 1675874104000,
-          "committed": null,
-        },
-        {
-          "authored": null,
-          "committed": null,
-        },
-        {
-          "authored": 1675881304000,
-          "committed": 1675895704000,
-        },
-        {
-          "authored": 1675884904000,
-          "committed": 1675895764000,
-        },
-      ],
-      "commits": 4,
+      "commits": {
+        "amount": 4,
+        "commit_timestamps": [
+          {
+            "authored": 1675874104000,
+            "committed": null,
+          },
+          {
+            "authored": null,
+            "committed": null,
+          },
+          {
+            "authored": 1675881304000,
+            "committed": 1675895704000,
+          },
+          {
+            "authored": 1675884904000,
+            "committed": 1675895764000,
+          },
+        ],
+      },
       "deletions": 1,
       "pr_id": 279147437,
     },
@@ -16081,25 +16085,27 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "metricsSignature": "commits-per-pr",
     "output": {
       "additions": 1,
-      "commit_timestamps": [
-        {
-          "authored": 1675874104000,
-          "committed": null,
-        },
-        {
-          "authored": null,
-          "committed": null,
-        },
-        {
-          "authored": 1675881304000,
-          "committed": 1675895704000,
-        },
-        {
-          "authored": 1675884904000,
-          "committed": 1675895764000,
-        },
-      ],
-      "commits": 4,
+      "commits": {
+        "amount": 4,
+        "commit_timestamps": [
+          {
+            "authored": 1675874104000,
+            "committed": null,
+          },
+          {
+            "authored": null,
+            "committed": null,
+          },
+          {
+            "authored": 1675881304000,
+            "committed": 1675895704000,
+          },
+          {
+            "authored": 1675884904000,
+            "committed": 1675895764000,
+          },
+        ],
+      },
       "deletions": 1,
       "pr_id": 279147437,
     },
@@ -16670,25 +16676,27 @@ exports[`Commits Per PR handles a range of mocked pull_request events: pull_requ
     "metricsSignature": "commits-per-pr",
     "output": {
       "additions": 1,
-      "commit_timestamps": [
-        {
-          "authored": 1675874104000,
-          "committed": null,
-        },
-        {
-          "authored": null,
-          "committed": null,
-        },
-        {
-          "authored": 1675881304000,
-          "committed": 1675895704000,
-        },
-        {
-          "authored": 1675884904000,
-          "committed": 1675895764000,
-        },
-      ],
-      "commits": 4,
+      "commits": {
+        "amount": 4,
+        "commit_timestamps": [
+          {
+            "authored": 1675874104000,
+            "committed": null,
+          },
+          {
+            "authored": null,
+            "committed": null,
+          },
+          {
+            "authored": 1675881304000,
+            "committed": 1675895704000,
+          },
+          {
+            "authored": 1675884904000,
+            "committed": 1675895764000,
+          },
+        ],
+      },
       "deletions": 1,
       "pr_id": 279147437,
     },
