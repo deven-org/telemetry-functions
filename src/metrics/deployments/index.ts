@@ -2,11 +2,19 @@ import {
   SignedDataEvent,
   MetricsSignature,
   MetricData,
+  MetricDataStatus,
 } from "../../interfaces";
 import octokit from "../../core/octokit";
-import { DeploymentOutput, DeploymentPayload } from "./interfaces";
+import {
+  DeploymentInformation,
+  DeploymentOutput,
+  DeploymentPayload,
+  PackageJsonInformation,
+} from "./interfaces";
 import { decode } from "js-base64";
 import { getTimestamp } from "../../shared/getTimestamp";
+import { logger } from "../../core";
+import { LogErrors } from "../../shared/logMessages";
 
 export const collectDeploymentMetrics = async (
   dataEvent: SignedDataEvent
@@ -20,52 +28,85 @@ export const collectDeploymentMetrics = async (
   const updatedTime = getTimestamp(payload.deployment.updated_at);
   const duration = updatedTime - createdTime;
 
-  let timeSinceLastDeploy: number | null = null;
-  try {
-    const request = await octokit.request(
+  let status: MetricDataStatus = "success";
+  let deploymentInfo: DeploymentInformation = null;
+  let packageJson: PackageJsonInformation = null;
+
+  const deploymentResponse = await octokit
+    .request(
       "GET /repos/{owner}/{repo}/deployments?environment={environment}",
       {
         owner: owner,
         repo: repo,
         environment: env,
       }
-    );
+    )
+    .catch(() => {
+      status = "networkError";
+      logger.error(
+        LogErrors.networkErrorDeployments,
+        `${owner}/${repo}/${env}`
+      );
+      return null;
+    });
 
+  if (deploymentResponse) {
     // Make sure to get the last deployment before the current deployment
-    const deployment = request.data.find(
+    const deployment = deploymentResponse.data.find(
       (dep) => getTimestamp(dep.created_at) < createdTime
     );
-    // If no previous deployment was found, timeSinceLastDeploy can't be determined
+
     if (deployment !== undefined) {
       const lastCommitTime = getTimestamp(deployment.created_at);
-      timeSinceLastDeploy = createdTime - lastCommitTime;
+      deploymentInfo = {
+        isInitialDeployment: false,
+        timeSinceLastDeploy: createdTime - lastCommitTime,
+      };
+    } else {
+      // If no previous deployment to the current environment was found
+      // there is no time since last deploy and it is the initial deployment.
+      deploymentInfo = {
+        isInitialDeployment: true,
+        timeSinceLastDeploy: null,
+      };
     }
-  } catch (error) {
-    console.log("error: ", error);
   }
 
-  let version: string | null = null;
-  try {
-    const response = await octokit.request(
-      "GET /repos/{owner}/{repo}/contents/{path}",
-      {
-        owner: owner,
-        repo: repo,
-        path: "package.json",
-      }
-    );
-    const content = JSON.parse(decode(response.data["content"]));
-    version = content.version;
-  } catch (error) {
-    console.log("error: ", error);
+  const packageJsonResponse = await octokit
+    .request("GET /repos/{owner}/{repo}/contents/{path}", {
+      owner: owner,
+      repo: repo,
+      path: "package.json",
+    })
+    .catch(() => {
+      status = "networkError";
+      logger.error(LogErrors.networkErrorPackageJson, `${owner}/${repo}`);
+      return null;
+    });
+
+  if (packageJsonResponse) {
+    try {
+      const content = JSON.parse(decode(packageJsonResponse.data["content"]));
+
+      packageJson = {
+        isParseable: true,
+        version: content.version,
+      };
+    } catch (error: unknown) {
+      packageJson = {
+        isParseable: false,
+        version: null,
+      };
+      logger.error(LogErrors.parseErrorPackageJson, `${owner}/${repo}`);
+    }
   }
 
   const output: DeploymentOutput = {
     env,
     deployTime: createdTime,
-    timeSinceLastDeploy,
-    version,
     duration,
+    environmentDeployments: deploymentInfo,
+    packageJson,
   };
 
   return {
@@ -74,7 +115,7 @@ export const collectDeploymentMetrics = async (
     metricsSignature: MetricsSignature.Deployment,
     owner: owner,
     repo: repo,
-    status: "success",
+    status,
     output,
   };
 };

@@ -2,6 +2,33 @@ import { DeploymentCreatedEvent } from "@octokit/webhooks-types";
 
 export type DeploymentPayload = DeploymentCreatedEvent;
 
+export type DeploymentInformation = null | {
+  /**
+   * True if fetching deployments is successful but no previous deployment
+   * to the requested environment is found.
+   */
+  isInitialDeployment: boolean;
+
+  /**
+   * Time in ms since last deployment created for the same environment.
+   * null if previous deployment creation time cannot be found.
+   */
+  timeSinceLastDeploy: number | null;
+};
+
+export type PackageJsonInformation = null | {
+  /** Boolean if the retrieved package.json file is successfully parsed */
+  isParseable: boolean;
+
+  /**
+   * Version field of root package.json in repo default branch.
+   * null if there is no valid version found in package.json.
+   *
+   * NOTE: type is guessed since the json file might contain anything / not include a version
+   */
+  version: string | null;
+};
+
 export interface DeploymentOutput {
   /** Deployment environment name */
   env: string;
@@ -13,16 +40,14 @@ export interface DeploymentOutput {
   duration: number;
 
   /**
-   * Version field of root package.json in repo default branch.
-   * null if the package.json cannot be fetched.
-   *
-   * NOTE: type is guessed since the json file might contain anything / not include a version
+   * Relevant information depending on previous deployments to the current environment.
+   * null if the list of deployments cannot be fetched (status: 'networkError')
    */
-  version: string | null;
+  environmentDeployments: DeploymentInformation;
 
   /**
-   * Time in ms since last deployment created for the same environment.
-   * null if previous deployment creation time cannot be found/fetched.
+   * General information about the package.json.
+   * null if package.json cannot be fetched (status: 'networkError')
    */
-  timeSinceLastDeploy: number | null;
+  packageJson: PackageJsonInformation;
 }

@@ -4,9 +4,12 @@ import {
   SignedDataEvent,
   MetricsSignature,
   MetricData,
+  MetricDataStatus,
 } from "../../interfaces";
-import { CommitsPerPrOutput, CommitsPerPrPayload } from "./interfaces";
+import { Commits, CommitsPerPrOutput, CommitsPerPrPayload } from "./interfaces";
 import { getTimestamp } from "../../shared/getTimestamp";
+import { LogErrors } from "../../shared/logMessages";
+import { logger } from "../../core";
 
 export const collectCommitsPerPrMetrics = async (
   dataEvent: SignedDataEvent
@@ -15,41 +18,47 @@ export const collectCommitsPerPrMetrics = async (
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
+  const pr_id = payload.pull_request.id;
   const additions = payload.pull_request.additions;
   const deletions = payload.pull_request.deletions;
-  let numberOfCommits = -1;
-  let commit_timestamps: CommitsPerPrOutput["commit_timestamps"] = [];
 
-  try {
-    const request = await octokit.request(
-      "GET /repos/{owner}/{repo}/pulls/{pull_number}/commits",
-      {
-        owner: owner,
-        repo: repo,
-        pull_number: payload.pull_request.number,
-      }
-    );
+  let status: MetricDataStatus = "success";
+  let commits: Commits = null;
 
-    const data = request.data;
-    numberOfCommits = data.length;
+  const commitsResponse = await octokit
+    .request("GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", {
+      owner: owner,
+      repo: repo,
+      pull_number: payload.pull_request.number,
+    })
+    .catch(() => {
+      status = "networkError";
+      logger.error(LogErrors.networkErrorCommitsPerPR, pr_id);
+      return null;
+    });
+
+  if (commitsResponse) {
+    const data = commitsResponse.data;
 
     // Checking the author date will not reflect amendments
-    commit_timestamps = data.map(({ commit }) => ({
+    const commit_timestamps = data.map(({ commit }) => ({
       authored: commit.author?.date ? getTimestamp(commit.author.date) : null,
       committed: commit.committer?.date
         ? getTimestamp(commit.committer.date)
         : null,
     }));
-  } catch (error: unknown) {
-    // TODO: send error output
+
+    commits = {
+      amount: data.length,
+      commit_timestamps,
+    };
   }
 
   const output: CommitsPerPrOutput = {
-    commits: numberOfCommits,
+    pr_id,
     additions,
     deletions,
-    commit_timestamps,
-    pr_id: payload.pull_request.id,
+    commits,
   };
 
   return {
@@ -58,7 +67,7 @@ export const collectCommitsPerPrMetrics = async (
     metricsSignature: MetricsSignature.CommitsPerPr,
     owner: owner,
     repo: repo,
-    status: "success",
+    status,
     output,
   };
 };

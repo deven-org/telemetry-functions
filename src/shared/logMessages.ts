@@ -1,6 +1,10 @@
 export enum LogErrors {
   collectMetricsSignatureNotRecognized = "No collect-metrics function found for this event.",
   wrongResolvedEnhancedEvents = "Enhanced Events are invalid.",
+  networkErrorCommitsPerPR = "Could not fetch commits for PR-Id: '%s'",
+  networkErrorDeployments = "Could not fetch deployments for owner/repo/env: '%s'",
+  networkErrorPackageJson = "Could not fetch package.json for owner/repo: '%s'",
+  parseErrorPackageJson = "Could not parse content of package.json for owner/repo: '%s'",
 }
 
 export enum LogInfos {
