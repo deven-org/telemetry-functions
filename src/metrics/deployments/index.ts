@@ -74,6 +74,7 @@ export const collectDeploymentMetrics = async (
     metricsSignature: MetricsSignature.Deployment,
     owner: owner,
     repo: repo,
+    status: "success",
     output,
   };
 };

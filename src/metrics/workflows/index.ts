@@ -53,6 +53,7 @@ export const collectWorkflowsMetrics = async (
     metricsSignature: MetricsSignature.WorkflowJob,
     owner,
     repo,
+    status: "success",
     output,
   };
 };

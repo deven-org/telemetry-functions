@@ -67,6 +67,9 @@ type MetricEnvelope<Output extends object> = {
   /** The ID of the collected metric, as defined by the function */
   metricsSignature: string;
 
+  /** The status of the metric collection, depending on the success of all related API calls */
+  status: "success" | "networkError";
+
   /** The collected data for this metric, see following sections */
   output: Output; // different for each metricsSignature
 };

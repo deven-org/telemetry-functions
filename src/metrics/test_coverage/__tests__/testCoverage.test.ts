@@ -86,6 +86,7 @@ describe("Test_Coverage", () => {
         },
         repo: "telemetry-data",
         owner: "deven-org",
+        status: "success",
       },
     ]);
   });
@@ -132,6 +133,7 @@ describe("Test_Coverage", () => {
         },
         repo: "telemetry-data",
         owner: "deven-org",
+        status: "success",
       },
     ]);
   });

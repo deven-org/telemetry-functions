@@ -16015,6 +16015,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -16583,6 +16584,7 @@ exports[`Documentation Updated handles a range of mocked pull_request events: pu
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;

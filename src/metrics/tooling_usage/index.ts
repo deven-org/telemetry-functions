@@ -50,6 +50,7 @@ export const collectToolingUsageMetrics = async (
     metricsSignature: MetricsSignature.ToolingUsage,
     owner: payload.owner,
     repo: payload.repo,
+    status: "success",
     output,
   };
 };

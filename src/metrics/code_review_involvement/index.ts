@@ -69,6 +69,7 @@ export const collectCodeReviewInvolvementMetrics = async (
     metricsSignature: MetricsSignature.CodeReviewInvolvement,
     owner,
     repo,
+    status: "success",
     output,
   };
 };

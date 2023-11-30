@@ -171,6 +171,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -444,6 +445,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -625,6 +627,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;
@@ -810,6 +813,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
     },
     "owner": "Codertocat",
     "repo": "Hello-World",
+    "status": "success",
   },
 ]
 `;

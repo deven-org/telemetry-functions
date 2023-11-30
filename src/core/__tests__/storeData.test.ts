@@ -63,6 +63,7 @@ const collectMetricsResponse: MetricData[] = [
     output,
     owner: "owner",
     repo: "repo",
+    status: "success",
   },
   {
     dataEventSignature: DataEventSignature.WorkflowJob,
@@ -71,6 +72,7 @@ const collectMetricsResponse: MetricData[] = [
     output,
     owner: "owner",
     repo: "repo",
+    status: "success",
   },
 ];
 
@@ -102,7 +104,7 @@ describe("storeData", () => {
       {
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJtZXRyaWNzU2lnbmF0dXJlIjoid29ya2Zsb3ctam9iIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiY3JlYXRlZF9hdCI6NDAwMCwic3RhcnRlZF9hdCI6NDAwMCwiY29tcGxldGVkX2F0Ijo1MDAwLCJkdXJhdGlvbiI6MTAwMCwic3RhdHVzIjoiY29tcGxldGVkIiwid29ya2Zsb3dfbmFtZSI6IndvcmtmbG93LW5hbWUiLCJydW5fYXR0ZW1wdCI6MSwic3RlcHMiOltdfSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJtZXRyaWNzU2lnbmF0dXJlIjoid29ya2Zsb3ctam9iIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiY3JlYXRlZF9hdCI6NDAwMCwic3RhcnRlZF9hdCI6NDAwMCwiY29tcGxldGVkX2F0Ijo1MDAwLCJkdXJhdGlvbiI6MTAwMCwic3RhdHVzIjoiY29tcGxldGVkIiwid29ya2Zsb3dfbmFtZSI6IndvcmtmbG93LW5hbWUiLCJydW5fYXR0ZW1wdCI6MSwic3RlcHMiOltdfSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIiwic3RhdHVzIjoic3VjY2VzcyJ9",
         message: "auto(data): add workflow-job - workflow-job for owner/repo",
         owner: "deven-org",
         path: "raw-data/owner/repo/workflow-job/100.json",
@@ -120,7 +122,7 @@ describe("storeData", () => {
         author: { email: "author_email", name: "author_name" },
         committer: { email: "committer_email", name: "committer_name" },
         content:
-          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJtZXRyaWNzU2lnbmF0dXJlIjoid29ya2Zsb3ctam9iIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiY3JlYXRlZF9hdCI6NDAwMCwic3RhcnRlZF9hdCI6NDAwMCwiY29tcGxldGVkX2F0Ijo1MDAwLCJkdXJhdGlvbiI6MTAwMCwic3RhdHVzIjoiY29tcGxldGVkIiwid29ya2Zsb3dfbmFtZSI6IndvcmtmbG93LW5hbWUiLCJydW5fYXR0ZW1wdCI6MSwic3RlcHMiOltdfSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIn0=",
+          "eyJkYXRhRXZlbnRTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJtZXRyaWNzU2lnbmF0dXJlIjoid29ya2Zsb3ctam9iIiwiY3JlYXRlZF9hdCI6MTAwLCJvdXRwdXQiOnsiY3JlYXRlZF9hdCI6NDAwMCwic3RhcnRlZF9hdCI6NDAwMCwiY29tcGxldGVkX2F0Ijo1MDAwLCJkdXJhdGlvbiI6MTAwMCwic3RhdHVzIjoiY29tcGxldGVkIiwid29ya2Zsb3dfbmFtZSI6IndvcmtmbG93LW5hbWUiLCJydW5fYXR0ZW1wdCI6MSwic3RlcHMiOltdfSwib3duZXIiOiJvd25lciIsInJlcG8iOiJyZXBvIiwic3RhdHVzIjoic3VjY2VzcyJ9",
         message: "auto(data): add workflow-job - workflow-job for owner/repo",
         owner: "deven-org",
         path: "raw-data/owner/repo/workflow-job/100.json",

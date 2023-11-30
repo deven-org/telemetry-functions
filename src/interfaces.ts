@@ -88,6 +88,9 @@ export interface MetricDataEnvelope<Output extends object> {
   /** The ID of the collected metric, as defined by the function */
   metricsSignature: MetricsSignature;
 
+  /** The status of the metric collection, depending on the success of all related API calls */
+  status: "success" | "networkError";
+
   /** The collected data for this metric */
   output: Output;
 }
