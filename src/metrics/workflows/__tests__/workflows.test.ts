@@ -1,13 +1,14 @@
-import {
-  MetricData,
-  DataEventSignature,
-  MetricsSignature,
-} from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
 import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+
+// Only collect this metric
+jest.mock("../../../metricsConditions.ts", () =>
+  jest.requireActual("../metricsConditions")
+);
 
 let octokitResponse = {};
 
@@ -48,9 +49,7 @@ describe("Workflows", () => {
 
     const output = await handler(eventBody);
 
-    expect(
-      output.filter((o) => o.metricsSignature === MetricsSignature.WorkflowJob)
-    ).toMatchObject([
+    expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
         output: {},
@@ -73,11 +72,7 @@ describe("Workflows", () => {
 
     const output: [] = await handler(eventBody);
 
-    expect(
-      output.filter(
-        (o: MetricData) => o.metricsSignature === MetricsSignature.WorkflowJob
-      )
-    ).toMatchObject([
+    expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
         output: {
@@ -129,11 +124,7 @@ describe("Workflows", () => {
     output.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
       expect(fixtures[i]).toMatchSnapshot(`workflow_job fixture[${i}] INPUT`);
-      expect(
-        output?.filter(
-          (out) => out.metricsSignature === MetricsSignature.WorkflowJob
-        )
-      ).toMatchSnapshot(`workflow_job fixture[${i}] OUTPUT`);
+      expect(output).toMatchSnapshot(`workflow_job fixture[${i}] OUTPUT`);
     });
   });
 });

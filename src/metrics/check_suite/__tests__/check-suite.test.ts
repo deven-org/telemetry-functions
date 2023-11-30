@@ -4,6 +4,11 @@ import { handler } from "../../../handler";
 import mockedCheckSuite from "./fixtures/mocked-check-suite.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
+// Only collect this metric
+jest.mock("../../../metricsConditions.ts", () =>
+  jest.requireActual("../metricsConditions")
+);
+
 const octokitResponse = {};
 
 jest.mock("./../../../core/octokit.ts", () => ({
@@ -95,11 +100,7 @@ describe("Check Suite", () => {
     output.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
       expect(fixtures[i]).toMatchSnapshot(`check_suite fixture[${i}] INPUT`);
-      expect(
-        output?.filter(
-          (out) => out.metricsSignature === MetricsSignature.CheckSuite
-        )
-      ).toMatchSnapshot(`check_suite fixture[${i}] OUTPUT`);
+      expect(output).toMatchSnapshot(`check_suite fixture[${i}] OUTPUT`);
     });
   });
 });

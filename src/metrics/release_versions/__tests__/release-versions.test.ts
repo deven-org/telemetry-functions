@@ -1,12 +1,13 @@
-import {
-  DataEventSignature,
-  MetricData,
-  MetricsSignature,
-} from "../../../interfaces";
+import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 
 import mockedCheckSuite from "./fixtures/mocked-pull-request-closed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+
+// Only collect this metric
+jest.mock("../../../metricsConditions.ts", () =>
+  jest.requireActual("../metricsConditions")
+);
 
 const octokitResponse = {};
 
@@ -47,12 +48,7 @@ describe("Release versions", () => {
 
     const output = await handler(eventBody);
 
-    expect(
-      output.filter(
-        (o: MetricData) =>
-          o.metricsSignature === MetricsSignature.ReleaseVersions
-      )
-    ).toMatchObject([
+    expect(output).toMatchObject([
       {
         created_at: expect.any(Number),
         output: {},
@@ -69,12 +65,7 @@ describe("Release versions", () => {
 
     const output = await handler(eventBody);
 
-    expect(
-      output.filter(
-        (o: MetricData) =>
-          o.metricsSignature === MetricsSignature.ReleaseVersions
-      )
-    ).toMatchObject([
+    expect(output).toMatchObject([
       {
         output: {
           pr_id: undefined,
@@ -104,11 +95,7 @@ describe("Release versions", () => {
     output.forEach((output, i) => {
       // Early error if our fixtures got updated - regenerate the snapshots!
       expect(fixtures[i]).toMatchSnapshot(`pull_request fixture[${i}] INPUT`);
-      expect(
-        output?.filter(
-          (out) => out.metricsSignature === MetricsSignature.ReleaseVersions
-        )
-      ).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
+      expect(output).toMatchSnapshot(`pull_request fixture[${i}] OUTPUT`);
     });
   });
 });
