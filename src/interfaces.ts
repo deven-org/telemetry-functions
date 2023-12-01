@@ -72,6 +72,8 @@ export interface SignedDataEvent<
   created_at: number;
 }
 
+export type MetricDataStatus = "success" | "networkError";
+
 export interface MetricDataEnvelope<Output extends object> {
   /** Time that the server started processing the event (UNIX ms) */
   created_at: number;
@@ -89,7 +91,7 @@ export interface MetricDataEnvelope<Output extends object> {
   metricsSignature: MetricsSignature;
 
   /** The status of the metric collection, depending on the success of all related API calls */
-  status: "success" | "networkError";
+  status: MetricDataStatus;
 
   /** The collected data for this metric */
   output: Output;
