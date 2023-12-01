@@ -2,6 +2,7 @@ import {
   SignedDataEvent,
   MetricsSignature,
   MetricData,
+  MetricDataStatus,
 } from "../../interfaces";
 import {
   DocumentationUpdatedOutput,
@@ -21,30 +22,33 @@ export const collectDocumentationUpdatedMetrics = async (
   const owner = payload.repository.owner.login;
   const pr_id = payload.pull_request.id;
 
-  const prFiles: DocumentationUpdatedOutput["prFiles"] = await octokit
+  let status: MetricDataStatus = "success";
+  let prFiles: DocumentationUpdatedOutput["prFiles"] = null;
+
+  const prFilesResponse = await octokit
     .request("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
       owner: owner,
       repo: repo,
       pull_number: payload.pull_request.number,
       per_page: 100,
     })
-    .then(
-      function onSuccess(response) {
-        const singlePage = !response.headers.link;
-        const mdFilesChanged = response.data.filter((file) =>
-          file.filename.endsWith(MARKDOWN_FILE_EXTENSION)
-        ).length;
+    .catch((error) => {
+      status = "networkError";
+      logger.error(error);
+      return null;
+    });
 
-        return {
-          over100Files: !singlePage,
-          mdFilesChanged,
-        };
-      },
-      function onError(error) {
-        logger.error(error);
-        return null;
-      }
-    );
+  if (prFilesResponse) {
+    const singlePage = !prFilesResponse.headers.link;
+    const mdFilesChanged = prFilesResponse.data.filter((file) =>
+      file.filename.endsWith(MARKDOWN_FILE_EXTENSION)
+    ).length;
+
+    prFiles = {
+      over100Files: !singlePage,
+      mdFilesChanged,
+    };
+  }
 
   const output: DocumentationUpdatedOutput = {
     pr_id,
@@ -57,7 +61,7 @@ export const collectDocumentationUpdatedMetrics = async (
     metricsSignature: MetricsSignature.DocumentationUpdated,
     owner,
     repo,
-    status: prFiles ? "success" : "networkError",
+    status,
     output,
   };
 };
