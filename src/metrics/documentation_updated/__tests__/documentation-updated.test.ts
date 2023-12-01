@@ -60,11 +60,14 @@ describe("Documentation Updated", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.resetToDefault();
+    Mocktokit.reset({
+      // endpoint to save json data
+      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
+    });
   });
 
   afterEach(() => {
-    expect(Mocktokit.unexpectedRequest.mock.calls).toStrictEqual([]);
+    expect(Mocktokit.unexpectedRequestsMade).toStrictEqual([]);
   });
 
   it("event gets signed as pull_request event", async () => {

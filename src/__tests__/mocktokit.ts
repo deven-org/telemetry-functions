@@ -4,28 +4,19 @@ type OctokitMockEndpoints = Record<
 >;
 
 class MocktokitImpl {
-  get defaultEndpoints(): OctokitMockEndpoints {
-    return {
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: jest.fn(
-        async () => undefined
-      ),
-    };
-  }
-
   mocks: OctokitMockEndpoints = {};
 
   unexpectedRequest = jest.fn(async (endpoint) => {
     throw new Error(`unexpected octokit request to "${endpoint}"`);
   });
 
-  reset() {
-    this.unexpectedRequest.mockReset();
-    this.mocks = {};
+  get unexpectedRequestsMade() {
+    return this.unexpectedRequest.mock.calls;
   }
 
-  resetToDefault() {
+  reset(defaultEndpoints: OctokitMockEndpoints = {}) {
     this.unexpectedRequest.mockReset();
-    this.mocks = Mocktokit.defaultEndpoints;
+    this.mocks = defaultEndpoints;
   }
 }
 
