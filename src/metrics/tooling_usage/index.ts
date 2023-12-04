@@ -3,6 +3,7 @@ import {
   SignedDataEvent,
   MetricData,
   MetricsSignature,
+  MetricDataStatus,
 } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
 import octokit from "../../core/octokit";
@@ -14,34 +15,72 @@ export const collectToolingUsageMetrics = async (
 ): Promise<MetricData<MetricsSignature.ToolingUsage>> => {
   const payload = dataEvent.payload as ToolingUsagePayload;
 
-  let output: ToolingUsageOutput;
+  let status: MetricDataStatus = "success";
+  const output: ToolingUsageOutput = {
+    documentationSkeletonConfig: null,
+  };
 
-  try {
-    const response = await octokit.request(
-      "GET /repos/{owner}/{repo}/contents/{path}",
-      {
-        owner: payload.owner,
-        repo: payload.repo,
-        path: "deven-skeleton-install.config.json",
+  const configResponse = await octokit
+    .request("GET /repos/{owner}/{repo}/contents/{path}", {
+      owner: payload.owner,
+      repo: payload.repo,
+      path: "deven-skeleton-install.config.json",
+    })
+    .catch((e: unknown) => {
+      if (e && typeof e == "object" && "status" in e && e.status === 404) {
+        logger.warn(
+          LogWarnings.documentationSkeletonConfigNotFound,
+          `${payload.owner}/${payload.repo}`
+        );
+        return "missing";
       }
-    );
 
-    const { version } = JSON.parse(decode(response.data["content"]));
+      status = "networkError";
+      logger.error(e);
+      return null;
+    });
 
-    output = {
-      hasDocumentationSkeleton: true,
-      documentationSkeletonVersion: version,
+  if (configResponse === "missing") {
+    output.documentationSkeletonConfig = {
+      exists: false,
+      parsable: null,
+      version: null,
     };
-  } catch (error) {
-    output = {
-      hasDocumentationSkeleton: false,
-      documentationSkeletonVersion: undefined,
-    };
+  } else if (configResponse !== null) {
+    let parsedConfig: unknown;
 
-    logger.warn(
-      LogWarnings.documentationSkeletonConfigNotFound,
-      `${payload.owner}/${payload.repo}`
-    );
+    try {
+      parsedConfig = JSON.parse(decode(configResponse.data["content"]));
+    } catch (e) {
+      parsedConfig = null;
+    }
+
+    if (
+      parsedConfig === null ||
+      typeof parsedConfig !== "object" ||
+      Array.isArray(parsedConfig)
+    ) {
+      output.documentationSkeletonConfig = {
+        exists: true,
+        parsable: false,
+        version: null,
+      };
+    } else {
+      const version = "version" in parsedConfig ? parsedConfig.version : null;
+      if (typeof version !== "string") {
+        output.documentationSkeletonConfig = {
+          exists: true,
+          parsable: true,
+          version: null,
+        };
+      } else {
+        output.documentationSkeletonConfig = {
+          exists: true,
+          parsable: true,
+          version,
+        };
+      }
+    }
   }
 
   return {
@@ -50,7 +89,7 @@ export const collectToolingUsageMetrics = async (
     metricsSignature: MetricsSignature.ToolingUsage,
     owner: payload.owner,
     repo: payload.repo,
-    status: "success",
+    status,
     output,
   };
 };

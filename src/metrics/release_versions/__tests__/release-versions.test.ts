@@ -9,7 +9,7 @@ jest.mock("../../../metricsConditions.ts", () =>
   jest.requireActual("../metricsConditions")
 );
 
-let octokitResponse = {};
+const octokitResponse = {};
 
 jest.mock("./../../../core/octokit.ts", () => ({
   __esModule: true,
