@@ -97,8 +97,8 @@ This event occurs when a Git branch or tag is created.
 Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#create
 
 Metrics:
-- [`release-versions` for created Tags with valid semver version](#release-versions-for-merged-or-closed-pull-requests)
 
+- [`release-versions` for created Tags with valid semver version](#release-versions-for-merged-or-closed-pull-requests)
 
 ### `deployment` (GitHub Event)
 
@@ -554,13 +554,13 @@ type ReleaseVersion = {
   prerelease: Array<string | number>;
   build: string[];
   version: string;
-}
+};
 
 type ReleaseVersionsOutput = {
   /**
    * Version found in tag (parsed by semver package)
    */
-  releaseVersion: ReleaseVersion
+  releaseVersion: ReleaseVersion;
 };
 ```
 
@@ -589,13 +589,26 @@ Fields:
 ```ts
 type ToolingUsageOutput = {
   /**
-   * Does the target repository's default branch include a
-   * deven-skeleton-install.config.json?
+   * Data based on the target repository's deven-skeleton-install.config.json.
+   * null means the data could not be fetched due to reasons other than the file
+   * not existing (status: 'networkError').
    */
-  hasDocumentationSkeleton: boolean;
+  documentationSkeletonConfig: null | {
+    /** Does the config exist */
+    exists: boolean;
 
-  /** If config was found: the version specified, otherwise undefined */
-  documentationSkeletonVersion: string | undefined;
+    /**
+     * Is the config parsable?
+     * null if file doesn't exist
+     */
+    parsable: null | boolean;
+
+    /**
+     * If config was found, parsed, and version is set: the version specified
+     * Otherwise null
+     */
+    version: string | null;
+  };
 };
 ```
 

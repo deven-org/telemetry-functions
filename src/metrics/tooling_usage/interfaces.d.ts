@@ -8,11 +8,24 @@ export type ToolingUsagePayload = {
 
 export type ToolingUsageOutput = {
   /**
-   * Does the target repository's default branch include a
-   * deven-skeleton-install.config.json?
+   * Data based on the target repository's deven-skeleton-install.config.json.
+   * null means the data could not be fetched due to reasons other than the file
+   * not existing (status: 'networkError').
    */
-  hasDocumentationSkeleton: boolean;
+  documentationSkeletonConfig: null | {
+    /** Does the config exist? */
+    exists: boolean;
 
-  /** If config was found: the version specified, otherwise undefined */
-  documentationSkeletonVersion: string | undefined;
+    /**
+     * Is the config parsable?
+     * null if file doesn't exist
+     */
+    parsable: null | boolean;
+
+    /**
+     * If config was found, parsed, and version is set: the version specified
+     * Otherwise null
+     */
+    version: string | null;
+  };
 };
