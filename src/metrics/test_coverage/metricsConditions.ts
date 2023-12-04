@@ -6,6 +6,7 @@ import {
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validateEventSignature";
 import { TestCoveragePayload } from "./interfaces";
+import { isNameAboutTest } from "./isNameAboutTest";
 
 export const isSignedAsWorkflowJobTestCoverage = (
   dataEvent: SignedDataEvent
@@ -15,6 +16,18 @@ export const isSignedAsWorkflowJobTestCoverage = (
   }
 
   if (dataEvent.payload.action !== "completed") {
+    return false;
+  }
+
+  const isAboutTests = [
+    dataEvent.payload.workflow_job.name,
+    dataEvent.payload.workflow_job.workflow_name,
+    ...dataEvent.payload.workflow_job.steps.map((step) => step.name),
+  ]
+    .filter((name): name is string => name !== null)
+    .some((name) => isNameAboutTest(name));
+
+  if (!isAboutTests) {
     return false;
   }
 
