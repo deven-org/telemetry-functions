@@ -3,6 +3,7 @@
 - [Metric Envelope](#metric-envelope)
 - [Trigger Events](#trigger-events)
   - [`check-suite` (GitHub Event)](#check-suite-github-event)
+  - [`create` (Github Event)](#create-github-event)
   - [`deployment` (GitHub Event)](#deployment-github-event)
   - [`deven-tooling-usage` (Custom Event)](#deven-tooling-usage-custom-event)
   - [`pull-request` (GitHub event)](#pull-request-github-event)
@@ -10,10 +11,10 @@
 - [Metrics](#metrics)
   - [`check-suite` for Completed Check Suites](#check-suite-for-completed-check-suites)
   - [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
-  - [`CommitsPerPr` for Merged or Closed Pull Requests](#commitsperpr-for-merged-or-closed-pull-requests)
+  - [`CommitsPerPr` for Merged Pull Requests](#commitsperpr-for-merged-pull-requests)
   - [`deployment` for Created Deployments](#deployment-for-created-deployments)
   - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
-  - [`release-versions` for created Tags with valid semver version](#release-versions-for-created-Tags-with-valid-semver-version)
+  - [`release-versions` for created Tags with valid semver version](#release-versions-for-created-tags-with-valid-semver-version)
   - [`tooling-usage` for a Repository](#tooling-usage-for-a-repository)
   - [`test-coverage` for Completed Workflow Jobs](#test-coverage-for-completed-workflow-jobs)
   - [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
@@ -145,7 +146,7 @@ Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull
 Metrics:
 
 - [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
-- [`CommitsPerPr` for Merged or Closed Pull Requests](#commitsperpr-for-merged-or-closed-pull-requests)
+- [`CommitsPerPr` for Merged Pull Requests](#commitsperpr-for-merged-pull-requests)
 - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
 
 ### `workflow-job` (GitHub Event)
@@ -311,16 +312,16 @@ type CodeReviewInvolvementOutput = {
 };
 ```
 
-### `CommitsPerPr` for Merged or Closed Pull Requests
+### `CommitsPerPr` for Merged Pull Requests
 
 Triggers:
 
 - [`pull-request` (GitHub event)](#pull-request-github-event)
 
-Condition, detecting merged or closed Pull Requests:
+Condition, detecting merged Pull Requests:
 
 ```ts
-payload.action === "closed";
+payload.action === "closed" && payload.pull_request.merged;
 ```
 
 <details><summary>Example JSON for CommitsPerPr output</summary>
@@ -472,7 +473,7 @@ Expecting that most documentation (especially when documentation-skeleton is use
 Condition, detecting merged pull requests:
 
 ```ts
-payload.action === "created" && payload.pull_request.merged;
+payload.action === "closed" && payload.pull_request.merged;
 ```
 
 <details><summary>Example JSON for release-versions output</summary>
