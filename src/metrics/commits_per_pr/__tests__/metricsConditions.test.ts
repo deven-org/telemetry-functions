@@ -26,12 +26,25 @@ describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
     expect(isSignedAsCommitsPerPr(event)).toBeFalsy();
   });
 
-  it("returns true if event is signed as closed PullRequest", async () => {
+  it("returns false if event is a closed PullRequest but not merged", async () => {
     const event: SignedDataEvent = {
       dataEventSignature: DataEventSignature.PullRequest,
       payload: getWebhookEventFixture(
         "pull_request",
-        (ex) => ex.action === "closed"
+        (ex) => ex.action === "closed" && !ex.pull_request.merged
+      ),
+      created_at: 100,
+    };
+
+    expect(isSignedAsCommitsPerPr(event)).toBeFalsy();
+  });
+
+  it("returns true if event is signed as merged PullRequest", async () => {
+    const event: SignedDataEvent = {
+      dataEventSignature: DataEventSignature.PullRequest,
+      payload: getWebhookEventFixture(
+        "pull_request",
+        (ex) => ex.action === "closed" && ex.pull_request.merged
       ),
       created_at: 100,
     };

@@ -1,6 +1,6 @@
-import { PullRequestClosedEvent } from "@octokit/webhooks-types";
+import { MergedPullRequestClosedEvent } from "../../github.interfaces";
 
-export type CommitsPerPrPayload = PullRequestClosedEvent;
+export type CommitsPerPrPayload = MergedPullRequestClosedEvent;
 
 export type Commits = null | {
   /**

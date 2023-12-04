@@ -5,6 +5,7 @@ import {
   DataEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validateEventSignature";
+import { validatePrWasMerged } from "../../shared/validatePrWasMerged";
 import { CommitsPerPrPayload } from "./interfaces";
 
 export const isSignedAsCommitsPerPr = (dataEvent: SignedDataEvent) => {
@@ -13,6 +14,10 @@ export const isSignedAsCommitsPerPr = (dataEvent: SignedDataEvent) => {
   }
 
   if (dataEvent.payload.action !== "closed") {
+    return false;
+  }
+
+  if (!validatePrWasMerged(dataEvent.payload)) {
     return false;
   }
 
