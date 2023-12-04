@@ -1,4 +1,3 @@
-import { toLower, pipe, test } from "ramda";
 import {
   SignedDataEvent,
   MetricsSignature,
@@ -10,8 +9,7 @@ import {
 } from "./interfaces";
 import { WorkflowStepCompleted } from "@octokit/webhooks-types";
 import { getTimestamp } from "../../shared/getTimestamp";
-
-const includesTestInString = pipe(toLower, test(/test/));
+import { isNameAboutTest } from "./isNameAboutTest";
 
 export const collectWorkflowsTestCoverageMetrics = async (
   dataEvent: SignedDataEvent
@@ -24,15 +22,16 @@ export const collectWorkflowsTestCoverageMetrics = async (
   const conclusion = payload.workflow_job.conclusion;
   const id = payload.workflow_job.id;
 
-  const is_workflow_name_about_test = includesTestInString(
-    payload.workflow_job.workflow_name
-  );
+  const is_job_name_about_test = isNameAboutTest(payload.workflow_job.name);
+  const is_workflow_name_about_test =
+    payload.workflow_job.workflow_name !== null &&
+    isNameAboutTest(payload.workflow_job.workflow_name);
 
   // For completed jobs, all steps must be completed too.
   const steps_about_test = (
     payload.workflow_job.steps as WorkflowStepCompleted[]
   )
-    .filter((step) => includesTestInString(step.name))
+    .filter((step) => isNameAboutTest(step.name))
     .map(({ name, status, conclusion, number, started_at, completed_at }) => ({
       name,
       status,
@@ -54,6 +53,7 @@ export const collectWorkflowsTestCoverageMetrics = async (
     id,
     status,
     conclusion,
+    is_job_name_about_test,
     is_workflow_name_about_test,
     steps_about_test,
     has_failed_steps,
