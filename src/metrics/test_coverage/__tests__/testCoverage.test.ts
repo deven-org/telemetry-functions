@@ -1,21 +1,21 @@
 import { DataEventSignature, MetricsSignature } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
+import mockedWorkflowJobCompletedWithTestSteps from "./fixtures/mocked-workflow-job-completed-with-test-steps.json";
+import mockedWorkflowJobCompletedWithTestWorkflowName from "./fixtures/mocked-workflow-job-completed-with-test-workflow.json";
+import mockedWorkflowJobCompletedWithTestName from "./fixtures/mocked-workflow-job-completed-with-test-name.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
+import { Mocktokit } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
 jest.mock("../../../metricsConditions.ts", () =>
   jest.requireActual("../metricsConditions")
 );
 
-const octokitResponse = {};
-
-jest.mock("./../../../core/octokit.ts", () => ({
-  __esModule: true,
-  default: {
-    request: () => octokitResponse,
-  },
-}));
+jest.mock(
+  "./../../../core/octokit.ts",
+  () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
+);
 
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
@@ -39,7 +39,35 @@ describe("Test_Coverage", () => {
     jest.useFakeTimers({ now: FAKE_NOW });
   });
 
-  it("event gets signed as workflow_job event", async () => {
+  beforeEach(() => {
+    Mocktokit.reset({
+      // endpoint to save json data
+      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
+    });
+  });
+
+  afterEach(() => {
+    expect(Mocktokit.unexpectedRequestsMade).toStrictEqual([]);
+  });
+
+  it("event gets signed as test_coverage event", async () => {
+    const eventBody = {
+      eventSignature: "workflow_job",
+      ...mockedWorkflowJobCompletedWithTestName,
+    };
+
+    const output = await handler(eventBody);
+
+    expect(output).toMatchObject([
+      {
+        created_at: FAKE_NOW,
+        output: {},
+        dataEventSignature: DataEventSignature.WorkflowJob,
+      },
+    ]);
+  });
+
+  it("collects no metrics if not about test", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
       ...mockedWorkflowJobCompleted,
@@ -47,22 +75,16 @@ describe("Test_Coverage", () => {
 
     const output = await handler(eventBody);
 
-    expect(output).toMatchObject([
-      {
-        created_at: expect.any(Number),
-        output: {},
-        dataEventSignature: DataEventSignature.WorkflowJob,
-      },
-    ]);
+    expect(output).toStrictEqual(undefined);
   });
 
-  it("returns collected metrics (no tests)", async () => {
+  it("returns collected metrics (with test in job name)", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompleted,
+      ...mockedWorkflowJobCompletedWithTestName,
     };
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toStrictEqual([
       {
@@ -73,6 +95,7 @@ describe("Test_Coverage", () => {
           id: 12126810024,
           status: "completed",
           conclusion: "failure",
+          is_job_name_about_test: true,
           is_workflow_name_about_test: false,
           steps_about_test: [],
           has_failed_steps: false,
@@ -85,16 +108,13 @@ describe("Test_Coverage", () => {
     ]);
   });
 
-  it("returns collected metrics (with tests)", async () => {
+  it("returns collected metrics (with test in workflow name)", async () => {
     const eventBody = {
       eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompleted,
+      ...mockedWorkflowJobCompletedWithTestWorkflowName,
     };
 
-    mockedWorkflowJobCompleted.workflow_job.workflow_name = "Just teStIng...";
-    mockedWorkflowJobCompleted.workflow_job.steps[0].name = "Run some tests";
-    mockedWorkflowJobCompleted.workflow_job.steps[0].conclusion = "failure";
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toStrictEqual([
       {
@@ -105,20 +125,60 @@ describe("Test_Coverage", () => {
           id: 12126810024,
           status: "completed",
           conclusion: "failure",
+          is_job_name_about_test: false,
           is_workflow_name_about_test: true,
+          steps_about_test: [],
+          has_failed_steps: false,
+          total_tests_duration: 0,
+        },
+        repo: "telemetry-data",
+        owner: "deven-org",
+        status: "success",
+      },
+    ]);
+  });
+
+  it("returns collected metrics (with test in step names)", async () => {
+    const eventBody = {
+      eventSignature: "workflow_job",
+      ...mockedWorkflowJobCompletedWithTestSteps,
+    };
+
+    const output = await handler(eventBody);
+
+    expect(output).toStrictEqual([
+      {
+        created_at: FAKE_NOW,
+        dataEventSignature: DataEventSignature.WorkflowJob,
+        metricsSignature: MetricsSignature.TestCoverage,
+        output: {
+          id: 12126810024,
+          status: "completed",
+          conclusion: "failure",
+          is_job_name_about_test: false,
+          is_workflow_name_about_test: false,
           steps_about_test: [
             {
-              completed_at: 1679311625000,
+              completed_at: 1679311626000,
+              conclusion: "success",
+              duration: 1000,
+              name: "Run jest",
+              number: 2,
+              started_at: 1679311625000,
+              status: "completed",
+            },
+            {
+              completed_at: 1679311686000,
               conclusion: "failure",
-              duration: 2000,
-              name: "Run some tests",
-              number: 1,
-              started_at: 1679311623000,
+              duration: 60000,
+              name: "Run cypress",
+              number: 2,
+              started_at: 1679311626000,
               status: "completed",
             },
           ],
           has_failed_steps: true,
-          total_tests_duration: 2000,
+          total_tests_duration: 61000,
         },
         repo: "telemetry-data",
         owner: "deven-org",
@@ -129,6 +189,8 @@ describe("Test_Coverage", () => {
 
   it("handles a range of mocked workflow_job events", async () => {
     const fixtures = getWebhookEventFixtureList("workflow_job");
+
+    fixtures.forEach((fix) => (fix.workflow_job.name = "Run tests"));
 
     const output = await Promise.all(
       fixtures.map((fix) =>

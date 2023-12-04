@@ -15,13 +15,16 @@ export type WorkflowJobTestCoverageOutput = {
   /** If the workflow that ran this job seems to be about tests */
   is_workflow_name_about_test: boolean;
 
-  /** If any job steps that mention tests (same check as above) failed */
+  /** If this job seems to be about tests */
+  is_job_name_about_test: boolean;
+
+  /** If any job steps that mention tests failed */
   has_failed_steps: boolean;
 
-  /** Duration of all job steps that mention tests (same check as above) */
+  /** Duration of all job steps that mention tests */
   total_tests_duration: number;
 
-  /** List of steps that were executed in the job that mention tests (same check as above) */
+  /** List of steps that were executed in the job that mention tests */
   steps_about_test: Array<{
     /** Step name */
     name: string;

@@ -16,7 +16,7 @@
   - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
   - [`release-versions` for created Tags with valid semver version](#release-versions-for-created-tags-with-valid-semver-version)
   - [`tooling-usage` for a Repository](#tooling-usage-for-a-repository)
-  - [`test-coverage` for Completed Workflow Jobs](#test-coverage-for-completed-workflow-jobs)
+  - [`test-coverage` for Completed Workflow Jobs mentioning tests](#test-coverage-for-completed-workflow-jobs-mentioning-tests)
   - [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
 
 ## Metric Envelope
@@ -157,7 +157,7 @@ Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#work
 
 Metrics:
 
-- [`test-coverage` for Completed Workflow Jobs](#test-coverage-for-completed-workflow-jobs)
+- [`test-coverage` for Completed Workflow Jobs mentioning tests](#test-coverage-for-completed-workflow-jobs-mentioning-tests)
 - [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
 
 ## Metrics
@@ -613,17 +613,28 @@ type ToolingUsageOutput = {
 };
 ```
 
-### `test-coverage` for Completed Workflow Jobs
+### `test-coverage` for Completed Workflow Jobs mentioning tests
 
 Triggers:
 
 - [`workflow-job` (GitHub Event)](#workflow-job-github-event)
 
-Condition, detecting completed jobs:
+Condition, detecting completed jobs, that seem to mention tests in their name,
+the workflow name, or in the steps:
 
 ```ts
+const testNameDetection =
+  /test|jest|[^j]ava|puppeteer|cypress|selenium|playwright|mocha|jasmine/;
+
 // Any completed job of any workflow
-payload.action === "completed";
+payload.action === "completed" &&
+  [
+    payload.workflow_job.name,
+    payload.workflow_job.workflow_name,
+    ...payload.workflow_job.steps.map((step) => step.name),
+  ]
+    .filter((name): name is string => name !== null)
+    .some((name) => testNameDetection.test(name));
 ```
 
 GitHub docs on events with action "completed":
@@ -669,19 +680,19 @@ type TestCoverageOutput = {
   /** Job conclusion, see GitHub docs */
   conclusion: string;
 
-  /**
-   * If the workflow that ran this job seems to be about tests
-   * Currently using regex: /test/i
-   */
+  /** If the workflow that ran this job seems to be about tests */
   is_workflow_name_about_test: boolean;
 
-  /** If any job steps that mention tests (same check as above) failed */
+  /** If this job seems to be about tests */
+  is_job_name_about_test: boolean;
+
+  /** If any job steps that mention tests failed */
   has_failed_steps: boolean;
 
-  /** Duration of all job steps that mention tests (same check as above) */
+  /** Duration of all job steps that mention tests */
   total_tests_duration: number;
 
-  /** List of steps that were executed in the job that mention tests (same check as above) */
+  /** List of steps that were executed in the job that mention tests */
   steps_about_test: Array<{
     /** Step name */
     name: string;
