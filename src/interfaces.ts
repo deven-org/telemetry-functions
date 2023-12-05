@@ -1,13 +1,13 @@
-import { CheckSuiteMetricsOutput } from "./metrics/check_suite/interfaces";
-import { CodeReviewInvolvementOutput } from "./metrics/code_review_involvement/interfaces";
-import { ReleaseVersionsOutput } from "./metrics/release_versions/interfaces";
+import { CheckSuiteMetricsOutput } from "./metrics/check-suite/interfaces";
+import { CodeReviewInvolvementOutput } from "./metrics/code-review-involvement/interfaces";
+import { ReleaseVersionsOutput } from "./metrics/release-versions/interfaces";
 import {
   ToolingUsageOutput,
   ToolingUsagePayload,
-} from "./metrics/tooling_usage/interfaces";
+} from "./metrics/tooling-usage/interfaces";
 import { WorkflowsOutput } from "./metrics/workflows/interfaces";
-import { CommitsPerPrOutput } from "./metrics/commits_per_pr/interfaces";
-import { WorkflowJobTestCoverageOutput } from "./metrics/test_coverage/interfaces";
+import { CommitsPerPrOutput } from "./metrics/commits-per-pr/interfaces";
+import { WorkflowJobTestCoverageOutput } from "./metrics/test-coverage/interfaces";
 import { DeploymentOutput } from "./metrics/deployments/interfaces";
 import {
   CreateEvent,
@@ -16,7 +16,7 @@ import {
   CheckSuiteEvent,
   DeploymentEvent,
 } from "@octokit/webhooks-types";
-import { DocumentationUpdatedOutput } from "./metrics/documentation_updated/interfaces";
+import { DocumentationUpdatedOutput } from "./metrics/documentation-updated/interfaces";
 
 export enum TriggerSource {
   Github = "github",

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[0] INPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[0] INPUT 1`] = `
 {
   "action": "created",
   "deployment": {
@@ -156,7 +156,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 }
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[0] OUTPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[0] OUTPUT 1`] = `
 [
   {
     "created_at": 1700000000000,
@@ -182,7 +182,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 ]
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[1] INPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[1] INPUT 1`] = `
 {
   "action": "created",
   "deployment": {
@@ -436,7 +436,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 }
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[1] OUTPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[1] OUTPUT 1`] = `
 [
   {
     "created_at": 1700000000000,
@@ -462,7 +462,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 ]
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[2] INPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[2] INPUT 1`] = `
 {
   "action": "created",
   "deployment": {
@@ -624,7 +624,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 }
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[2] OUTPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[2] OUTPUT 1`] = `
 [
   {
     "created_at": 1700000000000,
@@ -650,7 +650,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 ]
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[3] INPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[3] INPUT 1`] = `
 {
   "action": "created",
   "deployment": {
@@ -816,7 +816,7 @@ exports[`Deployments handles a range of mocked deployment events: deployment fix
 }
 `;
 
-exports[`Deployments handles a range of mocked deployment events: deployment fixture[3] OUTPUT 1`] = `
+exports[`deployments handles a range of mocked deployment events: deployment fixture[3] OUTPUT 1`] = `
 [
   {
     "created_at": 1700000000000,
