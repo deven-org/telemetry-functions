@@ -122,13 +122,13 @@ Metrics:
 POST Request Header:
 
 ```
-X-Deven-Event: toolingUsage
+X-Deven-Event: tooling-usage
 ```
 
 POST Request Body:
 
 ```ts
-type ToolingUsagePayload = {
+type ToolingUsageBody = {
   /** Repository name */
   owner: string;
 

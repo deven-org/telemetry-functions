@@ -1,10 +1,12 @@
 import octokit from "../../core/octokit";
+// imports needed for mocking to succeed
 import "../../core/collectMetrics";
-import "../../core/addSignature";
+import "../../core/add-signature";
 import {
   DataEventSignature,
   MetricData,
   MetricsSignature,
+  TriggerSource,
 } from "../../interfaces";
 import { handler } from "../../handler";
 import "../logger";
@@ -35,7 +37,7 @@ const dataSignatureResponse = {
   ),
 };
 
-jest.mock("../../core/addSignature", () => ({
+jest.mock("../../core/add-signature", () => ({
   __esModule: true,
   addSignature: () => {
     return new Promise((res) => {
@@ -91,9 +93,12 @@ jest.mock("../../core/octokit", () => ({
 describe("storeData", () => {
   it("pushes the enhanced data event to the data repo as json file", async () => {
     const event = {
-      foo: "foo",
-      bar: "bar",
-      eventSignature: "event-signature",
+      source: TriggerSource.Unknown,
+      sourceEventSignature: "event-signature",
+      payload: {
+        foo: "foo",
+        bar: "bar",
+      },
     };
     await handler(event);
 

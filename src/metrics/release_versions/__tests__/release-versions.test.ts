@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 
 import mockedCheckSuite from "./fixtures/mocked-tag-create-event.json";
@@ -41,9 +46,10 @@ describe("Release versions", () => {
   });
 
   it("event gets signed as create event", async () => {
-    const eventBody = {
-      eventSignature: "create",
-      ...mockedCheckSuite,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "create",
+      payload: mockedCheckSuite,
     };
 
     const output = await handler(eventBody);
@@ -58,9 +64,10 @@ describe("Release versions", () => {
   });
 
   it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "create",
-      ...mockedCheckSuite,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "create",
+      payload: mockedCheckSuite,
     };
 
     const output = await handler(eventBody);
@@ -93,8 +100,9 @@ describe("Release versions", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "create",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "create",
+          payload: fix,
         })
       )
     );

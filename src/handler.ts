@@ -2,16 +2,15 @@ import { collectMetrics } from "./core/collectMetrics";
 import { errorCatcher, ErrorForCatcher, storeData } from "./core";
 import { logger } from "./core/logger";
 import { LogInfos } from "./shared/logMessages";
-import { addSignature } from "./core/addSignature";
-import { RawEvent } from "./interfaces";
+import { addSignature } from "./core/add-signature";
+import { MetricData, RawEvent } from "./interfaces";
 
-export const handler = async (event: RawEvent): Promise<any> => {
-  const actionLog = (action: string | undefined): string =>
-    action ? ` (action: "${action}") ` : "";
-
+export const handler = async (
+  event: RawEvent
+): Promise<undefined | MetricData[]> => {
   logger.start(
     LogInfos.eventReceived,
-    `${event.eventSignature}${actionLog(event.action)}` || "unknown"
+    `${event.source}:${event.sourceEventSignature}`
   );
 
   try {
