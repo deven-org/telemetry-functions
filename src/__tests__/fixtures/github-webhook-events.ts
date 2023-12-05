@@ -7,16 +7,13 @@ import {
   WebhookEventMap,
   WebhookEventName,
 } from "@octokit/webhooks-types";
-import { clone } from "ramda";
 import { clean as semverClean } from "semver";
+import cloneDeep from "lodash.clonedeep";
 
 type ExampleData = Array<{
   name: WebhookEventName;
   examples: WebhookEvent[]; // hard to type more specifically here, we'll assert it later
 }>;
-
-// The ramda function is useful but is missing typings
-type Clone = <T>(source: T) => T;
 
 const patchedExampleData = addPatches(exampleDataJson as ExampleData);
 
@@ -36,7 +33,7 @@ export function getWebhookEventFixtureList<T extends WebhookEventName>(
   }
 
   // Deep-cloned so that the test cannot accidentally alter the source data.
-  return (clone as Clone)(examples);
+  return cloneDeep(examples);
 }
 
 export function getWebhookEventFixture<T extends WebhookEventName>(
@@ -49,7 +46,7 @@ export function getWebhookEventFixture<T extends WebhookEventName>(
 // Applies patches to the dataset
 function addPatches(data: ExampleData): ExampleData {
   // The deep clone prevents the imported data to be mutated globally for the runtime
-  let clonedData = (clone as Clone)(data);
+  let clonedData = cloneDeep(data);
 
   clonedData = addPullRequestPatches(clonedData);
   clonedData = addCreatePatches(clonedData);
@@ -84,7 +81,7 @@ function addPullRequestPatches(data: ExampleData): ExampleData {
   );
 
   for (const unmergedExample of unmergedExamples) {
-    const mergedExample = (clone as Clone)(unmergedExample);
+    const mergedExample = cloneDeep(unmergedExample);
 
     mergedExample.pull_request.merged = true;
     mergedExample.pull_request.merged_at = mergedExample.pull_request.closed_at;
@@ -126,7 +123,7 @@ function addCreatePatches(data: ExampleData): ExampleData {
   );
 
   for (const unmergedExample of unmergedExamples) {
-    const mergedExample = (clone as Clone)(unmergedExample);
+    const mergedExample = cloneDeep(unmergedExample);
 
     mergedExample.ref = "v1.2.3";
 

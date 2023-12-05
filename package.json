@@ -42,7 +42,9 @@
     "@netlify/functions": "^2.4.0",
     "@octokit/rest": "^19.0.7",
     "dotenv": "^16.0.3",
-    "js-base64": "^3.7.5"
+    "js-base64": "^3.7.5",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.pick": "^4.4.0"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.4.4",
@@ -50,6 +52,8 @@
     "@octokit/webhooks-examples": "^7.3.1",
     "@octokit/webhooks-types": "^7.3.1",
     "@types/jest": "^29.4.1",
+    "@types/lodash.clonedeep": "^4.5.9",
+    "@types/lodash.pick": "^4.4.9",
     "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "cli-table3": "^0.6.3",
@@ -59,7 +63,6 @@
     "netlify": "^13.1.10",
     "netlify-cli": "^17.3.1",
     "prettier": "^2.8.4",
-    "ramda": "^0.29.0",
     "semver": "^7.5.4",
     "signale": "^1.4.0",
     "ts-jest": "^29.0.5"
