@@ -1,5 +1,5 @@
 import { getErrorForCatcher, logger } from ".";
-import { clone } from "ramda";
+import cloneDeep from "lodash.clonedeep";
 import metricsConditions from "../metricsConditions";
 import { LogSuccess, LogWarnings } from "../shared/logMessages";
 import { MetricData, SignedDataEvent } from "../interfaces";
@@ -10,7 +10,7 @@ export const collectMetrics = async (
   const collectedMetrics: MetricData[] = [];
 
   for (const [condition, collect] of metricsConditions) {
-    const clonedDataEvent = clone(dataEvent);
+    const clonedDataEvent = cloneDeep(dataEvent);
     if (condition(clonedDataEvent)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const metrics = await collect(clonedDataEvent);
