@@ -37,7 +37,7 @@ const handler: Handler = async (event: HandlerEvent) => {
 
     const rawEvent: RawEvent = getRawEventFromHandlerEvent(event);
 
-    const result: any = await collectMetricsHandler(rawEvent);
+    const result: unknown = await collectMetricsHandler(rawEvent);
 
     return {
       statusCode: 200,
