@@ -1,7 +1,7 @@
-import { collectMetrics } from "./core/collectMetrics";
+import { collectMetrics } from "./core/collect-metrics";
 import { errorCatcher, ErrorForCatcher, storeData } from "./core";
 import { logger } from "./core/logger";
-import { LogInfos } from "./shared/logMessages";
+import { LogInfos } from "./shared/log-messages";
 import { addSignature } from "./core/add-signature";
 import { MetricData, RawEvent } from "./interfaces";
 

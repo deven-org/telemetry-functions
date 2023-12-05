@@ -1,5 +1,5 @@
 import { getErrorForCatcher, logger } from ".";
-import { LogInfos, LogWarnings } from "../shared/logMessages";
+import { LogInfos, LogWarnings } from "../shared/log-messages";
 import { SignedDataEvent, RawEvent } from "../interfaces";
 import { identifyTriggerEventSignature } from "../trigger-signatures";
 

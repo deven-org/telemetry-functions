@@ -1,4 +1,4 @@
 export * from "./add-signature";
-export * from "./storeData";
+export * from "./store-data";
 export * from "./logger";
-export * from "./errorCatcher";
+export * from "./error-catcher";

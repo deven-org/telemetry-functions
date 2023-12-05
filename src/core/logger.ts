@@ -1,6 +1,6 @@
-import { Signale, SignaleOptions } from "signale";
+import { Signale, SignaleOptions, DefaultMethods } from "signale";
 
-const options: SignaleOptions = {
+const options: SignaleOptions<DefaultMethods | "skip"> = {
   stream: process.stdout,
   types: {
     skip: {
