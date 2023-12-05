@@ -1,7 +1,7 @@
 import { SemVer, clean as semverClean, parse as semverParse } from "semver";
-import { pick } from "ramda";
 import { ReleaseVersion } from "./interfaces";
 import { LogErrors } from "../../shared/logMessages";
+import pick from "lodash.pick";
 
 export const getVersionByString = (ref: string): ReleaseVersion => {
   const version: SemVer | null = semverParse(semverClean(ref, { loose: true }));
@@ -11,11 +11,14 @@ export const getVersionByString = (ref: string): ReleaseVersion => {
       `${LogErrors.releaseVersionsUnexpectedInvalidVersion}: ${ref}`
     );
   }
-  return pick(
-    ["raw", "major", "minor", "patch", "prerelease", "build", "version"],
-    version
-  ) as Pick<
-    SemVer,
-    "raw" | "major" | "minor" | "patch" | "prerelease" | "build" | "version"
-  >;
+
+  return pick(version, [
+    "raw",
+    "major",
+    "minor",
+    "patch",
+    "prerelease",
+    "build",
+    "version",
+  ]);
 };
