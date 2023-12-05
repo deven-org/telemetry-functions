@@ -1,5 +1,4 @@
 import { CreateEvent } from "@octokit/webhooks-types";
-import { SemVer } from "semver";
 
 export type ReleaseVersionsPayload = CreateEvent;
 
