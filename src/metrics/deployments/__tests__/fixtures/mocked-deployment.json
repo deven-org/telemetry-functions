@@ -1,5 +1,4 @@
 {
-  "eventSignature": "deployment",
   "action": "created",
   "repo": "telemetry-functions",
   "owner": "deven-org",

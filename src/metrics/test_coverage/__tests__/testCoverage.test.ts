@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
 import mockedWorkflowJobCompletedWithTestSteps from "./fixtures/mocked-workflow-job-completed-with-test-steps.json";
@@ -51,9 +56,10 @@ describe("Test_Coverage", () => {
   });
 
   it("event gets signed as test_coverage event", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompletedWithTestName,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompletedWithTestName,
     };
 
     const output = await handler(eventBody);
@@ -68,9 +74,10 @@ describe("Test_Coverage", () => {
   });
 
   it("collects no metrics if not about test", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompleted,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompleted,
     };
 
     const output = await handler(eventBody);
@@ -79,9 +86,10 @@ describe("Test_Coverage", () => {
   });
 
   it("returns collected metrics (with test in job name)", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompletedWithTestName,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompletedWithTestName,
     };
 
     const output = await handler(eventBody);
@@ -109,9 +117,10 @@ describe("Test_Coverage", () => {
   });
 
   it("returns collected metrics (with test in workflow name)", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompletedWithTestWorkflowName,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompletedWithTestWorkflowName,
     };
 
     const output = await handler(eventBody);
@@ -139,9 +148,10 @@ describe("Test_Coverage", () => {
   });
 
   it("returns collected metrics (with test in step names)", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompletedWithTestSteps,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompletedWithTestSteps,
     };
 
     const output = await handler(eventBody);
@@ -195,8 +205,9 @@ describe("Test_Coverage", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "workflow_job",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "workflow_job",
+          payload: fix,
         })
       )
     );

@@ -1,41 +1,35 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { handler as collectMetricsHandler } from "../../src/handler";
-import {
-  path,
-  pipe,
-  filter,
-  pick,
-  isNotNil,
-  values,
-  head,
-  either,
-  always,
-  assoc,
-} from "ramda";
-import { RawEvent } from "../../src/interfaces";
+import { RawEvent, TriggerSource } from "../../src/interfaces";
 
-const handler: Handler = async (event: HandlerEvent) => {
+const headerSourceMap: Record<string, TriggerSource> = {
+  ["x-github-event"]: TriggerSource.Github,
+  ["x-deven-event"]: TriggerSource.Deven,
+};
+
+function identifySourceAndEvent(
+  headers: HandlerEvent["headers"]
+): Pick<RawEvent, "source" | "sourceEventSignature"> {
+  for (const [headerName, source] of Object.entries(headerSourceMap)) {
+    const sourceEventSignature = headers[headerName];
+
+    if (sourceEventSignature) {
+      return { source, sourceEventSignature };
+    }
+  }
+
+  return {
+    source: TriggerSource.Unknown,
+    sourceEventSignature: "unknown",
+  };
+}
+
+export const handler: Handler = async (event: HandlerEvent) => {
   try {
-    const getBodyFromHandlerEvent: (HandlerEvent) => string = pipe(
-      path(["body"]),
-      String,
-      JSON.parse
-    );
-
-    const getEventNameFromHandlerEvent: (HandlerEvent) => string = pipe(
-      path(["headers"]),
-      pick(["x-github-event", "x-deven-event"]),
-      filter(isNotNil),
-      values,
-      either(head, always("unknown"))
-    );
-
-    const getRawEventFromHandlerEvent: (HandlerEvent) => RawEvent = pipe(
-      getBodyFromHandlerEvent,
-      assoc("eventSignature", getEventNameFromHandlerEvent(event))
-    );
-
-    const rawEvent: RawEvent = getRawEventFromHandlerEvent(event);
+    const rawEvent: RawEvent = {
+      payload: event.body ? JSON.parse(event.body) : null,
+      ...identifySourceAndEvent(event.headers),
+    };
 
     const result: unknown = await collectMetricsHandler(rawEvent);
 
@@ -43,12 +37,16 @@ const handler: Handler = async (event: HandlerEvent) => {
       statusCode: 200,
       body: JSON.stringify(result),
     };
-  } catch (e: any) {
+  } catch (e: unknown) {
     return {
       statusCode: 500,
-      body: e && e.message ? e.message : e,
+      body:
+        typeof e === "object" &&
+        e !== null &&
+        "message" in e &&
+        typeof e.message === "string"
+          ? e.message
+          : "server error",
     };
   }
 };
-
-export { handler };

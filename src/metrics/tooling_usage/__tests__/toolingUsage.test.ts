@@ -2,11 +2,11 @@ import {
   DataEventSignature,
   MetricsSignature,
   RawEvent,
+  TriggerSource,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import { Mocktokit } from "../../../__tests__/mocktokit";
-import { ToolingUsagePayload } from "../interfaces";
 
 // Only collect this metric
 jest.mock("../../../metricsConditions.ts", () =>
@@ -38,10 +38,13 @@ describe("Tooling_Usage", () => {
 
   const GET_CONFIG_ENDPOINT = "GET /repos/{owner}/{repo}/contents/{path}";
 
-  const eventBody: RawEvent & ToolingUsagePayload = {
-    eventSignature: "toolingUsage",
-    owner: "test-owner",
-    repo: "test-repo",
+  const eventBody: RawEvent = {
+    source: TriggerSource.Deven,
+    sourceEventSignature: "tooling-usage",
+    payload: {
+      owner: "test-owner",
+      repo: "test-repo",
+    },
   };
 
   beforeAll(() => {
@@ -66,7 +69,7 @@ describe("Tooling_Usage", () => {
       },
     });
 
-    const result: [] = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(result).toMatchObject([
       {
@@ -86,7 +89,7 @@ describe("Tooling_Usage", () => {
       throw error;
     };
 
-    const result: [] = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(result).toStrictEqual([
       {
@@ -114,7 +117,7 @@ describe("Tooling_Usage", () => {
       },
     });
 
-    const result: [] = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(result).toStrictEqual([
       {
@@ -142,7 +145,7 @@ describe("Tooling_Usage", () => {
       },
     });
 
-    const result: [] = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(result).toStrictEqual([
       {
@@ -170,7 +173,7 @@ describe("Tooling_Usage", () => {
       },
     });
 
-    const result: [] = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(result).toStrictEqual([
       {

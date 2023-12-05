@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
@@ -81,9 +86,10 @@ describe("Commits Per PR", () => {
   });
 
   it("event gets signed as pull_request event", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrClosed,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
@@ -103,9 +109,10 @@ describe("Commits Per PR", () => {
   });
 
   it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrClosed,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
@@ -114,7 +121,7 @@ describe("Commits Per PR", () => {
         data: commitsData,
       });
 
-    const result: [] = await handler(eventBody);
+    const result = await handler(eventBody);
 
     expect(result).toStrictEqual([
       {
@@ -155,9 +162,10 @@ describe("Commits Per PR", () => {
   });
 
   it("sets status to networkError if commits fetch fails", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrClosed,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
@@ -168,7 +176,7 @@ describe("Commits Per PR", () => {
     const result = await handler(eventBody);
 
     expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject({
+    expect(result?.[0]).toMatchObject({
       created_at: FAKE_NOW,
       output: {
         pr_id: 42424242,
@@ -196,8 +204,9 @@ describe("Commits Per PR", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "pull_request",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "pull_request",
+          payload: fix,
         })
       )
     );

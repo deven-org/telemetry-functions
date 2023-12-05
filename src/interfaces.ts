@@ -18,6 +18,12 @@ import {
 } from "@octokit/webhooks-types";
 import { DocumentationUpdatedOutput } from "./metrics/documentation_updated/interfaces";
 
+export enum TriggerSource {
+  Github = "github",
+  Deven = "deven",
+  Unknown = "unknown",
+}
+
 export enum DataEventSignature {
   WorkflowJob = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
@@ -25,7 +31,6 @@ export enum DataEventSignature {
   CheckSuite = "check-suite",
   Deployment = "deployment",
   TagOrBranchCreation = "create",
-  Unknown = "unknown",
 }
 
 export enum MetricsSignature {
@@ -47,7 +52,6 @@ interface DataEventPayloadMap {
   [DataEventSignature.CheckSuite]: CheckSuiteEvent;
   [DataEventSignature.Deployment]: DeploymentEvent;
   [DataEventSignature.TagOrBranchCreation]: CreateEvent;
-  [DataEventSignature.Unknown]: unknown;
 }
 
 interface MetricsSignatureOutputMap {
@@ -63,8 +67,9 @@ interface MetricsSignatureOutputMap {
 }
 
 export interface RawEvent {
-  eventSignature: string;
-  action?: string;
+  source: TriggerSource;
+  sourceEventSignature: string;
+  payload: unknown;
 }
 
 export interface SignedDataEvent<
