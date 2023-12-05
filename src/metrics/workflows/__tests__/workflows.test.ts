@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import mockedPackageWithDocSkeleton from "./fixtures/mocked-package.json";
@@ -42,9 +47,10 @@ describe("Workflows", () => {
   });
 
   it("event gets signed as workflow_job event", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompleted,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompleted,
     };
 
     const output = await handler(eventBody);
@@ -59,9 +65,10 @@ describe("Workflows", () => {
   });
 
   it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "workflow_job",
-      ...mockedWorkflowJobCompleted,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "workflow_job",
+      payload: mockedWorkflowJobCompleted,
     };
 
     octokitResponse = {
@@ -70,7 +77,7 @@ describe("Workflows", () => {
       },
     };
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toMatchObject([
       {
@@ -115,8 +122,9 @@ describe("Workflows", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "workflow_job",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "workflow_job",
+          payload: fix,
         })
       )
     );

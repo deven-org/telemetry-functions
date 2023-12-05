@@ -1,5 +1,9 @@
 import { encode } from "js-base64";
-import { DataEventSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
 import mockedDeploymentList from "./fixtures/mocked-deployment-list.json";
@@ -51,8 +55,10 @@ describe("Deployments", () => {
   });
 
   it("event gets signed as deployment event", async () => {
-    const eventBody = {
-      ...mockedDeploymentEvent,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "deployment",
+      payload: mockedDeploymentEvent,
     };
 
     Mocktokit.mocks[
@@ -81,8 +87,10 @@ describe("Deployments", () => {
   });
 
   it("sets timeSinceLastDeploy to null if there was no previous deploy on env", async () => {
-    const eventBody = {
-      ...mockedDeploymentEvent,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "deployment",
+      payload: mockedDeploymentEvent,
     };
 
     Mocktokit.mocks[
@@ -101,7 +109,7 @@ describe("Deployments", () => {
     const result = await handler(eventBody);
 
     expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject({
+    expect(result?.[0]).toMatchObject({
       status: "success",
       output: {
         deployTime: 1658193553000,
@@ -120,8 +128,10 @@ describe("Deployments", () => {
   });
 
   it("sets status to networkError if deployments fetch fails", async () => {
-    const eventBody = {
-      ...mockedDeploymentEvent,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "deployment",
+      payload: mockedDeploymentEvent,
     };
 
     Mocktokit.mocks[
@@ -139,7 +149,7 @@ describe("Deployments", () => {
     const result = await handler(eventBody);
 
     expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject({
+    expect(result?.[0]).toMatchObject({
       status: "networkError",
       output: {
         deployTime: 1658193553000,
@@ -155,8 +165,10 @@ describe("Deployments", () => {
   });
 
   it("sets status to networkError if packageJson fetch fails", async () => {
-    const eventBody = {
-      ...mockedDeploymentEvent,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "deployment",
+      payload: mockedDeploymentEvent,
     };
 
     Mocktokit.mocks[
@@ -173,7 +185,7 @@ describe("Deployments", () => {
     const result = await handler(eventBody);
 
     expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject({
+    expect(result?.[0]).toMatchObject({
       status: "networkError",
       output: {
         deployTime: 1658193553000,
@@ -207,8 +219,9 @@ describe("Deployments", () => {
     const result = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "deployment",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "deployment",
+          payload: fix,
         })
       )
     );

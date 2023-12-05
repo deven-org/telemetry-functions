@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrMerged from "./fixtures/mocked-pull-request-merged.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
@@ -71,9 +76,10 @@ describe("Documentation Updated", () => {
   });
 
   it("event gets signed as pull_request event", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrMerged,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrMerged,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
@@ -94,9 +100,10 @@ describe("Documentation Updated", () => {
   });
 
   it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrMerged,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrMerged,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
@@ -105,7 +112,7 @@ describe("Documentation Updated", () => {
         data: prFilesData,
       });
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toMatchObject([
       {
@@ -125,9 +132,10 @@ describe("Documentation Updated", () => {
   });
 
   it("reports over100Files if result is paginated", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrMerged,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrMerged,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
@@ -138,7 +146,7 @@ describe("Documentation Updated", () => {
         data: prFilesData,
       });
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toMatchObject([
       {
@@ -158,9 +166,10 @@ describe("Documentation Updated", () => {
   });
 
   it("sets status to networkError if prFiles fetch fails", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrMerged,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrMerged,
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
@@ -168,7 +177,7 @@ describe("Documentation Updated", () => {
         throw new Error("mocked network error");
       };
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toMatchObject([
       {
@@ -196,8 +205,9 @@ describe("Documentation Updated", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "pull_request",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "pull_request",
+          payload: fix,
         })
       )
     );

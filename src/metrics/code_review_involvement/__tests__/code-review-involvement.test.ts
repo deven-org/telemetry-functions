@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
@@ -40,9 +45,10 @@ describe("Code Reviews Involvement", () => {
   });
 
   it("event gets signed as pull_request event", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrClosed,
     };
 
     const output = await handler(eventBody);
@@ -56,12 +62,13 @@ describe("Code Reviews Involvement", () => {
   });
 
   it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "pull_request",
-      ...mockedPrClosed,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "pull_request",
+      payload: mockedPrClosed,
     };
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toMatchObject([
       {
@@ -95,8 +102,9 @@ describe("Code Reviews Involvement", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "pull_request",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "pull_request",
+          payload: fix,
         })
       )
     );

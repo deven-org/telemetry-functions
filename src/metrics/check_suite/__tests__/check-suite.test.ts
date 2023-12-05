@@ -1,4 +1,9 @@
-import { DataEventSignature, MetricsSignature } from "../../../interfaces";
+import {
+  DataEventSignature,
+  MetricsSignature,
+  RawEvent,
+  TriggerSource,
+} from "../../../interfaces";
 import { handler } from "../../../handler";
 
 import mockedCheckSuite from "./fixtures/mocked-check-suite.json";
@@ -41,9 +46,10 @@ describe("Check Suite", () => {
   });
 
   it("event gets signed as pull_request event", async () => {
-    const eventBody = {
-      eventSignature: "check_suite",
-      ...mockedCheckSuite,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "check_suite",
+      payload: mockedCheckSuite,
     };
 
     const output = await handler(eventBody);
@@ -58,12 +64,13 @@ describe("Check Suite", () => {
   });
 
   it("returns collected metrics", async () => {
-    const eventBody = {
-      eventSignature: "check_suite",
-      ...mockedCheckSuite,
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: "check_suite",
+      payload: mockedCheckSuite,
     };
 
-    const output: [] = await handler(eventBody);
+    const output = await handler(eventBody);
 
     expect(output).toStrictEqual([
       {
@@ -91,8 +98,9 @@ describe("Check Suite", () => {
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
-          eventSignature: "check_suite",
-          ...fix,
+          source: TriggerSource.Github,
+          sourceEventSignature: "check_suite",
+          payload: fix,
         })
       )
     );

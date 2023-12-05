@@ -4,8 +4,6 @@ import { MetricData } from "../interfaces";
 import octokit from "./octokit";
 
 export const storeData = async (metricData: MetricData[]) => {
-  if (!metricData) return false;
-
   for (const data of metricData) {
     logger.pending(
       `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`

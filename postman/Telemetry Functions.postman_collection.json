@@ -159,13 +159,13 @@
 					},
 					{
 						"key": "X-Deven-Event",
-						"value": "toolingUsage",
+						"value": "tooling-usage",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"eventSignature\": \"deven-tooling-usage\",\n  \"repo\": \"telemetry-functions\",\n  \"owner\": \"deven-org\"\n}\n",
+					"raw": "{\n  \"repo\": \"telemetry-functions\",\n  \"owner\": \"deven-org\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
