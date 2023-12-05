@@ -12,9 +12,9 @@ import {
   PackageJsonInformation,
 } from "./interfaces";
 import { decode } from "js-base64";
-import { getTimestamp } from "../../shared/getTimestamp";
+import { getTimestamp } from "../../shared/get-timestamp";
 import { logger } from "../../core";
-import { LogErrors } from "../../shared/logMessages";
+import { LogErrors } from "../../shared/log-messages";
 
 export const collectDeploymentMetrics = async (
   dataEvent: SignedDataEvent

@@ -12,8 +12,8 @@ import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-w
 import { Mocktokit } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
-jest.mock("../../../metricsConditions.ts", () =>
-  jest.requireActual("../metricsConditions")
+jest.mock("../../../metrics-conditions.ts", () =>
+  jest.requireActual("../metrics-conditions")
 );
 
 jest.mock(
@@ -36,7 +36,7 @@ jest.mock("../../../core/logger.ts", () => ({
   },
 }));
 
-describe("Deployments", () => {
+describe("deployments", () => {
   const FAKE_NOW = 1700000000000;
 
   beforeAll(() => {

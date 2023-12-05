@@ -11,8 +11,8 @@ import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
 // Only collect this metric
-jest.mock("../../../metricsConditions.ts", () =>
-  jest.requireActual("../metricsConditions")
+jest.mock("../../../metrics-conditions.ts", () =>
+  jest.requireActual("../metrics-conditions")
 );
 
 let octokitResponse = {};
@@ -39,7 +39,7 @@ jest.mock("../../../core/logger.ts", () => ({
   },
 }));
 
-describe("Workflows", () => {
+describe("workflows", () => {
   const FAKE_NOW = 1700000000000;
 
   beforeAll(() => {

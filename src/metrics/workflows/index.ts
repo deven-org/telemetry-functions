@@ -5,7 +5,7 @@ import {
   MetricData,
 } from "../../interfaces";
 import { WorkflowsOutput, WorkflowsPayload } from "./interfaces";
-import { getTimestamp } from "../../shared/getTimestamp";
+import { getTimestamp } from "../../shared/get-timestamp";
 
 export const collectWorkflowsMetrics = async (
   dataEvent: SignedDataEvent

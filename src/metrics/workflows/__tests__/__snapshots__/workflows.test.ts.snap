@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[0] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[0] INPUT 1`] = `
 {
   "action": "in_progress",
   "organization": {
@@ -168,9 +168,9 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[0] OUTPUT 1`] = `undefined`;
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[0] OUTPUT 1`] = `undefined`;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[1] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[1] INPUT 1`] = `
 {
   "action": "completed",
   "organization": {
@@ -432,7 +432,7 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[1] OUTPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[1] OUTPUT 1`] = `
 [
   {
     "created_at": 1700000000000,
@@ -564,7 +564,7 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 ]
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[2] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[2] INPUT 1`] = `
 {
   "action": "completed",
   "organization": {
@@ -794,7 +794,7 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[2] OUTPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[2] OUTPUT 1`] = `
 [
   {
     "created_at": 1700000000000,
@@ -890,7 +890,7 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 ]
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[3] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[3] INPUT 1`] = `
 {
   "action": "in_progress",
   "installation": {
@@ -1054,9 +1054,9 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[3] OUTPUT 1`] = `undefined`;
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[3] OUTPUT 1`] = `undefined`;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[4] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[4] INPUT 1`] = `
 {
   "action": "in_progress",
   "installation": {
@@ -1292,9 +1292,9 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[4] OUTPUT 1`] = `undefined`;
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[4] OUTPUT 1`] = `undefined`;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[5] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[5] INPUT 1`] = `
 {
   "action": "queued",
   "installation": {
@@ -1449,9 +1449,9 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[5] OUTPUT 1`] = `undefined`;
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[5] OUTPUT 1`] = `undefined`;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[6] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[6] INPUT 1`] = `
 {
   "action": "queued",
   "deployment": {
@@ -1738,9 +1738,9 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[6] OUTPUT 1`] = `undefined`;
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[6] OUTPUT 1`] = `undefined`;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[7] INPUT 1`] = `
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[7] INPUT 1`] = `
 {
   "action": "waiting",
   "installation": {
@@ -1904,4 +1904,4 @@ exports[`Workflows handles a range of mocked workflow_job events: workflow_job f
 }
 `;
 
-exports[`Workflows handles a range of mocked workflow_job events: workflow_job fixture[7] OUTPUT 1`] = `undefined`;
+exports[`workflows handles a range of mocked workflow_job events: workflow_job fixture[7] OUTPUT 1`] = `undefined`;

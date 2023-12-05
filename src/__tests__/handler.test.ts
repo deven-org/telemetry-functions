@@ -1,8 +1,8 @@
 import * as moduleAddSignature from "../core/add-signature";
-import * as moduleCollectMetrics from "../core/collectMetrics";
+import * as moduleCollectMetrics from "../core/collect-metrics";
 import { handler } from "../handler";
 import { logger } from "../core/logger";
-import { LogWarnings } from "../shared/logMessages";
+import { LogWarnings } from "../shared/log-messages";
 import { DataEventSignature, TriggerSource } from "../interfaces";
 import { Mocktokit } from "./mocktokit";
 
