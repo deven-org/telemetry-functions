@@ -27,7 +27,8 @@
   "scripts": {
     "build": "rm -fr dist && microbundle --target node -f umd",
     "prettier": "prettier --config .prettierrc.js 'src/**/*.ts' --write",
-    "lint": "eslint --fix **/*.ts",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --fix --ext .ts .",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:dev": "jest --watch",
