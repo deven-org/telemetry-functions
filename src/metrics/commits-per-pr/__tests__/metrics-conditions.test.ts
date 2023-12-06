@@ -1,11 +1,11 @@
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { DataEventSignature, SignedDataEvent } from "../../../interfaces";
+import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
 import { isSignedAsCommitsPerPr } from "../metrics-conditions";
 
 describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
   it("returns false if event is not signed as PullRequest", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.CheckSuite,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.CheckSuite,
       payload: getWebhookEventFixture("check_suite"),
       created_at: 100,
     };
@@ -14,8 +14,8 @@ describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
   });
 
   it("returns false if event is signed as PullRequest but not closed", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.PullRequest,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       payload: getWebhookEventFixture(
         "pull_request",
         (ex) => ex.action !== "closed"
@@ -27,8 +27,8 @@ describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
   });
 
   it("returns false if event is a closed PullRequest but not merged", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.PullRequest,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       payload: getWebhookEventFixture(
         "pull_request",
         (ex) => ex.action === "closed" && !ex.pull_request.merged
@@ -40,8 +40,8 @@ describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
   });
 
   it("returns true if event is signed as merged PullRequest", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.PullRequest,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       payload: getWebhookEventFixture(
         "pull_request",
         (ex) => ex.action === "closed" && ex.pull_request.merged

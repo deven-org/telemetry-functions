@@ -16007,7 +16007,6 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "pull-request",
     "metricsSignature": "documentation-updated",
     "output": {
       "prFiles": {
@@ -16019,6 +16018,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "pull-request",
   },
 ]
 `;
@@ -16579,7 +16579,6 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "pull-request",
     "metricsSignature": "documentation-updated",
     "output": {
       "prFiles": {
@@ -16591,6 +16590,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "pull-request",
   },
 ]
 `;

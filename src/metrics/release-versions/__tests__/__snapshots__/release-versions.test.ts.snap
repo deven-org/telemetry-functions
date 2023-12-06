@@ -792,7 +792,6 @@ exports[`release-versions handles a range of mocked create events: create fixtur
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "create",
     "metricsSignature": "release-versions",
     "output": {
       "releaseVersion": {
@@ -808,6 +807,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "create",
   },
 ]
 `;
@@ -944,7 +944,6 @@ exports[`release-versions handles a range of mocked create events: create fixtur
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "create",
     "metricsSignature": "release-versions",
     "output": {
       "releaseVersion": {
@@ -960,6 +959,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "create",
   },
 ]
 `;
@@ -1096,7 +1096,6 @@ exports[`release-versions handles a range of mocked create events: create fixtur
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "create",
     "metricsSignature": "release-versions",
     "output": {
       "releaseVersion": {
@@ -1112,6 +1111,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "create",
   },
 ]
 `;
@@ -1252,7 +1252,6 @@ exports[`release-versions handles a range of mocked create events: create fixtur
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "create",
     "metricsSignature": "release-versions",
     "output": {
       "releaseVersion": {
@@ -1268,6 +1267,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "create",
   },
 ]
 `;
@@ -1418,7 +1418,6 @@ exports[`release-versions handles a range of mocked create events: create fixtur
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "create",
     "metricsSignature": "release-versions",
     "output": {
       "releaseVersion": {
@@ -1434,6 +1433,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "create",
   },
 ]
 `;

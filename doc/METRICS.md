@@ -21,7 +21,7 @@
 
 ## Metric Envelope
 
-All collected metric data has an "envelope" object containing a `dataEventSignature` that identifies the event trigger, as well es a `metricsSignature` that identifies the kind of metric.
+All collected metric data has an "envelope" object containing a `trigger_event_signature` that identifies the event trigger, as well es a `metricsSignature` that identifies the kind of metric.
 
 <details><summary>Example JSON (<code>release-versions</code> metric output)</summary>
 
@@ -30,7 +30,7 @@ All collected metric data has an "envelope" object containing a `dataEventSignat
   "created_at": 1679419755468,
   "owner": "deven-org",
   "repo": "telemetry-functions",
-  "dataEventSignature": "pull-request",
+  "trigger_event_signature": "pull-request",
   "metricsSignature": "release-versions",
   "output": {
     "pull_number": 12,
@@ -63,7 +63,7 @@ type MetricEnvelope<Output extends object> = {
   repo: string;
 
   /** The ID of the triggering data-source, e.g. a GitHub event name */
-  dataEventSignature: string;
+  trigger_event_signature: string;
 
   /** The ID of the collected metric, as defined by the function */
   metricsSignature: string;
@@ -79,7 +79,7 @@ type MetricEnvelope<Output extends object> = {
 ## Trigger Events
 
 The following events are the possible triggers for collecting metrics.
-Each trigger's name is the respective `dataEventSignature` ID.
+Each trigger's name is the respective `trigger_event_signature` ID.
 
 ### `check-suite` (GitHub Event)
 
@@ -520,7 +520,7 @@ Triggers:
 Condition, detecting created tag with valid semver version:
 
 ```ts
-payload.ref_type !== "tag" && semverClean(dataEvent.payload.ref);
+payload.ref_type !== "tag" && semverClean(triggerEvent.payload.ref);
 ```
 
 <details><summary>Example JSON for release-versions output</summary>

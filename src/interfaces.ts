@@ -24,7 +24,7 @@ export enum TriggerSource {
   Unknown = "unknown",
 }
 
-export enum DataEventSignature {
+export enum TriggerEventSignature {
   WorkflowJob = "workflow-job",
   ToolingUsage = "deven-tooling-usage",
   PullRequest = "pull-request",
@@ -45,13 +45,13 @@ export enum MetricsSignature {
   DocumentationUpdated = "documentation-updated",
 }
 
-interface DataEventPayloadMap {
-  [DataEventSignature.WorkflowJob]: WorkflowJobEvent;
-  [DataEventSignature.ToolingUsage]: ToolingUsagePayload;
-  [DataEventSignature.PullRequest]: PullRequestEvent;
-  [DataEventSignature.CheckSuite]: CheckSuiteEvent;
-  [DataEventSignature.Deployment]: DeploymentEvent;
-  [DataEventSignature.TagOrBranchCreation]: CreateEvent;
+interface TriggerEventPayloadMap {
+  [TriggerEventSignature.WorkflowJob]: WorkflowJobEvent;
+  [TriggerEventSignature.ToolingUsage]: ToolingUsagePayload;
+  [TriggerEventSignature.PullRequest]: PullRequestEvent;
+  [TriggerEventSignature.CheckSuite]: CheckSuiteEvent;
+  [TriggerEventSignature.Deployment]: DeploymentEvent;
+  [TriggerEventSignature.TagOrBranchCreation]: CreateEvent;
 }
 
 interface MetricsSignatureOutputMap {
@@ -72,11 +72,13 @@ export interface RawEvent {
   payload: unknown;
 }
 
-export interface SignedDataEvent<
-  T extends DataEventSignature = DataEventSignature
+export interface SignedTriggerEvent<
+  T extends TriggerEventSignature = TriggerEventSignature
 > {
-  dataEventSignature: T;
-  payload: T extends keyof DataEventPayloadMap ? DataEventPayloadMap[T] : never;
+  trigger_event_signature: T;
+  payload: T extends keyof TriggerEventPayloadMap
+    ? TriggerEventPayloadMap[T]
+    : never;
   created_at: number;
 }
 
@@ -93,7 +95,7 @@ export interface MetricDataEnvelope<Output extends object> {
   repo: string;
 
   /** The ID of the triggering data-source, e.g. a GitHub event name */
-  dataEventSignature: DataEventSignature;
+  trigger_event_signature: TriggerEventSignature;
 
   /** The ID of the collected metric, as defined by the function */
   metricsSignature: MetricsSignature;
@@ -111,6 +113,6 @@ export interface MetricData<T extends MetricsSignature = MetricsSignature>
 }
 
 export type Conditions = [
-  (event: SignedDataEvent) => boolean,
-  (event: SignedDataEvent) => Promise<MetricData>
+  (event: SignedTriggerEvent) => boolean,
+  (event: SignedTriggerEvent) => Promise<MetricData>
 ][];

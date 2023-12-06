@@ -1,11 +1,11 @@
-import { DataEventSignature, SignedDataEvent } from "../../../interfaces";
+import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
 import { isSignedAsPullRequestClosed } from "../metrics-conditions";
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
 
 describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed", () => {
   it("returns false if event is not signed as PullRequest", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.CheckSuite,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.CheckSuite,
       payload: getWebhookEventFixture("check_suite"),
       created_at: 100,
     };
@@ -14,8 +14,8 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
   });
 
   it("returns false if event is signed as PullRequest but not closed", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.PullRequest,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       payload: getWebhookEventFixture(
         "pull_request",
         (ex) => ex.action !== "closed"
@@ -27,8 +27,8 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
   });
 
   it("returns true if event is a closed PullRequest but not merged", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.PullRequest,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       payload: getWebhookEventFixture(
         "pull_request",
         (ex) => ex.action === "closed" && !ex.pull_request.merged
@@ -45,8 +45,8 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
       (ex) => ex.action === "closed" && ex.pull_request.merged
     );
 
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.PullRequest,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       // there's no merged example yet, we'll have to get one from an unmerged one
       payload: fixture,
       created_at: 100,

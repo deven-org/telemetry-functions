@@ -2,28 +2,31 @@ import { clean as semverClean } from "semver";
 import { collectReleaseVersionsMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { ReleaseVersionsPayload } from "./interfaces";
 
-export const isSignedAsTagCreateEvent = (dataEvent: SignedDataEvent) => {
+export const isSignedAsTagCreateEvent = (triggerEvent: SignedTriggerEvent) => {
   if (
-    !validateEventSignature(dataEvent, DataEventSignature.TagOrBranchCreation)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.TagOrBranchCreation
+    )
   ) {
     return false;
   }
 
-  if (dataEvent.payload.ref_type !== "tag") {
+  if (triggerEvent.payload.ref_type !== "tag") {
     return false;
   }
 
-  if (semverClean(dataEvent.payload.ref, { loose: true }) === null) {
+  if (semverClean(triggerEvent.payload.ref, { loose: true }) === null) {
     return false;
   }
 
-  dataEvent.payload satisfies ReleaseVersionsPayload;
+  triggerEvent.payload satisfies ReleaseVersionsPayload;
 
   return true;
 };

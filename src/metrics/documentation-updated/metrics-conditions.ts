@@ -2,26 +2,30 @@ import { collectDocumentationUpdatedMetrics } from ".";
 import { DocumentationUpdatedPayload } from "./interfaces";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { validatePrWasMerged } from "../../shared/validate-pr-was-merged";
 
-export const isSignedAsPullRequestMerged = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.PullRequest)) {
+export const isSignedAsPullRequestMerged = (
+  triggerEvent: SignedTriggerEvent
+) => {
+  if (
+    !validateEventSignature(triggerEvent, TriggerEventSignature.PullRequest)
+  ) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "closed") {
+  if (triggerEvent.payload.action !== "closed") {
     return false;
   }
 
-  if (!validatePrWasMerged(dataEvent.payload)) {
+  if (!validatePrWasMerged(triggerEvent.payload)) {
     return false;
   }
 
-  dataEvent.payload satisfies DocumentationUpdatedPayload;
+  triggerEvent.payload satisfies DocumentationUpdatedPayload;
 
   return true;
 };

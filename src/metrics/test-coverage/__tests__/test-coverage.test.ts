@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -68,7 +68,7 @@ describe("Test_Coverage", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        dataEventSignature: DataEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.WorkflowJob,
       },
     ]);
   });
@@ -97,7 +97,7 @@ describe("Test_Coverage", () => {
     expect(output).toStrictEqual([
       {
         created_at: FAKE_NOW,
-        dataEventSignature: DataEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.WorkflowJob,
         metricsSignature: MetricsSignature.TestCoverage,
         output: {
           id: 12126810024,
@@ -128,7 +128,7 @@ describe("Test_Coverage", () => {
     expect(output).toStrictEqual([
       {
         created_at: FAKE_NOW,
-        dataEventSignature: DataEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.WorkflowJob,
         metricsSignature: MetricsSignature.TestCoverage,
         output: {
           id: 12126810024,
@@ -159,7 +159,7 @@ describe("Test_Coverage", () => {
     expect(output).toStrictEqual([
       {
         created_at: FAKE_NOW,
-        dataEventSignature: DataEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.WorkflowJob,
         metricsSignature: MetricsSignature.TestCoverage,
         output: {
           id: 12126810024,

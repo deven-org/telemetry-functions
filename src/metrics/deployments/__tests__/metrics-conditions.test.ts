@@ -1,11 +1,11 @@
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { DataEventSignature, SignedDataEvent } from "../../../interfaces";
+import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
 import { isSignedAsDeployment } from "../metrics-conditions";
 
 describe("Deployment metric condition: isSignedAsDeployment", () => {
   it("returns false if event is not signed as Deployment", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.CheckSuite,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.CheckSuite,
       payload: getWebhookEventFixture("check_suite"),
       created_at: 100,
     };
@@ -19,8 +19,8 @@ describe("Deployment metric condition: isSignedAsDeployment", () => {
     // @ts-expect-error the type is unhappy bc it only knows the "created" action.
     fixture.action = "deployed";
 
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.Deployment,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.Deployment,
       payload: fixture,
       created_at: 100,
     };
@@ -29,8 +29,8 @@ describe("Deployment metric condition: isSignedAsDeployment", () => {
   });
 
   it("returns true if event is signed as Deployment with the action created", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.Deployment,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.Deployment,
       payload: getWebhookEventFixture(
         "deployment",
         (ex) => ex.action === "created"

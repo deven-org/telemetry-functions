@@ -436,7 +436,6 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "workflow-job",
     "metricsSignature": "test-coverage",
     "output": {
       "conclusion": "failure",
@@ -451,6 +450,7 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
     "owner": "Octocoders",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "workflow-job",
   },
 ]
 `;
@@ -689,7 +689,6 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "workflow-job",
     "metricsSignature": "test-coverage",
     "output": {
       "conclusion": "success",
@@ -704,6 +703,7 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
     "owner": "Octocoders",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "workflow-job",
   },
 ]
 `;

@@ -1,18 +1,20 @@
 import { collectToolingUsageMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { ToolingUsagePayload } from "./interfaces";
 
-export const isSignedAsToolingUsage = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.ToolingUsage)) {
+export const isSignedAsToolingUsage = (triggerEvent: SignedTriggerEvent) => {
+  if (
+    !validateEventSignature(triggerEvent, TriggerEventSignature.ToolingUsage)
+  ) {
     return false;
   }
 
-  dataEvent.payload satisfies ToolingUsagePayload;
+  triggerEvent.payload satisfies ToolingUsagePayload;
 
   return true;
 };

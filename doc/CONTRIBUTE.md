@@ -65,7 +65,7 @@ Source folders and files should be named in kebab-case (e.g. `src/trigger-signat
 
 ### Data Events
 
-telemetry-functions operates on the basis of event objects. An event object (_DataEvent_) can be created either automatically by Github, manually, or by a Cronjob. Event objects represent a specific event that occurred, such as a pull request. Regardless of how it is created, event objects are sent to the endpoint URL provided by Netlify.
+telemetry-functions operates on the basis of event objects. An event object (_TriggerEvent_) can be created either automatically by Github, manually, or by a Cronjob. Event objects represent a specific event that occurred, such as a pull request. Regardless of how it is created, event objects are sent to the endpoint URL provided by Netlify.
 
 ### Event Signatures
 
@@ -91,7 +91,7 @@ Files in the `/src/core` folder are referred to as _Core Functions_. These funct
 
 - **addSignature**: adds the event signature to an data object
 - **collectMetrics**: collects metrics from a signed data event
-- **createDataEvent**: creates initial data event
+- **createTriggerEvent**: creates initial data event
 - **errorCatcher**: catches errors process
 - **logger**: logs activity
 - **octokit**: interfaces with Github for data collection

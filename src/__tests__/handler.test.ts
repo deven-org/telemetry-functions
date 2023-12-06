@@ -3,7 +3,7 @@ import * as moduleCollectMetrics from "../core/collect-metrics";
 import { handler } from "../handler";
 import { logger } from "../core/logger";
 import { LogWarnings } from "../shared/log-messages";
-import { DataEventSignature, TriggerSource } from "../interfaces";
+import { TriggerEventSignature, TriggerSource } from "../interfaces";
 import { Mocktokit } from "./mocktokit";
 
 jest.mock(
@@ -86,7 +86,7 @@ describe("handler", () => {
 
     expect(spyOnCollectMetrics).toBeCalledWith({
       created_at: FAKE_NOW,
-      dataEventSignature: "deven-tooling-usage",
+      trigger_event_signature: "deven-tooling-usage",
       payload: {
         owner: "foo",
         repo: "bar",
@@ -144,7 +144,7 @@ describe("handler", () => {
 
     expect(spyOnStoreData).toBeCalledWith({
       created_at: FAKE_NOW,
-      dataEventSignature: DataEventSignature.ToolingUsage,
+      trigger_event_signature: TriggerEventSignature.ToolingUsage,
       payload: {
         owner: "foo",
         repo: "bar",

@@ -1,6 +1,6 @@
 import { collectMetrics } from "../collect-metrics";
 import "../logger";
-import { SignedDataEvent, DataEventSignature } from "../../interfaces";
+import { SignedTriggerEvent, TriggerEventSignature } from "../../interfaces";
 
 jest.mock("../logger", () => ({
   __esModule: true,
@@ -24,17 +24,17 @@ jest.mock("../../metrics-conditions", () => ({
 describe("collect-metrics", () => {
   it("collects metrics and returns an array of promises, containing the metrics", async () => {
     const event = {
-      dataEventSignature: "foo-signature" as DataEventSignature,
+      trigger_event_signature: "foo-signature" as TriggerEventSignature,
       payload: {},
       created_at: 100,
     };
 
     const expectedResult = {
-      dataEventSignature: "foo-signature" as DataEventSignature,
+      trigger_event_signature: "foo-signature" as TriggerEventSignature,
       created_at: 100,
     };
 
-    const collectedMetrics = await collectMetrics(event as SignedDataEvent);
+    const collectedMetrics = await collectMetrics(event as SignedTriggerEvent);
 
     expect(collectedMetrics[0]).toMatchObject({
       it: "works",

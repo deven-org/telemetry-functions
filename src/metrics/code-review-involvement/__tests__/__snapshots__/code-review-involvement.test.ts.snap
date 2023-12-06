@@ -2078,7 +2078,6 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "pull-request",
     "metricsSignature": "code-review-involvement",
     "output": {
       "changed_files": 1,
@@ -2100,6 +2099,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "pull-request",
   },
 ]
 `;
@@ -2641,7 +2641,6 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "pull-request",
     "metricsSignature": "code-review-involvement",
     "output": {
       "changed_files": 1,
@@ -2663,6 +2662,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "pull-request",
   },
 ]
 `;
@@ -16063,7 +16063,6 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "pull-request",
     "metricsSignature": "code-review-involvement",
     "output": {
       "changed_files": 1,
@@ -16085,6 +16084,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "pull-request",
   },
 ]
 `;
@@ -16645,7 +16645,6 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "pull-request",
     "metricsSignature": "code-review-involvement",
     "output": {
       "changed_files": 1,
@@ -16667,6 +16666,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "pull-request",
   },
 ]
 `;

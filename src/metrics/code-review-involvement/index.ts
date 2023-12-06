@@ -1,5 +1,5 @@
 import {
-  SignedDataEvent,
+  SignedTriggerEvent,
   MetricsSignature,
   MetricData,
 } from "../../interfaces";
@@ -10,9 +10,9 @@ import {
 import { getTimestamp } from "../../shared/get-timestamp";
 
 export const collectCodeReviewInvolvementMetrics = async (
-  dataEvent: SignedDataEvent
+  triggerEvent: SignedTriggerEvent
 ): Promise<MetricData<MetricsSignature.CodeReviewInvolvement>> => {
-  const payload = dataEvent.payload as CodeReviewInvolvementPayload;
+  const payload = triggerEvent.payload as CodeReviewInvolvementPayload;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -64,8 +64,8 @@ export const collectCodeReviewInvolvementMetrics = async (
   };
 
   return {
-    created_at: dataEvent.created_at,
-    dataEventSignature: dataEvent.dataEventSignature,
+    created_at: triggerEvent.created_at,
+    trigger_event_signature: triggerEvent.trigger_event_signature,
     metricsSignature: MetricsSignature.CodeReviewInvolvement,
     owner,
     repo,

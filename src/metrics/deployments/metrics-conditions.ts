@@ -1,22 +1,22 @@
 import { collectDeploymentMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { DeploymentPayload } from "./interfaces";
 
-export const isSignedAsDeployment = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.Deployment)) {
+export const isSignedAsDeployment = (triggerEvent: SignedTriggerEvent) => {
+  if (!validateEventSignature(triggerEvent, TriggerEventSignature.Deployment)) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "created") {
+  if (triggerEvent.payload.action !== "created") {
     return false;
   }
 
-  dataEvent.payload satisfies DeploymentPayload;
+  triggerEvent.payload satisfies DeploymentPayload;
 
   return true;
 };

@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -94,7 +94,7 @@ describe("documentation-updated", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
       },
     ]);
   });
@@ -117,7 +117,7 @@ describe("documentation-updated", () => {
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
         metricsSignature: MetricsSignature.DocumentationUpdated,
         status: "success",
         output: {
@@ -151,7 +151,7 @@ describe("documentation-updated", () => {
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
         metricsSignature: MetricsSignature.DocumentationUpdated,
         status: "success",
         output: {
@@ -182,7 +182,7 @@ describe("documentation-updated", () => {
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
         metricsSignature: MetricsSignature.DocumentationUpdated,
         status: "networkError",
         output: {
