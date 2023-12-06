@@ -12,7 +12,7 @@ export type ToolingUsageOutput = {
    * null means the data could not be fetched due to reasons other than the file
    * not existing (status: 'networkError').
    */
-  documentationSkeletonConfig: null | {
+  documentation_skeleton_config: null | {
     /** Does the config exist? */
     exists: boolean;
 

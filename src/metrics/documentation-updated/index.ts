@@ -20,10 +20,10 @@ export const collectDocumentationUpdatedMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const pr_id = payload.pull_request.id;
+  const prId = payload.pull_request.id;
 
   let status: MetricDataStatus = "success";
-  let prFiles: DocumentationUpdatedOutput["prFiles"] = null;
+  let prFiles: DocumentationUpdatedOutput["pr_files"] = null;
 
   const prFilesResponse = await octokit
     .request("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
@@ -45,14 +45,14 @@ export const collectDocumentationUpdatedMetrics = async (
     ).length;
 
     prFiles = {
-      over100Files: !singlePage,
-      mdFilesChanged,
+      over_100_files: !singlePage,
+      md_files_changed: mdFilesChanged,
     };
   }
 
   const output: DocumentationUpdatedOutput = {
-    pr_id,
-    prFiles,
+    pr_id: prId,
+    pr_files: prFiles,
   };
 
   return {

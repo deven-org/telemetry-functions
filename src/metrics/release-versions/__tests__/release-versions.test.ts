@@ -75,7 +75,7 @@ describe("release-versions", () => {
     expect(output).toMatchObject([
       {
         output: {
-          releaseVersion: {
+          release_version: {
             build: [],
             major: 1,
             minor: 2,

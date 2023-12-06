@@ -122,16 +122,16 @@ describe("documentation-updated", () => {
         status: "success",
         output: {
           pr_id: 42424242,
-          prFiles: {
-            over100Files: false,
-            mdFilesChanged: 4,
+          pr_files: {
+            over_100_files: false,
+            md_files_changed: 4,
           },
         },
       },
     ]);
   });
 
-  it("reports over100Files if result is paginated", async () => {
+  it("reports over_100_files if result is paginated", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
       sourceEventSignature: "pull_request",
@@ -156,16 +156,16 @@ describe("documentation-updated", () => {
         status: "success",
         output: {
           pr_id: 42424242,
-          prFiles: {
-            over100Files: true,
-            mdFilesChanged: 4,
+          pr_files: {
+            over_100_files: true,
+            md_files_changed: 4,
           },
         },
       },
     ]);
   });
 
-  it("sets status to networkError if prFiles fetch fails", async () => {
+  it("sets status to networkError if pr_files fetch fails", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
       sourceEventSignature: "pull_request",
@@ -187,7 +187,7 @@ describe("documentation-updated", () => {
         status: "networkError",
         output: {
           pr_id: 42424242,
-          prFiles: null,
+          pr_files: null,
         },
       },
     ]);

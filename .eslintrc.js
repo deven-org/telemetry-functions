@@ -11,7 +11,7 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   env: {
-    browser: true,
+    node: true,
     es2024: true,
     jest: true,
   },
@@ -23,7 +23,13 @@ module.exports = {
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   plugins: ["unicorn"],
   rules: {
-    "@typescript-eslint/camelcase": "off",
+    camelcase: [
+      "error",
+      {
+        properties: "never",
+        ignoreDestructuring: true,
+      },
+    ],
     "@typescript-eslint/no-explicit-any": "error",
     "default-case": "error",
     // enforce kebab case file names
