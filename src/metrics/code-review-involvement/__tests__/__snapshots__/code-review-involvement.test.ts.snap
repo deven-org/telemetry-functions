@@ -2078,7 +2078,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "code-review-involvement",
+    "metric_signature": "code-review-involvement",
     "output": {
       "changed_files": 1,
       "closed_at": 1557933678000,
@@ -2641,7 +2641,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "code-review-involvement",
+    "metric_signature": "code-review-involvement",
     "output": {
       "changed_files": 1,
       "closed_at": 1557933678000,
@@ -16063,7 +16063,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "code-review-involvement",
+    "metric_signature": "code-review-involvement",
     "output": {
       "changed_files": 1,
       "closed_at": 1557933678000,
@@ -16645,7 +16645,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "code-review-involvement",
+    "metric_signature": "code-review-involvement",
     "output": {
       "changed_files": 1,
       "closed_at": 1557933678000,

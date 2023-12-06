@@ -1,6 +1,6 @@
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
 } from "../../interfaces";
 import {
@@ -11,7 +11,7 @@ import { getTimestamp } from "../../shared/get-timestamp";
 
 export const collectCodeReviewInvolvementMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.CodeReviewInvolvement>> => {
+): Promise<MetricData<MetricSignature.CodeReviewInvolvement>> => {
   const payload = triggerEvent.payload as CodeReviewInvolvementPayload;
 
   const repo = payload.repository.name;
@@ -66,7 +66,7 @@ export const collectCodeReviewInvolvementMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.CodeReviewInvolvement,
+    metric_signature: MetricSignature.CodeReviewInvolvement,
     owner,
     repo,
     status: "success",

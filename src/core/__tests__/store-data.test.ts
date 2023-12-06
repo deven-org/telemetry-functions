@@ -5,7 +5,7 @@ import "../../core/add-signature";
 import {
   TriggerEventSignature,
   MetricData,
-  MetricsSignature,
+  MetricSignature,
   TriggerSource,
 } from "../../interfaces";
 import { handler } from "../../handler";
@@ -60,7 +60,7 @@ const output: WorkflowsOutput = {
 const collectMetricsResponse: MetricData[] = [
   {
     trigger_event_signature: TriggerEventSignature.WorkflowJob,
-    metricsSignature: MetricsSignature.WorkflowJob,
+    metric_signature: MetricSignature.WorkflowJob,
     created_at: 100,
     output,
     owner: "owner",
@@ -69,7 +69,7 @@ const collectMetricsResponse: MetricData[] = [
   },
   {
     trigger_event_signature: TriggerEventSignature.WorkflowJob,
-    metricsSignature: MetricsSignature.WorkflowJob,
+    metric_signature: MetricSignature.WorkflowJob,
     created_at: 100,
     output,
     owner: "owner",
@@ -117,7 +117,7 @@ describe("storeData", () => {
               "email": "committer_email",
               "name": "committer_name",
             },
-            "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsIm1ldHJpY3NTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJjcmVhdGVkX2F0Ijo0MDAwLCJzdGFydGVkX2F0Ijo0MDAwLCJjb21wbGV0ZWRfYXQiOjUwMDAsImR1cmF0aW9uIjoxMDAwLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJ3b3JrZmxvd19uYW1lIjoid29ya2Zsb3ctbmFtZSIsInJ1bl9hdHRlbXB0IjoxLCJzdGVwcyI6W119LCJvd25lciI6Im93bmVyIiwicmVwbyI6InJlcG8iLCJzdGF0dXMiOiJzdWNjZXNzIn0=",
+            "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsIm1ldHJpY19zaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJjcmVhdGVkX2F0Ijo0MDAwLCJzdGFydGVkX2F0Ijo0MDAwLCJjb21wbGV0ZWRfYXQiOjUwMDAsImR1cmF0aW9uIjoxMDAwLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJ3b3JrZmxvd19uYW1lIjoid29ya2Zsb3ctbmFtZSIsInJ1bl9hdHRlbXB0IjoxLCJzdGVwcyI6W119LCJvd25lciI6Im93bmVyIiwicmVwbyI6InJlcG8iLCJzdGF0dXMiOiJzdWNjZXNzIn0=",
             "message": "auto(data): add workflow-job - workflow-job for owner/repo",
             "owner": "deven-org",
             "path": "raw-data/owner/repo/workflow-job/100.json",
@@ -135,7 +135,7 @@ describe("storeData", () => {
               "email": "committer_email",
               "name": "committer_name",
             },
-            "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsIm1ldHJpY3NTaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJjcmVhdGVkX2F0Ijo0MDAwLCJzdGFydGVkX2F0Ijo0MDAwLCJjb21wbGV0ZWRfYXQiOjUwMDAsImR1cmF0aW9uIjoxMDAwLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJ3b3JrZmxvd19uYW1lIjoid29ya2Zsb3ctbmFtZSIsInJ1bl9hdHRlbXB0IjoxLCJzdGVwcyI6W119LCJvd25lciI6Im93bmVyIiwicmVwbyI6InJlcG8iLCJzdGF0dXMiOiJzdWNjZXNzIn0=",
+            "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsIm1ldHJpY19zaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJjcmVhdGVkX2F0Ijo0MDAwLCJzdGFydGVkX2F0Ijo0MDAwLCJjb21wbGV0ZWRfYXQiOjUwMDAsImR1cmF0aW9uIjoxMDAwLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJ3b3JrZmxvd19uYW1lIjoid29ya2Zsb3ctbmFtZSIsInJ1bl9hdHRlbXB0IjoxLCJzdGVwcyI6W119LCJvd25lciI6Im93bmVyIiwicmVwbyI6InJlcG8iLCJzdGF0dXMiOiJzdWNjZXNzIn0=",
             "message": "auto(data): add workflow-job - workflow-job for owner/repo",
             "owner": "deven-org",
             "path": "raw-data/owner/repo/workflow-job/100.json",

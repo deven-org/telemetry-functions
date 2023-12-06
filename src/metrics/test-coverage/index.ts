@@ -1,6 +1,6 @@
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
 } from "../../interfaces";
 import {
@@ -13,7 +13,7 @@ import { isNameAboutTest } from "./is-name-about-test";
 
 export const collectWorkflowsTestCoverageMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.TestCoverage>> => {
+): Promise<MetricData<MetricSignature.TestCoverage>> => {
   const payload = triggerEvent.payload as TestCoveragePayload;
 
   const repo = payload.repository.name;
@@ -63,7 +63,7 @@ export const collectWorkflowsTestCoverageMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.TestCoverage,
+    metric_signature: MetricSignature.TestCoverage,
     owner,
     repo,
     status: "success",

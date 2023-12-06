@@ -2,7 +2,7 @@ import octokit from "../../core/octokit";
 
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
   MetricDataStatus,
 } from "../../interfaces";
@@ -13,7 +13,7 @@ import { logger } from "../../core";
 
 export const collectCommitsPerPrMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.CommitsPerPr>> => {
+): Promise<MetricData<MetricSignature.CommitsPerPr>> => {
   const payload = triggerEvent.payload as CommitsPerPrPayload;
 
   const owner = payload.repository.owner.login;
@@ -64,7 +64,7 @@ export const collectCommitsPerPrMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.CommitsPerPr,
+    metric_signature: MetricSignature.CommitsPerPr,
     owner: owner,
     repo: repo,
     status,

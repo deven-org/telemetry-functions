@@ -9,11 +9,11 @@ export const storeData = async (metricData: MetricData[]) => {
       `Pushing file to repo: ${process.env.REPO_PATH}/${data.created_at}.json`
     );
 
-    const actionType = data.metricsSignature
-      ? ` - ${data.metricsSignature} `
+    const actionType = data.metric_signature
+      ? ` - ${data.metric_signature} `
       : " ";
 
-    const path = `${process.env.REPO_PATH}/${data.owner}/${data.repo}/${data.metricsSignature}/${data.created_at}.json`;
+    const path = `${process.env.REPO_PATH}/${data.owner}/${data.repo}/${data.metric_signature}/${data.created_at}.json`;
     try {
       await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
         owner: process.env.REPO_OWNER as string,

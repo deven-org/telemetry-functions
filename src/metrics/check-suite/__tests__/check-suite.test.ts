@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -85,7 +85,7 @@ describe("check-suite", () => {
         trigger_event_signature: TriggerEventSignature.CheckSuite,
         owner: "owner_name",
         repo: "repo_name",
-        metricsSignature: MetricsSignature.CheckSuite,
+        metric_signature: MetricSignature.CheckSuite,
         created_at: FAKE_NOW,
         status: "success",
       },

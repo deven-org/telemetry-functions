@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -111,7 +111,7 @@ describe("workflows", () => {
           ],
         },
         trigger_event_signature: TriggerEventSignature.WorkflowJob,
-        metricsSignature: MetricsSignature.WorkflowJob,
+        metric_signature: MetricSignature.WorkflowJob,
       },
     ]);
   });

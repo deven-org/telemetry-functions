@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -90,7 +90,7 @@ describe("code-review-involvement", () => {
           requested_reviewers: 3,
           requested_teams: 0,
         },
-        metricsSignature: MetricsSignature.CodeReviewInvolvement,
+        metric_signature: MetricSignature.CodeReviewInvolvement,
         trigger_event_signature: TriggerEventSignature.PullRequest,
       },
     ]);

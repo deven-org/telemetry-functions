@@ -16007,7 +16007,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "documentation-updated",
+    "metric_signature": "documentation-updated",
     "output": {
       "prFiles": {
         "mdFilesChanged": 4,
@@ -16579,7 +16579,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "documentation-updated",
+    "metric_signature": "documentation-updated",
     "output": {
       "prFiles": {
         "mdFilesChanged": 4,
