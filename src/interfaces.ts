@@ -73,7 +73,7 @@ export interface RawEvent {
 }
 
 export interface SignedTriggerEvent<
-  T extends TriggerEventSignature = TriggerEventSignature
+  T extends TriggerEventSignature = TriggerEventSignature,
 > {
   trigger_event_signature: T;
   payload: T extends keyof TriggerEventPayloadMap
@@ -114,5 +114,5 @@ export interface MetricData<T extends MetricSignature = MetricSignature>
 
 export type Conditions = [
   (event: SignedTriggerEvent) => boolean,
-  (event: SignedTriggerEvent) => Promise<MetricData>
+  (event: SignedTriggerEvent) => Promise<MetricData>,
 ][];
