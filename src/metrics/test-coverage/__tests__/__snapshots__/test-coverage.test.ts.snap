@@ -436,7 +436,7 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "test-coverage",
+    "metric_signature": "test-coverage",
     "output": {
       "conclusion": "failure",
       "has_failed_steps": false,
@@ -689,7 +689,7 @@ exports[`Test_Coverage handles a range of mocked workflow_job events: workflow_j
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "test-coverage",
+    "metric_signature": "test-coverage",
     "output": {
       "conclusion": "success",
       "has_failed_steps": false,

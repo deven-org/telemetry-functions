@@ -160,7 +160,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "deployment",
+    "metric_signature": "deployment",
     "output": {
       "deployTime": 1557933653000,
       "duration": 0,
@@ -440,7 +440,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "deployment",
+    "metric_signature": "deployment",
     "output": {
       "deployTime": 1641173310000,
       "duration": 10000,
@@ -628,7 +628,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "deployment",
+    "metric_signature": "deployment",
     "output": {
       "deployTime": 1557933653000,
       "duration": 0,
@@ -820,7 +820,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "deployment",
+    "metric_signature": "deployment",
     "output": {
       "deployTime": 1557933653000,
       "duration": 0,

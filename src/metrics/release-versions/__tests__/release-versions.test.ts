@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -88,7 +88,7 @@ describe("release-versions", () => {
         trigger_event_signature: TriggerEventSignature.TagOrBranchCreation,
         owner: "owner",
         repo: "repo_name",
-        metricsSignature: MetricsSignature.ReleaseVersions,
+        metric_signature: MetricSignature.ReleaseVersions,
         created_at: expect.any(Number),
       },
     ]);

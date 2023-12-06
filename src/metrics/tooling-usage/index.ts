@@ -2,7 +2,7 @@ import { logger } from "../../core";
 import {
   SignedTriggerEvent,
   MetricData,
-  MetricsSignature,
+  MetricSignature,
   MetricDataStatus,
 } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
@@ -12,7 +12,7 @@ import { LogWarnings } from "../../shared/log-messages";
 
 export const collectToolingUsageMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.ToolingUsage>> => {
+): Promise<MetricData<MetricSignature.ToolingUsage>> => {
   const payload = triggerEvent.payload as ToolingUsagePayload;
 
   let status: MetricDataStatus = "success";
@@ -86,7 +86,7 @@ export const collectToolingUsageMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.ToolingUsage,
+    metric_signature: MetricSignature.ToolingUsage,
     owner: payload.owner,
     repo: payload.repo,
     status,

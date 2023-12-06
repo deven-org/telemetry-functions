@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -118,7 +118,7 @@ describe("documentation-updated", () => {
       {
         created_at: FAKE_NOW,
         trigger_event_signature: TriggerEventSignature.PullRequest,
-        metricsSignature: MetricsSignature.DocumentationUpdated,
+        metric_signature: MetricSignature.DocumentationUpdated,
         status: "success",
         output: {
           pr_id: 42424242,
@@ -152,7 +152,7 @@ describe("documentation-updated", () => {
       {
         created_at: FAKE_NOW,
         trigger_event_signature: TriggerEventSignature.PullRequest,
-        metricsSignature: MetricsSignature.DocumentationUpdated,
+        metric_signature: MetricSignature.DocumentationUpdated,
         status: "success",
         output: {
           pr_id: 42424242,
@@ -183,7 +183,7 @@ describe("documentation-updated", () => {
       {
         created_at: FAKE_NOW,
         trigger_event_signature: TriggerEventSignature.PullRequest,
-        metricsSignature: MetricsSignature.DocumentationUpdated,
+        metric_signature: MetricSignature.DocumentationUpdated,
         status: "networkError",
         output: {
           pr_id: 42424242,

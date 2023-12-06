@@ -1,7 +1,7 @@
 import { WorkflowStepCompleted } from "@octokit/webhooks-types";
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
 } from "../../interfaces";
 import { WorkflowsOutput, WorkflowsPayload } from "./interfaces";
@@ -9,7 +9,7 @@ import { getTimestamp } from "../../shared/get-timestamp";
 
 export const collectWorkflowsMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.WorkflowJob>> => {
+): Promise<MetricData<MetricSignature.WorkflowJob>> => {
   const payload = triggerEvent.payload as WorkflowsPayload;
 
   const repo = payload.repository.name;
@@ -50,7 +50,7 @@ export const collectWorkflowsMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.WorkflowJob,
+    metric_signature: MetricSignature.WorkflowJob,
     owner,
     repo,
     status: "success",

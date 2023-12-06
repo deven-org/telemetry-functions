@@ -16007,7 +16007,7 @@ exports[`commits-per-pr handles a range of mocked pull_request events: pull_requ
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "commits-per-pr",
+    "metric_signature": "commits-per-pr",
     "output": {
       "additions": 1,
       "commits": {
@@ -16598,7 +16598,7 @@ exports[`commits-per-pr handles a range of mocked pull_request events: pull_requ
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "commits-per-pr",
+    "metric_signature": "commits-per-pr",
     "output": {
       "additions": 1,
       "commits": {

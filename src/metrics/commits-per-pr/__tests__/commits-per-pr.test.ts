@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -154,7 +154,7 @@ describe("commits-per-pr", () => {
         },
         owner: "owner",
         repo: "repo_name",
-        metricsSignature: MetricsSignature.CommitsPerPr,
+        metric_signature: MetricSignature.CommitsPerPr,
         trigger_event_signature: TriggerEventSignature.PullRequest,
         status: "success",
       },
@@ -186,7 +186,7 @@ describe("commits-per-pr", () => {
       },
       owner: "owner",
       repo: "repo_name",
-      metricsSignature: MetricsSignature.CommitsPerPr,
+      metric_signature: MetricSignature.CommitsPerPr,
       trigger_event_signature: TriggerEventSignature.PullRequest,
       status: "networkError",
     });

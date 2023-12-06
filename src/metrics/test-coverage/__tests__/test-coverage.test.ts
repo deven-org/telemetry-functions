@@ -1,6 +1,6 @@
 import {
   TriggerEventSignature,
-  MetricsSignature,
+  MetricSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -98,7 +98,7 @@ describe("Test_Coverage", () => {
       {
         created_at: FAKE_NOW,
         trigger_event_signature: TriggerEventSignature.WorkflowJob,
-        metricsSignature: MetricsSignature.TestCoverage,
+        metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
           status: "completed",
@@ -129,7 +129,7 @@ describe("Test_Coverage", () => {
       {
         created_at: FAKE_NOW,
         trigger_event_signature: TriggerEventSignature.WorkflowJob,
-        metricsSignature: MetricsSignature.TestCoverage,
+        metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
           status: "completed",
@@ -160,7 +160,7 @@ describe("Test_Coverage", () => {
       {
         created_at: FAKE_NOW,
         trigger_event_signature: TriggerEventSignature.WorkflowJob,
-        metricsSignature: MetricsSignature.TestCoverage,
+        metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
           status: "completed",
