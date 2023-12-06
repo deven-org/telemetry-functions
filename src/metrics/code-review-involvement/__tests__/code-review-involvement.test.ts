@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -56,7 +56,7 @@ describe("code-review-involvement", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
       },
     ]);
   });
@@ -91,7 +91,7 @@ describe("code-review-involvement", () => {
           requested_teams: 0,
         },
         metricsSignature: MetricsSignature.CodeReviewInvolvement,
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
       },
     ]);
   });

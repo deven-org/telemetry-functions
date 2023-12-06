@@ -1,23 +1,23 @@
 import { WebhookEventName } from "@octokit/webhooks-types";
-import { DataEventSignature } from "../interfaces";
+import { TriggerEventSignature } from "../interfaces";
 
 export function identifyGithubEventSignature(
   githubEvent: string
-): DataEventSignature | null {
+): TriggerEventSignature | null {
   // Careful, this type assertion is here to ensure our cases are sensible,
   // but at runtime the actual value might be something different we got sent.
   // So always include a default case.
   switch (githubEvent as WebhookEventName) {
     case "pull_request":
-      return DataEventSignature.PullRequest;
+      return TriggerEventSignature.PullRequest;
     case "workflow_job":
-      return DataEventSignature.WorkflowJob;
+      return TriggerEventSignature.WorkflowJob;
     case "create":
-      return DataEventSignature.TagOrBranchCreation;
+      return TriggerEventSignature.TagOrBranchCreation;
     case "check_suite":
-      return DataEventSignature.CheckSuite;
+      return TriggerEventSignature.CheckSuite;
     case "deployment":
-      return DataEventSignature.Deployment;
+      return TriggerEventSignature.Deployment;
     default:
       return null;
   }

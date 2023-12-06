@@ -1,5 +1,5 @@
 import {
-  SignedDataEvent,
+  SignedTriggerEvent,
   MetricsSignature,
   MetricData,
   MetricDataStatus,
@@ -14,9 +14,9 @@ import { logger } from "../../core/logger";
 const MARKDOWN_FILE_EXTENSION = ".md";
 
 export const collectDocumentationUpdatedMetrics = async (
-  dataEvent: SignedDataEvent
+  triggerEvent: SignedTriggerEvent
 ): Promise<MetricData<MetricsSignature.DocumentationUpdated>> => {
-  const payload = dataEvent.payload as DocumentationUpdatedPayload;
+  const payload = triggerEvent.payload as DocumentationUpdatedPayload;
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -56,8 +56,8 @@ export const collectDocumentationUpdatedMetrics = async (
   };
 
   return {
-    created_at: dataEvent.created_at,
-    dataEventSignature: dataEvent.dataEventSignature,
+    created_at: triggerEvent.created_at,
+    trigger_event_signature: triggerEvent.trigger_event_signature,
     metricsSignature: MetricsSignature.DocumentationUpdated,
     owner,
     repo,

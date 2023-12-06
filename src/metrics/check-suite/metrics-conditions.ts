@@ -1,22 +1,24 @@
 import { collectCheckSuiteMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { CheckSuitePayload } from "./interfaces";
 
-export const isSignedAsCheckSuiteCompleted = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.CheckSuite)) {
+export const isSignedAsCheckSuiteCompleted = (
+  triggerEvent: SignedTriggerEvent
+) => {
+  if (!validateEventSignature(triggerEvent, TriggerEventSignature.CheckSuite)) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "completed") {
+  if (triggerEvent.payload.action !== "completed") {
     return false;
   }
 
-  dataEvent.payload satisfies CheckSuitePayload;
+  triggerEvent.payload satisfies CheckSuitePayload;
 
   return true;
 };

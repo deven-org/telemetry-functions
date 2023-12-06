@@ -1,6 +1,6 @@
 import { encode } from "js-base64";
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   RawEvent,
   TriggerSource,
 } from "../../../interfaces";
@@ -78,7 +78,7 @@ describe("deployments", () => {
 
     expect(result).toMatchObject([
       {
-        dataEventSignature: DataEventSignature.Deployment,
+        trigger_event_signature: TriggerEventSignature.Deployment,
         created_at: FAKE_NOW,
         status: "success",
         output: {},

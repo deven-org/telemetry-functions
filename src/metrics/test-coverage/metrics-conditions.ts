@@ -1,28 +1,30 @@
 import { collectWorkflowsTestCoverageMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { TestCoveragePayload } from "./interfaces";
 import { isNameAboutTest } from "./is-name-about-test";
 
 export const isSignedAsWorkflowJobTestCoverage = (
-  dataEvent: SignedDataEvent
+  triggerEvent: SignedTriggerEvent
 ) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.WorkflowJob)) {
+  if (
+    !validateEventSignature(triggerEvent, TriggerEventSignature.WorkflowJob)
+  ) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "completed") {
+  if (triggerEvent.payload.action !== "completed") {
     return false;
   }
 
   const isAboutTests = [
-    dataEvent.payload.workflow_job.name,
-    dataEvent.payload.workflow_job.workflow_name,
-    ...dataEvent.payload.workflow_job.steps.map((step) => step.name),
+    triggerEvent.payload.workflow_job.name,
+    triggerEvent.payload.workflow_job.workflow_name,
+    ...triggerEvent.payload.workflow_job.steps.map((step) => step.name),
   ]
     .filter((name): name is string => name !== null)
     .some((name) => isNameAboutTest(name));
@@ -31,7 +33,7 @@ export const isSignedAsWorkflowJobTestCoverage = (
     return false;
   }
 
-  dataEvent.payload satisfies TestCoveragePayload;
+  triggerEvent.payload satisfies TestCoveragePayload;
 
   return true;
 };

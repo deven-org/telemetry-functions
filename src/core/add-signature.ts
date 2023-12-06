@@ -1,9 +1,11 @@
 import { getErrorForCatcher, logger } from ".";
 import { LogInfos, LogWarnings } from "../shared/log-messages";
-import { SignedDataEvent, RawEvent } from "../interfaces";
+import { SignedTriggerEvent, RawEvent } from "../interfaces";
 import { identifyTriggerEventSignature } from "../trigger-signatures";
 
-export async function addSignature(data: RawEvent): Promise<SignedDataEvent> {
+export async function addSignature(
+  data: RawEvent
+): Promise<SignedTriggerEvent> {
   const { payload, source, sourceEventSignature } = data;
 
   const signature = identifyTriggerEventSignature(source, sourceEventSignature);
@@ -18,12 +20,12 @@ export async function addSignature(data: RawEvent): Promise<SignedDataEvent> {
   logger.info(LogInfos.eventSigned, signature);
 
   return {
-    dataEventSignature: signature,
+    trigger_event_signature: signature,
     created_at: Date.now(),
     // Note!
     // There is no runtime check for this assertion. It's a central point of
     // unsafety for us - we assume that the data matches what we expect, if
     // we were able to identify the signature.
-    payload: payload as SignedDataEvent["payload"],
+    payload: payload as SignedTriggerEvent["payload"],
   };
 }

@@ -19,7 +19,7 @@ export const storeData = async (metricData: MetricData[]) => {
         owner: process.env.REPO_OWNER as string,
         repo: process.env.REPO_NAME as string,
         path,
-        message: `auto(data): add ${data.dataEventSignature}${actionType}for ${data.owner}/${data.repo}`,
+        message: `auto(data): add ${data.trigger_event_signature}${actionType}for ${data.owner}/${data.repo}`,
         committer: {
           name: process.env.COMMITTER_NAME as string,
           email: process.env.COMMITTER_EMAIL as string,

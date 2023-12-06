@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -58,7 +58,7 @@ describe("release-versions", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        dataEventSignature: DataEventSignature.TagOrBranchCreation,
+        trigger_event_signature: TriggerEventSignature.TagOrBranchCreation,
       },
     ]);
   });
@@ -85,7 +85,7 @@ describe("release-versions", () => {
             version: "1.2.3",
           },
         },
-        dataEventSignature: DataEventSignature.TagOrBranchCreation,
+        trigger_event_signature: TriggerEventSignature.TagOrBranchCreation,
         owner: "owner",
         repo: "repo_name",
         metricsSignature: MetricsSignature.ReleaseVersions,

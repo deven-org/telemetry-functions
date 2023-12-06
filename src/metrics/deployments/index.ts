@@ -1,5 +1,5 @@
 import {
-  SignedDataEvent,
+  SignedTriggerEvent,
   MetricsSignature,
   MetricData,
   MetricDataStatus,
@@ -17,9 +17,9 @@ import { logger } from "../../core";
 import { LogErrors } from "../../shared/log-messages";
 
 export const collectDeploymentMetrics = async (
-  dataEvent: SignedDataEvent
+  triggerEvent: SignedTriggerEvent
 ): Promise<MetricData<MetricsSignature.Deployment>> => {
-  const payload = dataEvent.payload as DeploymentPayload;
+  const payload = triggerEvent.payload as DeploymentPayload;
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
@@ -110,8 +110,8 @@ export const collectDeploymentMetrics = async (
   };
 
   return {
-    created_at: dataEvent.created_at,
-    dataEventSignature: dataEvent.dataEventSignature,
+    created_at: triggerEvent.created_at,
+    trigger_event_signature: triggerEvent.trigger_event_signature,
     metricsSignature: MetricsSignature.Deployment,
     owner: owner,
     repo: repo,

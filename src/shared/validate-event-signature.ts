@@ -1,10 +1,10 @@
-import { DataEventSignature, SignedDataEvent } from "../interfaces";
+import { TriggerEventSignature, SignedTriggerEvent } from "../interfaces";
 
 // This comparison is somewhat trivial, but it helps typescript infer the
 // specialized type.
-export function validateEventSignature<T extends DataEventSignature>(
-  dataEvent: SignedDataEvent,
+export function validateEventSignature<T extends TriggerEventSignature>(
+  triggerEvent: SignedTriggerEvent,
   signature: T
-): dataEvent is SignedDataEvent<T> {
-  return dataEvent.dataEventSignature === signature;
+): triggerEvent is SignedTriggerEvent<T> {
+  return triggerEvent.trigger_event_signature === signature;
 }

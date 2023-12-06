@@ -1,22 +1,26 @@
 import { collectCodeReviewInvolvementMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { CodeReviewInvolvementPayload } from "./interfaces";
 
-export const isSignedAsPullRequestClosed = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.PullRequest)) {
+export const isSignedAsPullRequestClosed = (
+  triggerEvent: SignedTriggerEvent
+) => {
+  if (
+    !validateEventSignature(triggerEvent, TriggerEventSignature.PullRequest)
+  ) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "closed") {
+  if (triggerEvent.payload.action !== "closed") {
     return false;
   }
 
-  dataEvent.payload satisfies CodeReviewInvolvementPayload;
+  triggerEvent.payload satisfies CodeReviewInvolvementPayload;
 
   return true;
 };
