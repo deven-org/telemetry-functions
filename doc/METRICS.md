@@ -401,10 +401,10 @@ payload.action === "created";
 ```json
 {
   "env": "github-pages",
-  "deployTime": 1697612749000,
+  "deploy_time": 1697612749000,
   "duration": 71000,
   "version": "0.1.0",
-  "timeSinceLastDeploy": 1223014
+  "time_since_last_deploy": 1223014
 }
 ```
 
@@ -418,7 +418,7 @@ type CheckSuiteMetricsOutput = {
   env: string;
 
   /** Deployment creation time (UNIX ms) */
-  deployTime: number;
+  deploy_time: number;
 
   /**
    * Duration between deployment creation and last update
@@ -429,27 +429,27 @@ type CheckSuiteMetricsOutput = {
    * Relevant information depending on previous deployments to the current environment.
    * null if the list of deployments cannot be fetched (status: 'networkError')
    */
-  environmentDeployments: null | {
+  environment_deployments: null | {
     /**
      * True if fetching deployments is successful but no previous deployment
      * to the requested environment is found.
      */
-    isInitialDeployment: boolean;
+    is_initial_deployment: boolean;
 
     /**
      * Time in ms since last deployment created for the same environment.
      * null if previous deployment creation time cannot be found.
      */
-    timeSinceLastDeploy: number | null;
+    time_since_last_deploy: number | null;
   };
 
   /**
    * General information about the package.json.
    * null if package.json cannot be fetched (status: 'networkError')
    */
-  packageJson: null | {
+  package_json: null | {
     /** Boolean if the retrieved package.json file is successfully parsed */
-    isParseable: boolean;
+    is_parsable: boolean;
 
     /**
      * Version field of root package.json in repo default branch.
@@ -481,7 +481,7 @@ payload.action === "closed" && payload.pull_request.merged;
 ```json
 {
   "pr_id": 279147437,
-  "mdFilesChanged": 3
+  "md_files_changed": 3
 }
 ```
 
@@ -498,15 +498,15 @@ type DocumentationUpdatedOutput = {
    * Data based on the files in the PR.
    * null means the additional data could not be fetched (status: 'networkError')
    */
-  prFiles: null | {
+  pr_files: null | {
     /** Did this PR have >100 files? */
-    over100Files: boolean;
+    over_100_files: boolean;
 
     /**
      * Number of Markdown files changed in PR
-     * This can be inexact if over100Files is true
+     * This can be inexact if over_100_files is true
      */
-    mdFilesChanged: number;
+    md_files_changed: number;
   };
 };
 ```
@@ -527,7 +527,7 @@ payload.ref_type !== "tag" && semverClean(triggerEvent.payload.ref);
 
 ```json
 {
-  "releaseVersion": {
+  "release_version": {
     "raw": "1.2.3",
     "major": 1,
     "minor": 2,
@@ -561,7 +561,7 @@ type ReleaseVersionsOutput = {
   /**
    * Version found in tag (parsed by semver package)
    */
-  releaseVersion: ReleaseVersion;
+  release_version: ReleaseVersion;
 };
 ```
 
@@ -594,7 +594,7 @@ type ToolingUsageOutput = {
    * null means the data could not be fetched due to reasons other than the file
    * not existing (status: 'networkError').
    */
-  documentationSkeletonConfig: null | {
+  documentation_skeleton_config: null | {
     /** Does the config exist */
     exists: boolean;
 

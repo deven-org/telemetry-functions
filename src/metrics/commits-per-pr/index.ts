@@ -18,7 +18,7 @@ export const collectCommitsPerPrMetrics = async (
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
-  const pr_id = payload.pull_request.id;
+  const prId = payload.pull_request.id;
   const additions = payload.pull_request.additions;
   const deletions = payload.pull_request.deletions;
 
@@ -33,7 +33,7 @@ export const collectCommitsPerPrMetrics = async (
     })
     .catch(() => {
       status = "networkError";
-      logger.error(LogErrors.networkErrorCommitsPerPR, pr_id);
+      logger.error(LogErrors.networkErrorCommitsPerPR, prId);
       return null;
     });
 
@@ -41,7 +41,7 @@ export const collectCommitsPerPrMetrics = async (
     const data = commitsResponse.data;
 
     // Checking the author date will not reflect amendments
-    const commit_timestamps = data.map(({ commit }) => ({
+    const commitTimestamps = data.map(({ commit }) => ({
       authored: commit.author?.date ? getTimestamp(commit.author.date) : null,
       committed: commit.committer?.date
         ? getTimestamp(commit.committer.date)
@@ -50,12 +50,12 @@ export const collectCommitsPerPrMetrics = async (
 
     commits = {
       amount: data.length,
-      commit_timestamps,
+      commit_timestamps: commitTimestamps,
     };
   }
 
   const output: CommitsPerPrOutput = {
-    pr_id,
+    pr_id: prId,
     additions,
     deletions,
     commits,

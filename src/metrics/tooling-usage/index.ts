@@ -17,7 +17,7 @@ export const collectToolingUsageMetrics = async (
 
   let status: MetricDataStatus = "success";
   const output: ToolingUsageOutput = {
-    documentationSkeletonConfig: null,
+    documentation_skeleton_config: null,
   };
 
   const configResponse = await octokit
@@ -41,7 +41,7 @@ export const collectToolingUsageMetrics = async (
     });
 
   if (configResponse === "missing") {
-    output.documentationSkeletonConfig = {
+    output.documentation_skeleton_config = {
       exists: false,
       parsable: null,
       version: null,
@@ -60,7 +60,7 @@ export const collectToolingUsageMetrics = async (
       typeof parsedConfig !== "object" ||
       Array.isArray(parsedConfig)
     ) {
-      output.documentationSkeletonConfig = {
+      output.documentation_skeleton_config = {
         exists: true,
         parsable: false,
         version: null,
@@ -68,13 +68,13 @@ export const collectToolingUsageMetrics = async (
     } else {
       const version = "version" in parsedConfig ? parsedConfig.version : null;
       if (typeof version !== "string") {
-        output.documentationSkeletonConfig = {
+        output.documentation_skeleton_config = {
           exists: true,
           parsable: true,
           version: null,
         };
       } else {
-        output.documentationSkeletonConfig = {
+        output.documentation_skeleton_config = {
           exists: true,
           parsable: true,
           version,

@@ -162,15 +162,15 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "created_at": 1700000000000,
     "metric_signature": "deployment",
     "output": {
-      "deployTime": 1557933653000,
+      "deploy_time": 1557933653000,
       "duration": 0,
       "env": "production",
-      "environmentDeployments": {
-        "isInitialDeployment": false,
-        "timeSinceLastDeploy": 152114500000,
+      "environment_deployments": {
+        "is_initial_deployment": false,
+        "time_since_last_deploy": 152114500000,
       },
-      "packageJson": {
-        "isParseable": false,
+      "package_json": {
+        "is_parsable": false,
         "version": null,
       },
     },
@@ -442,15 +442,15 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "created_at": 1700000000000,
     "metric_signature": "deployment",
     "output": {
-      "deployTime": 1641173310000,
+      "deploy_time": 1641173310000,
       "duration": 10000,
       "env": "github-pages",
-      "environmentDeployments": {
-        "isInitialDeployment": false,
-        "timeSinceLastDeploy": 235354157000,
+      "environment_deployments": {
+        "is_initial_deployment": false,
+        "time_since_last_deploy": 235354157000,
       },
-      "packageJson": {
-        "isParseable": false,
+      "package_json": {
+        "is_parsable": false,
         "version": null,
       },
     },
@@ -630,15 +630,15 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "created_at": 1700000000000,
     "metric_signature": "deployment",
     "output": {
-      "deployTime": 1557933653000,
+      "deploy_time": 1557933653000,
       "duration": 0,
       "env": "production",
-      "environmentDeployments": {
-        "isInitialDeployment": false,
-        "timeSinceLastDeploy": 152114500000,
+      "environment_deployments": {
+        "is_initial_deployment": false,
+        "time_since_last_deploy": 152114500000,
       },
-      "packageJson": {
-        "isParseable": false,
+      "package_json": {
+        "is_parsable": false,
         "version": null,
       },
     },
@@ -822,15 +822,15 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "created_at": 1700000000000,
     "metric_signature": "deployment",
     "output": {
-      "deployTime": 1557933653000,
+      "deploy_time": 1557933653000,
       "duration": 0,
       "env": "production",
-      "environmentDeployments": {
-        "isInitialDeployment": false,
-        "timeSinceLastDeploy": 152114500000,
+      "environment_deployments": {
+        "is_initial_deployment": false,
+        "time_since_last_deploy": 152114500000,
       },
-      "packageJson": {
-        "isParseable": false,
+      "package_json": {
+        "is_parsable": false,
         "version": null,
       },
     },

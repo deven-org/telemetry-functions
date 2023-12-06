@@ -794,7 +794,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "created_at": 1700000000000,
     "metric_signature": "release-versions",
     "output": {
-      "releaseVersion": {
+      "release_version": {
         "build": [],
         "major": 1,
         "minor": 2,
@@ -946,7 +946,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "created_at": 1700000000000,
     "metric_signature": "release-versions",
     "output": {
-      "releaseVersion": {
+      "release_version": {
         "build": [],
         "major": 1,
         "minor": 2,
@@ -1098,7 +1098,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "created_at": 1700000000000,
     "metric_signature": "release-versions",
     "output": {
-      "releaseVersion": {
+      "release_version": {
         "build": [],
         "major": 1,
         "minor": 2,
@@ -1254,7 +1254,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "created_at": 1700000000000,
     "metric_signature": "release-versions",
     "output": {
-      "releaseVersion": {
+      "release_version": {
         "build": [],
         "major": 1,
         "minor": 2,
@@ -1420,7 +1420,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "created_at": 1700000000000,
     "metric_signature": "release-versions",
     "output": {
-      "releaseVersion": {
+      "release_version": {
         "build": [],
         "major": 1,
         "minor": 2,

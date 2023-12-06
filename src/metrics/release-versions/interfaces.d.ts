@@ -19,5 +19,5 @@ export type ReleaseVersionsOutput = {
   /**
    * Version found in tag (parsed by semver package)
    */
-  releaseVersion: ReleaseVersion;
+  release_version: ReleaseVersion;
 };

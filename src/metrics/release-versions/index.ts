@@ -21,7 +21,7 @@ export const collectReleaseVersionsMetrics = async (
   const version: ReleaseVersion = getVersionByString(payload.ref);
 
   const output: ReleaseVersionsOutput = {
-    releaseVersion: version,
+    release_version: version,
   };
 
   return {
