@@ -1,6 +1,6 @@
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
 } from "../../interfaces";
 import { getTimestamp } from "../../shared/get-timestamp";
@@ -8,7 +8,7 @@ import { CheckSuiteMetricsOutput, CheckSuitePayload } from "./interfaces";
 
 export const collectCheckSuiteMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.CheckSuite>> => {
+): Promise<MetricData<MetricSignature.CheckSuite>> => {
   const payload = triggerEvent.payload as CheckSuitePayload;
 
   const pull_requests = payload.check_suite.pull_requests.map((pr) => {
@@ -33,7 +33,7 @@ export const collectCheckSuiteMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.CheckSuite,
+    metric_signature: MetricSignature.CheckSuite,
     owner: payload.repository.owner.login,
     repo: payload.repository.name,
     status: "success",

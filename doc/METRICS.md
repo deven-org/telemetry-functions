@@ -21,7 +21,7 @@
 
 ## Metric Envelope
 
-All collected metric data has an "envelope" object containing a `trigger_event_signature` that identifies the event trigger, as well es a `metricsSignature` that identifies the kind of metric.
+All collected metric data has an "envelope" object containing a `trigger_event_signature` that identifies the event trigger, as well es a `metric_signature` that identifies the kind of metric.
 
 <details><summary>Example JSON (<code>release-versions</code> metric output)</summary>
 
@@ -31,7 +31,7 @@ All collected metric data has an "envelope" object containing a `trigger_event_s
   "owner": "deven-org",
   "repo": "telemetry-functions",
   "trigger_event_signature": "pull-request",
-  "metricsSignature": "release-versions",
+  "metric_signature": "release-versions",
   "output": {
     "pull_number": 12,
     "title": {
@@ -66,13 +66,13 @@ type MetricEnvelope<Output extends object> = {
   trigger_event_signature: string;
 
   /** The ID of the collected metric, as defined by the function */
-  metricsSignature: string;
+  metric_signature: string;
 
   /** The status of the metric collection, depending on the success of all related API calls */
   status: "success" | "networkError";
 
   /** The collected data for this metric, see following sections */
-  output: Output; // different for each metricsSignature
+  output: Output; // different for each metric_signature
 };
 ```
 

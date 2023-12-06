@@ -15,7 +15,7 @@ export const collectMetrics = async (
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const metrics = await collect(clonedTriggerEvent);
       collectedMetrics.push(metrics);
-      logger.success(LogSuccess.metricsCollected, metrics.metricsSignature);
+      logger.success(LogSuccess.metricsCollected, metrics.metric_signature);
     }
   }
 

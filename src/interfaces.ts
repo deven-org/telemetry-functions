@@ -33,7 +33,7 @@ export enum TriggerEventSignature {
   TagOrBranchCreation = "create",
 }
 
-export enum MetricsSignature {
+export enum MetricSignature {
   CheckSuite = "check-suite",
   WorkflowJob = "workflow-job",
   TestCoverage = "test-coverage",
@@ -54,16 +54,16 @@ interface TriggerEventPayloadMap {
   [TriggerEventSignature.TagOrBranchCreation]: CreateEvent;
 }
 
-interface MetricsSignatureOutputMap {
-  [MetricsSignature.CheckSuite]: CheckSuiteMetricsOutput;
-  [MetricsSignature.CodeReviewInvolvement]: CodeReviewInvolvementOutput;
-  [MetricsSignature.CommitsPerPr]: CommitsPerPrOutput;
-  [MetricsSignature.Deployment]: DeploymentOutput;
-  [MetricsSignature.DocumentationUpdated]: DocumentationUpdatedOutput;
-  [MetricsSignature.ReleaseVersions]: ReleaseVersionsOutput;
-  [MetricsSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
-  [MetricsSignature.ToolingUsage]: ToolingUsageOutput;
-  [MetricsSignature.WorkflowJob]: WorkflowsOutput;
+interface MetricSignatureOutputMap {
+  [MetricSignature.CheckSuite]: CheckSuiteMetricsOutput;
+  [MetricSignature.CodeReviewInvolvement]: CodeReviewInvolvementOutput;
+  [MetricSignature.CommitsPerPr]: CommitsPerPrOutput;
+  [MetricSignature.Deployment]: DeploymentOutput;
+  [MetricSignature.DocumentationUpdated]: DocumentationUpdatedOutput;
+  [MetricSignature.ReleaseVersions]: ReleaseVersionsOutput;
+  [MetricSignature.TestCoverage]: WorkflowJobTestCoverageOutput;
+  [MetricSignature.ToolingUsage]: ToolingUsageOutput;
+  [MetricSignature.WorkflowJob]: WorkflowsOutput;
 }
 
 export interface RawEvent {
@@ -98,7 +98,7 @@ export interface MetricDataEnvelope<Output extends object> {
   trigger_event_signature: TriggerEventSignature;
 
   /** The ID of the collected metric, as defined by the function */
-  metricsSignature: MetricsSignature;
+  metric_signature: MetricSignature;
 
   /** The status of the metric collection, depending on the success of all related API calls */
   status: MetricDataStatus;
@@ -107,9 +107,9 @@ export interface MetricDataEnvelope<Output extends object> {
   output: Output;
 }
 
-export interface MetricData<T extends MetricsSignature = MetricsSignature>
-  extends MetricDataEnvelope<MetricsSignatureOutputMap[T]> {
-  metricsSignature: T;
+export interface MetricData<T extends MetricSignature = MetricSignature>
+  extends MetricDataEnvelope<MetricSignatureOutputMap[T]> {
+  metric_signature: T;
 }
 
 export type Conditions = [

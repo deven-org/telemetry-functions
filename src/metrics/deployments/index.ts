@@ -1,6 +1,6 @@
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
   MetricDataStatus,
 } from "../../interfaces";
@@ -18,7 +18,7 @@ import { LogErrors } from "../../shared/log-messages";
 
 export const collectDeploymentMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.Deployment>> => {
+): Promise<MetricData<MetricSignature.Deployment>> => {
   const payload = triggerEvent.payload as DeploymentPayload;
 
   const owner = payload.repository.owner.login;
@@ -112,7 +112,7 @@ export const collectDeploymentMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.Deployment,
+    metric_signature: MetricSignature.Deployment,
     owner: owner,
     repo: repo,
     status,

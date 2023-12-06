@@ -230,7 +230,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "check-suite",
+    "metric_signature": "check-suite",
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
@@ -459,7 +459,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "check-suite",
+    "metric_signature": "check-suite",
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
@@ -710,7 +710,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "check-suite",
+    "metric_signature": "check-suite",
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
@@ -979,7 +979,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "metricsSignature": "check-suite",
+    "metric_signature": "check-suite",
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,

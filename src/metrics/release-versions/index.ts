@@ -1,6 +1,6 @@
 import {
   SignedTriggerEvent,
-  MetricsSignature,
+  MetricSignature,
   MetricData,
 } from "../../interfaces";
 import { getVersionByString } from "./get-version-by-string";
@@ -12,7 +12,7 @@ import {
 
 export const collectReleaseVersionsMetrics = async (
   triggerEvent: SignedTriggerEvent
-): Promise<MetricData<MetricsSignature.ReleaseVersions>> => {
+): Promise<MetricData<MetricSignature.ReleaseVersions>> => {
   const payload = triggerEvent.payload as ReleaseVersionsPayload;
 
   const repo = payload.repository.name;
@@ -27,7 +27,7 @@ export const collectReleaseVersionsMetrics = async (
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
-    metricsSignature: MetricsSignature.ReleaseVersions,
+    metric_signature: MetricSignature.ReleaseVersions,
     owner,
     repo,
     status: "success",
