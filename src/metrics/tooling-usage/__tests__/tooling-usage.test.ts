@@ -96,7 +96,7 @@ describe("tooling-usage", () => {
         created_at: FAKE_NOW,
         status: "success",
         output: {
-          documentationSkeletonConfig: {
+          documentation_skeleton_config: {
             exists: false,
             parsable: null,
             version: null,
@@ -124,7 +124,7 @@ describe("tooling-usage", () => {
         created_at: FAKE_NOW,
         status: "success",
         output: {
-          documentationSkeletonConfig: {
+          documentation_skeleton_config: {
             exists: true,
             parsable: false,
             version: null,
@@ -152,7 +152,7 @@ describe("tooling-usage", () => {
         created_at: FAKE_NOW,
         status: "success",
         output: {
-          documentationSkeletonConfig: {
+          documentation_skeleton_config: {
             exists: true,
             parsable: true,
             version: null,
@@ -180,7 +180,7 @@ describe("tooling-usage", () => {
         created_at: FAKE_NOW,
         status: "success",
         output: {
-          documentationSkeletonConfig: {
+          documentation_skeleton_config: {
             exists: true,
             parsable: true,
             version: "2.0.0",
@@ -208,7 +208,7 @@ describe("tooling-usage", () => {
         created_at: FAKE_NOW,
         status: "networkError",
         output: {
-          documentationSkeletonConfig: null,
+          documentation_skeleton_config: null,
         },
         trigger_event_signature: TriggerEventSignature.ToolingUsage,
         metric_signature: MetricSignature.ToolingUsage,

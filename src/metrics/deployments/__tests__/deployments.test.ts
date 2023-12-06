@@ -86,7 +86,7 @@ describe("deployments", () => {
     ]);
   });
 
-  it("sets timeSinceLastDeploy to null if there was no previous deploy on env", async () => {
+  it("sets time_since_last_deploy to null if there was no previous deploy on env", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
       sourceEventSignature: "deployment",
@@ -112,15 +112,15 @@ describe("deployments", () => {
     expect(result?.[0]).toMatchObject({
       status: "success",
       output: {
-        deployTime: 1658193553000,
+        deploy_time: 1658193553000,
         duration: 86400000,
         env: "production",
-        environmentDeployments: {
-          isInitialDeployment: true,
-          timeSinceLastDeploy: null,
+        environment_deployments: {
+          is_initial_deployment: true,
+          time_since_last_deploy: null,
         },
-        packageJson: {
-          isParseable: true,
+        package_json: {
+          is_parsable: true,
           version: "1.1.0",
         },
       },
@@ -152,19 +152,19 @@ describe("deployments", () => {
     expect(result?.[0]).toMatchObject({
       status: "networkError",
       output: {
-        deployTime: 1658193553000,
+        deploy_time: 1658193553000,
         duration: 86400000,
         env: "production",
-        environmentDeployments: null,
-        packageJson: {
-          isParseable: true,
+        environment_deployments: null,
+        package_json: {
+          is_parsable: true,
           version: "1.1.0",
         },
       },
     });
   });
 
-  it("sets status to networkError if packageJson fetch fails", async () => {
+  it("sets status to networkError if package_json fetch fails", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
       sourceEventSignature: "deployment",
@@ -179,7 +179,7 @@ describe("deployments", () => {
     });
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] = async () => {
-      throw new Error("mocked packageJson network error");
+      throw new Error("mocked package_json network error");
     };
 
     const result = await handler(eventBody);
@@ -188,14 +188,14 @@ describe("deployments", () => {
     expect(result?.[0]).toMatchObject({
       status: "networkError",
       output: {
-        deployTime: 1658193553000,
+        deploy_time: 1658193553000,
         duration: 86400000,
         env: "production",
-        environmentDeployments: {
-          isInitialDeployment: false,
-          timeSinceLastDeploy: 252374400000,
+        environment_deployments: {
+          is_initial_deployment: false,
+          time_since_last_deploy: 252374400000,
         },
-        packageJson: null,
+        package_json: null,
       },
     });
   });

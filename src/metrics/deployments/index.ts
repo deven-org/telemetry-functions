@@ -59,15 +59,15 @@ export const collectDeploymentMetrics = async (
     if (deployment !== undefined) {
       const lastCommitTime = getTimestamp(deployment.created_at);
       deploymentInfo = {
-        isInitialDeployment: false,
-        timeSinceLastDeploy: createdTime - lastCommitTime,
+        is_initial_deployment: false,
+        time_since_last_deploy: createdTime - lastCommitTime,
       };
     } else {
       // If no previous deployment to the current environment was found
       // there is no time since last deploy and it is the initial deployment.
       deploymentInfo = {
-        isInitialDeployment: true,
-        timeSinceLastDeploy: null,
+        is_initial_deployment: true,
+        time_since_last_deploy: null,
       };
     }
   }
@@ -89,12 +89,12 @@ export const collectDeploymentMetrics = async (
       const content = JSON.parse(decode(packageJsonResponse.data["content"]));
 
       packageJson = {
-        isParseable: true,
+        is_parsable: true,
         version: content.version,
       };
     } catch (error: unknown) {
       packageJson = {
-        isParseable: false,
+        is_parsable: false,
         version: null,
       };
       logger.error(LogErrors.parseErrorPackageJson, `${owner}/${repo}`);
@@ -103,10 +103,10 @@ export const collectDeploymentMetrics = async (
 
   const output: DeploymentOutput = {
     env,
-    deployTime: createdTime,
+    deploy_time: createdTime,
     duration,
-    environmentDeployments: deploymentInfo,
-    packageJson,
+    environment_deployments: deploymentInfo,
+    package_json: packageJson,
   };
 
   return {

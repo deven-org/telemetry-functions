@@ -16009,9 +16009,9 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "created_at": 1700000000000,
     "metric_signature": "documentation-updated",
     "output": {
-      "prFiles": {
-        "mdFilesChanged": 4,
-        "over100Files": false,
+      "pr_files": {
+        "md_files_changed": 4,
+        "over_100_files": false,
       },
       "pr_id": 279147437,
     },
@@ -16581,9 +16581,9 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "created_at": 1700000000000,
     "metric_signature": "documentation-updated",
     "output": {
-      "prFiles": {
-        "mdFilesChanged": 4,
-        "over100Files": false,
+      "pr_files": {
+        "md_files_changed": 4,
+        "over_100_files": false,
       },
       "pr_id": 279147437,
     },

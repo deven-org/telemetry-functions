@@ -11,22 +11,22 @@ export const collectCheckSuiteMetrics = async (
 ): Promise<MetricData<MetricSignature.CheckSuite>> => {
   const payload = triggerEvent.payload as CheckSuitePayload;
 
-  const pull_requests = payload.check_suite.pull_requests.map((pr) => {
+  const pullRequests = payload.check_suite.pull_requests.map((pr) => {
     return { id: pr.id };
   });
-  const created_at = getTimestamp(payload.check_suite.created_at);
+  const createdAt = getTimestamp(payload.check_suite.created_at);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- this is never null for completed events
   const conclusion = payload.check_suite.conclusion!;
-  const is_app_owner = payload?.installation ? true : false;
-  const updated_at = getTimestamp(payload.check_suite.updated_at);
-  const duration = updated_at - created_at;
+  const isAppOwner = payload?.installation ? true : false;
+  const updatedAt = getTimestamp(payload.check_suite.updated_at);
+  const duration = updatedAt - createdAt;
 
   const output: CheckSuiteMetricsOutput = {
-    pull_requests,
-    created_at,
+    pull_requests: pullRequests,
+    created_at: createdAt,
     conclusion,
-    is_app_owner,
-    updated_at,
+    is_app_owner: isAppOwner,
+    updated_at: updatedAt,
     duration,
   };
 
