@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -58,7 +58,7 @@ describe("check-suite", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        dataEventSignature: DataEventSignature.CheckSuite,
+        trigger_event_signature: TriggerEventSignature.CheckSuite,
       },
     ]);
   });
@@ -82,7 +82,7 @@ describe("check-suite", () => {
           is_app_owner: true,
           pull_requests: [{ id: 41414141 }, { id: 42424242 }, { id: 43434343 }],
         },
-        dataEventSignature: DataEventSignature.CheckSuite,
+        trigger_event_signature: TriggerEventSignature.CheckSuite,
         owner: "owner_name",
         repo: "repo_name",
         metricsSignature: MetricsSignature.CheckSuite,

@@ -436,7 +436,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "workflow-job",
     "metricsSignature": "workflow-job",
     "output": {
       "completed_at": 1628159896000,
@@ -560,6 +559,7 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
     "owner": "Octocoders",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "workflow-job",
   },
 ]
 `;
@@ -798,7 +798,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "workflow-job",
     "metricsSignature": "workflow-job",
     "output": {
       "completed_at": 1628159896000,
@@ -886,6 +885,7 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
     "owner": "Octocoders",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "workflow-job",
   },
 ]
 `;

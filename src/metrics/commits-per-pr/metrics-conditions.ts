@@ -1,27 +1,29 @@
 import { collectCommitsPerPrMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { validatePrWasMerged } from "../../shared/validate-pr-was-merged";
 import { CommitsPerPrPayload } from "./interfaces";
 
-export const isSignedAsCommitsPerPr = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.PullRequest)) {
+export const isSignedAsCommitsPerPr = (triggerEvent: SignedTriggerEvent) => {
+  if (
+    !validateEventSignature(triggerEvent, TriggerEventSignature.PullRequest)
+  ) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "closed") {
+  if (triggerEvent.payload.action !== "closed") {
     return false;
   }
 
-  if (!validatePrWasMerged(dataEvent.payload)) {
+  if (!validatePrWasMerged(triggerEvent.payload)) {
     return false;
   }
 
-  dataEvent.payload satisfies CommitsPerPrPayload;
+  triggerEvent.payload satisfies CommitsPerPrPayload;
 
   return true;
 };

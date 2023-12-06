@@ -1,11 +1,11 @@
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { DataEventSignature, SignedDataEvent } from "../../../interfaces";
+import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
 import { isSignedAsWorkflowJobTestCoverage } from "../metrics-conditions";
 
 describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", () => {
   it("returns false if event is not signed as WorkflowJob", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.CheckSuite,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.CheckSuite,
       payload: getWebhookEventFixture("check_suite"),
       created_at: 100,
     };
@@ -14,8 +14,8 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
   });
 
   it("returns false if event is signed as WorkflowJob but not completed", async () => {
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.WorkflowJob,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.WorkflowJob,
       payload: getWebhookEventFixture(
         "workflow_job",
         (ex) => ex.action !== "completed"
@@ -38,8 +38,8 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
       step.name = "nothing";
     }
 
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.WorkflowJob,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.WorkflowJob,
       payload: payload,
       created_at: 100,
     };
@@ -59,8 +59,8 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
       step.name = "nothing";
     }
 
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.WorkflowJob,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.WorkflowJob,
       payload: payload,
       created_at: 100,
     };
@@ -80,8 +80,8 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
       step.name = "nothing";
     }
 
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.WorkflowJob,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.WorkflowJob,
       payload: payload,
       created_at: 100,
     };
@@ -102,8 +102,8 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
     }
     payload.workflow_job.steps[0].name = "run jest";
 
-    const event: SignedDataEvent = {
-      dataEventSignature: DataEventSignature.WorkflowJob,
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.WorkflowJob,
       payload: payload,
       created_at: 100,
     };

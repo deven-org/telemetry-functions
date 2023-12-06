@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -103,7 +103,7 @@ describe("commits-per-pr", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
       },
     ]);
   });
@@ -155,7 +155,7 @@ describe("commits-per-pr", () => {
         owner: "owner",
         repo: "repo_name",
         metricsSignature: MetricsSignature.CommitsPerPr,
-        dataEventSignature: DataEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.PullRequest,
         status: "success",
       },
     ]);
@@ -187,7 +187,7 @@ describe("commits-per-pr", () => {
       owner: "owner",
       repo: "repo_name",
       metricsSignature: MetricsSignature.CommitsPerPr,
-      dataEventSignature: DataEventSignature.PullRequest,
+      trigger_event_signature: TriggerEventSignature.PullRequest,
       status: "networkError",
     });
   });

@@ -1,22 +1,24 @@
 import { collectWorkflowsMetrics } from ".";
 import {
   Conditions,
-  SignedDataEvent,
-  DataEventSignature,
+  SignedTriggerEvent,
+  TriggerEventSignature,
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { WorkflowsPayload } from "./interfaces";
 
-export const isSignedAsWorkflowJob = (dataEvent: SignedDataEvent) => {
-  if (!validateEventSignature(dataEvent, DataEventSignature.WorkflowJob)) {
+export const isSignedAsWorkflowJob = (triggerEvent: SignedTriggerEvent) => {
+  if (
+    !validateEventSignature(triggerEvent, TriggerEventSignature.WorkflowJob)
+  ) {
     return false;
   }
 
-  if (dataEvent.payload.action !== "completed") {
+  if (triggerEvent.payload.action !== "completed") {
     return false;
   }
 
-  dataEvent.payload satisfies WorkflowsPayload;
+  triggerEvent.payload satisfies WorkflowsPayload;
 
   return true;
 };

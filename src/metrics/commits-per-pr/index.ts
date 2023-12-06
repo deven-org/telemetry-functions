@@ -1,7 +1,7 @@
 import octokit from "../../core/octokit";
 
 import {
-  SignedDataEvent,
+  SignedTriggerEvent,
   MetricsSignature,
   MetricData,
   MetricDataStatus,
@@ -12,9 +12,9 @@ import { LogErrors } from "../../shared/log-messages";
 import { logger } from "../../core";
 
 export const collectCommitsPerPrMetrics = async (
-  dataEvent: SignedDataEvent
+  triggerEvent: SignedTriggerEvent
 ): Promise<MetricData<MetricsSignature.CommitsPerPr>> => {
-  const payload = dataEvent.payload as CommitsPerPrPayload;
+  const payload = triggerEvent.payload as CommitsPerPrPayload;
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
@@ -62,8 +62,8 @@ export const collectCommitsPerPrMetrics = async (
   };
 
   return {
-    created_at: dataEvent.created_at,
-    dataEventSignature: dataEvent.dataEventSignature,
+    created_at: triggerEvent.created_at,
+    trigger_event_signature: triggerEvent.trigger_event_signature,
     metricsSignature: MetricsSignature.CommitsPerPr,
     owner: owner,
     repo: repo,

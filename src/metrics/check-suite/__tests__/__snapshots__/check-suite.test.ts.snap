@@ -230,7 +230,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "check-suite",
     "metricsSignature": "check-suite",
     "output": {
       "conclusion": "success",
@@ -247,6 +246,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "check-suite",
   },
 ]
 `;
@@ -459,7 +459,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "check-suite",
     "metricsSignature": "check-suite",
     "output": {
       "conclusion": "success",
@@ -472,6 +471,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "check-suite",
   },
 ]
 `;
@@ -710,7 +710,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "check-suite",
     "metricsSignature": "check-suite",
     "output": {
       "conclusion": "success",
@@ -727,6 +726,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "check-suite",
   },
 ]
 `;
@@ -979,7 +979,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "check-suite",
     "metricsSignature": "check-suite",
     "output": {
       "conclusion": "success",
@@ -996,6 +995,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "check-suite",
   },
 ]
 `;

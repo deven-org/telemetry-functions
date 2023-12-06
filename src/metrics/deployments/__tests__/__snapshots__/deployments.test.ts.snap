@@ -160,7 +160,6 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "deployment",
     "metricsSignature": "deployment",
     "output": {
       "deployTime": 1557933653000,
@@ -178,6 +177,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "deployment",
   },
 ]
 `;
@@ -440,7 +440,6 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "deployment",
     "metricsSignature": "deployment",
     "output": {
       "deployTime": 1641173310000,
@@ -458,6 +457,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "deployment",
   },
 ]
 `;
@@ -628,7 +628,6 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "deployment",
     "metricsSignature": "deployment",
     "output": {
       "deployTime": 1557933653000,
@@ -646,6 +645,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "deployment",
   },
 ]
 `;
@@ -820,7 +820,6 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
 [
   {
     "created_at": 1700000000000,
-    "dataEventSignature": "deployment",
     "metricsSignature": "deployment",
     "output": {
       "deployTime": 1557933653000,
@@ -838,6 +837,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
+    "trigger_event_signature": "deployment",
   },
 ]
 `;

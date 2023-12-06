@@ -1,5 +1,5 @@
 import {
-  DataEventSignature,
+  TriggerEventSignature,
   MetricsSignature,
   RawEvent,
   TriggerSource,
@@ -59,7 +59,7 @@ describe("workflows", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        dataEventSignature: DataEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.WorkflowJob,
       },
     ]);
   });
@@ -110,7 +110,7 @@ describe("workflows", () => {
             },
           ],
         },
-        dataEventSignature: DataEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.WorkflowJob,
         metricsSignature: MetricsSignature.WorkflowJob,
       },
     ]);

@@ -26,12 +26,12 @@ The function itself consists of several modules that work together to collect me
 
 The first module, "**handler**", is used as controller, to define and handle the whole process, included the error management and the logger.
 
-The second module, "**addSignature**", is responsible for identifing the events (_DataEvent_) coming from various sources: GitHub events, custom cron-jobs, manual requests, and other systems.
+The second module, "**addSignature**", is responsible for identifing the events (_TriggerEvent_) coming from various sources: GitHub events, custom cron-jobs, manual requests, and other systems.
 This module is designed to be flexible and can be customized to identify a various type of events.
 
-The "signed event" (_SignedDataEvent_) is then sent to the third module, the processing module, "**collectMetrics**", which is responsible for collecting the metrics, normalizing and transforming the data into a standardized format (_EnhancedDataEvent_).
+The "signed event" (_SignedTriggerEvent_) is then sent to the third module, the processing module, "**collectMetrics**", which is responsible for collecting the metrics, normalizing and transforming the data into a standardized format (_EnhancedTriggerEvent_).
 
-Once the event has been processed (_EnhancedDataEvent_), the fourth module stores it in a database (currently pushes it to a GitHub repo as JSON file.). _telemetry-functions_ is hosted on Netlify, but this is a temporary solution. In the future, the function will be hosted on a more robust and scalable platform that can handle large amounts of data.
+Once the event has been processed (_EnhancedTriggerEvent_), the fourth module stores it in a database (currently pushes it to a GitHub repo as JSON file.). _telemetry-functions_ is hosted on Netlify, but this is a temporary solution. In the future, the function will be hosted on a more robust and scalable platform that can handle large amounts of data.
 
 ### Code base
 

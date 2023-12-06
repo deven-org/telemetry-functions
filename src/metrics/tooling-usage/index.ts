@@ -1,6 +1,6 @@
 import { logger } from "../../core";
 import {
-  SignedDataEvent,
+  SignedTriggerEvent,
   MetricData,
   MetricsSignature,
   MetricDataStatus,
@@ -11,9 +11,9 @@ import { decode } from "js-base64";
 import { LogWarnings } from "../../shared/log-messages";
 
 export const collectToolingUsageMetrics = async (
-  dataEvent: SignedDataEvent
+  triggerEvent: SignedTriggerEvent
 ): Promise<MetricData<MetricsSignature.ToolingUsage>> => {
-  const payload = dataEvent.payload as ToolingUsagePayload;
+  const payload = triggerEvent.payload as ToolingUsagePayload;
 
   let status: MetricDataStatus = "success";
   const output: ToolingUsageOutput = {
@@ -84,8 +84,8 @@ export const collectToolingUsageMetrics = async (
   }
 
   return {
-    created_at: dataEvent.created_at,
-    dataEventSignature: dataEvent.dataEventSignature,
+    created_at: triggerEvent.created_at,
+    trigger_event_signature: triggerEvent.trigger_event_signature,
     metricsSignature: MetricsSignature.ToolingUsage,
     owner: payload.owner,
     repo: payload.repo,
