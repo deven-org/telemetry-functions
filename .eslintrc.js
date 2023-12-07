@@ -10,6 +10,7 @@
 
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/strict"],
   env: {
     node: true,
     es2024: true,
@@ -20,8 +21,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  plugins: ["unicorn"],
+  plugins: ["@typescript-eslint", "unicorn"],
   rules: {
     camelcase: [
       "error",
