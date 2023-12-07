@@ -1,0 +1,30 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "formatWithErrors": true
+  },
+  "files": {
+    "ignore": [
+      "node_modules",
+      "package-lock.json",
+      "coverage",
+      ".netlify",
+      ".husky",
+      "postman"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "trailingComma": "es5"
+    }
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "enabled": false
+  }
+}

@@ -103,8 +103,9 @@ describe("storeData", () => {
     await handler(event);
 
     expect(octokit.request).toHaveBeenCalledTimes(2);
-    expect((octokit.request as unknown as jest.Mock).mock.calls)
-      .toMatchInlineSnapshot(`
+    expect(
+      (octokit.request as unknown as jest.Mock).mock.calls
+    ).toMatchInlineSnapshot(`
       [
         [
           "PUT /repos/{owner}/{repo}/contents/{path}",
