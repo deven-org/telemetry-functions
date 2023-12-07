@@ -9,12 +9,7 @@
   "publishConfig": {
     "@deven-org:registry": "https://npm.pkg.github.com"
   },
-  "keywords": [
-    "deven",
-    "telemetry",
-    "functions",
-    "serverless"
-  ],
+  "keywords": ["deven", "telemetry", "functions", "serverless"],
   "homepage": "https://github.com/deven-org/telemetry-functions",
   "engines": {
     "node": ">= 16"
