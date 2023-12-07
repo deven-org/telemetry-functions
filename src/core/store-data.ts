@@ -2,6 +2,7 @@ import { Base64 } from "js-base64";
 import { logger } from ".";
 import { MetricData } from "../interfaces";
 import octokit from "./octokit";
+import { storeDataStaggerTimeout } from "./store-data-stagger-timeout";
 
 export const storeData = async (metricData: MetricData[]) => {
   for (const data of metricData) {
@@ -35,6 +36,9 @@ export const storeData = async (metricData: MetricData[]) => {
     } catch (e) {
       console.log(e);
     }
+
+    // Timeout to prevent GitHub errors - see function documentation
+    await storeDataStaggerTimeout();
   }
   return metricData;
 };
