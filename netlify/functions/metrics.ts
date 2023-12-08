@@ -31,12 +31,9 @@ export const handler: Handler = async (event: HandlerEvent) => {
       ...identifySourceAndEvent(event.headers),
     };
 
-    const result: unknown = await collectMetricsHandler(rawEvent);
+    await collectMetricsHandler(rawEvent);
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result),
-    };
+    return { statusCode: 204 };
   } catch (e: unknown) {
     return {
       statusCode: 500,
