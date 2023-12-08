@@ -6,6 +6,8 @@ import {
   GithubEvent,
 } from "../../../interfaces";
 import { isSignedAsTagCreateEvent } from "../metrics-conditions";
+import { ErrorForLogger } from "../../../core";
+import { LogWarnings } from "../../../shared/log-messages";
 
 describe("Release Versions metric condition: isSignedAsTagCreateEvent", () => {
   it("returns false if event is not signed as create", async () => {
@@ -16,6 +18,24 @@ describe("Release Versions metric condition: isSignedAsTagCreateEvent", () => {
     };
 
     expect(isSignedAsTagCreateEvent(event)).toBeFalsy();
+  });
+
+  it("throws skip if event is from data repo", async () => {
+    const payload = getWebhookEventFixture(
+      GithubEvent.TagOrBranchCreation,
+      (ex) => ex.ref_type === "tag"
+    );
+    payload.repository.full_name = "data-repo-owner/data-repo-name";
+
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.GithubTagOrBranchCreation,
+      payload,
+      created_at: 100,
+    };
+
+    expect(() => isSignedAsTagCreateEvent(event)).toThrow(
+      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+    );
   });
 
   it("returns false if event is signed as create, ref_type is tag and ref is invalid semver string ", async () => {

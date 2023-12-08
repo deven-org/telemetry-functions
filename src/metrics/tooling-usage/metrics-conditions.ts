@@ -4,6 +4,7 @@ import {
   SignedTriggerEvent,
   TriggerEventSignature,
 } from "../../interfaces";
+import { abortIfDataRepo } from "../../shared/abort-if-data-repo";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { ToolingUsagePayload } from "./interfaces";
 
@@ -16,6 +17,8 @@ export const isSignedAsToolingUsage = (triggerEvent: SignedTriggerEvent) => {
   ) {
     return false;
   }
+
+  abortIfDataRepo(`${triggerEvent.payload.owner}/${triggerEvent.payload.repo}`);
 
   triggerEvent.payload satisfies ToolingUsagePayload;
 
