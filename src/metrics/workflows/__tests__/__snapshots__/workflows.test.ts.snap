@@ -559,7 +559,7 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
     "owner": "Octocoders",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "workflow-job",
+    "trigger_event_signature": "github::workflow_job",
   },
 ]
 `;
@@ -885,7 +885,7 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
     "owner": "Octocoders",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "workflow-job",
+    "trigger_event_signature": "github::workflow_job",
   },
 ]
 `;

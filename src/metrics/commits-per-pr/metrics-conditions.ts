@@ -10,7 +10,10 @@ import { CommitsPerPrPayload } from "./interfaces";
 
 export const isSignedAsCommitsPerPr = (triggerEvent: SignedTriggerEvent) => {
   if (
-    !validateEventSignature(triggerEvent, TriggerEventSignature.PullRequest)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubPullRequest
+    )
   ) {
     return false;
   }

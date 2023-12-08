@@ -9,7 +9,10 @@ import { ToolingUsagePayload } from "./interfaces";
 
 export const isSignedAsToolingUsage = (triggerEvent: SignedTriggerEvent) => {
   if (
-    !validateEventSignature(triggerEvent, TriggerEventSignature.ToolingUsage)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.DevenToolingUsage
+    )
   ) {
     return false;
   }

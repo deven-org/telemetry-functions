@@ -246,7 +246,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "check-suite",
+    "trigger_event_signature": "github::check_suite",
   },
 ]
 `;
@@ -471,7 +471,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "check-suite",
+    "trigger_event_signature": "github::check_suite",
   },
 ]
 `;
@@ -726,7 +726,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "check-suite",
+    "trigger_event_signature": "github::check_suite",
   },
 ]
 `;
@@ -995,7 +995,7 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "check-suite",
+    "trigger_event_signature": "github::check_suite",
   },
 ]
 `;

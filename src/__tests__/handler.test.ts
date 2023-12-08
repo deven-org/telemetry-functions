@@ -3,7 +3,12 @@ import * as moduleCollectMetrics from "../core/collect-metrics";
 import { handler } from "../handler";
 import { logger } from "../core/logger";
 import { LogWarnings } from "../shared/log-messages";
-import { TriggerEventSignature, TriggerSource } from "../interfaces";
+import {
+  DevenEvent,
+  GithubEvent,
+  TriggerEventSignature,
+  TriggerSource,
+} from "../interfaces";
 import { Mocktokit } from "./mocktokit";
 
 jest.mock(
@@ -62,7 +67,7 @@ describe("handler", () => {
   it("calls addSignature passing the given event payload", async () => {
     const event = {
       source: TriggerSource.Deven,
-      sourceEventSignature: "tooling-usage",
+      sourceEventSignature: DevenEvent.ToolingUsage,
       payload: {
         owner: "foo",
         repo: "bar",
@@ -75,7 +80,7 @@ describe("handler", () => {
   it("calls collectMetrics passing a signed event, given that the event is known", async () => {
     const event = {
       source: TriggerSource.Deven,
-      sourceEventSignature: "tooling-usage",
+      sourceEventSignature: DevenEvent.ToolingUsage,
       payload: {
         owner: "foo",
         repo: "bar",
@@ -86,7 +91,7 @@ describe("handler", () => {
 
     expect(spyOnCollectMetrics).toBeCalledWith({
       created_at: FAKE_NOW,
-      trigger_event_signature: "deven-tooling-usage",
+      trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
       payload: {
         owner: "foo",
         repo: "bar",
@@ -97,7 +102,7 @@ describe("handler", () => {
   it("doesn't call collectMetrics if the source is unknown", async () => {
     const event = {
       source: TriggerSource.Unknown,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: {
         owner: "foo",
         repo: "bar",
@@ -133,7 +138,7 @@ describe("handler", () => {
   it("calls storeData passing an enhanced data event, given that the metrics can be collects", async () => {
     const event = {
       source: TriggerSource.Deven,
-      sourceEventSignature: "tooling-usage",
+      sourceEventSignature: DevenEvent.ToolingUsage,
       payload: {
         owner: "foo",
         repo: "bar",
@@ -144,7 +149,7 @@ describe("handler", () => {
 
     expect(spyOnStoreData).toBeCalledWith({
       created_at: FAKE_NOW,
-      trigger_event_signature: TriggerEventSignature.ToolingUsage,
+      trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
       payload: {
         owner: "foo",
         repo: "bar",

@@ -16037,7 +16037,7 @@ exports[`commits-per-pr handles a range of mocked pull_request events: pull_requ
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;
@@ -16628,7 +16628,7 @@ exports[`commits-per-pr handles a range of mocked pull_request events: pull_requ
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;

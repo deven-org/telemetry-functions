@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
@@ -47,7 +48,7 @@ describe("code-review-involvement", () => {
   it("event gets signed as pull_request event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrClosed,
     };
 
@@ -56,7 +57,7 @@ describe("code-review-involvement", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       },
     ]);
   });
@@ -64,7 +65,7 @@ describe("code-review-involvement", () => {
   it("returns collected metrics", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrClosed,
     };
 
@@ -91,19 +92,19 @@ describe("code-review-involvement", () => {
           requested_teams: 0,
         },
         metric_signature: MetricSignature.CodeReviewInvolvement,
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       },
     ]);
   });
 
   it("handles a range of mocked pull_request events", async () => {
-    const fixtures = getWebhookEventFixtureList("pull_request");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.PullRequest);
 
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "pull_request",
+          sourceEventSignature: GithubEvent.PullRequest,
           payload: fix,
         })
       )

@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 
@@ -48,7 +49,7 @@ describe("check-suite", () => {
   it("event gets signed as pull_request event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "check_suite",
+      sourceEventSignature: GithubEvent.CheckSuite,
       payload: mockedCheckSuite,
     };
 
@@ -58,7 +59,7 @@ describe("check-suite", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        trigger_event_signature: TriggerEventSignature.CheckSuite,
+        trigger_event_signature: TriggerEventSignature.GithubCheckSuite,
       },
     ]);
   });
@@ -66,7 +67,7 @@ describe("check-suite", () => {
   it("returns collected metrics", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "check_suite",
+      sourceEventSignature: GithubEvent.CheckSuite,
       payload: mockedCheckSuite,
     };
 
@@ -82,7 +83,7 @@ describe("check-suite", () => {
           is_app_owner: true,
           pull_requests: [{ id: 41414141 }, { id: 42424242 }, { id: 43434343 }],
         },
-        trigger_event_signature: TriggerEventSignature.CheckSuite,
+        trigger_event_signature: TriggerEventSignature.GithubCheckSuite,
         owner: "owner_name",
         repo: "repo_name",
         metric_signature: MetricSignature.CheckSuite,
@@ -93,13 +94,13 @@ describe("check-suite", () => {
   });
 
   it("handles a range of mocked check_suite events", async () => {
-    const fixtures = getWebhookEventFixtureList("check_suite");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.CheckSuite);
 
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "check_suite",
+          sourceEventSignature: GithubEvent.CheckSuite,
           payload: fix,
         })
       )

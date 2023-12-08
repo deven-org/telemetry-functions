@@ -10,7 +10,7 @@ export const handler = async (
 ): Promise<undefined | MetricData[]> => {
   logger.start(
     LogInfos.eventReceived,
-    `${event.source}:${event.sourceEventSignature}`
+    `${event.source}::${event.sourceEventSignature}`
   );
 
   try {

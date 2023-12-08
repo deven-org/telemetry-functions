@@ -12,7 +12,10 @@ export const isSignedAsPullRequestMerged = (
   triggerEvent: SignedTriggerEvent
 ) => {
   if (
-    !validateEventSignature(triggerEvent, TriggerEventSignature.PullRequest)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubPullRequest
+    )
   ) {
     return false;
   }

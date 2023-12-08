@@ -7,6 +7,7 @@ import {
   MetricData,
   MetricSignature,
   TriggerSource,
+  GithubEvent,
 } from "../../interfaces";
 import { handler } from "../../handler";
 import "../logger";
@@ -29,10 +30,10 @@ jest.mock("../logger", () => ({
 }));
 
 const dataSignatureResponse = {
-  trigger_event_signature: TriggerEventSignature.WorkflowJob,
+  trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
   created_at: 100,
   payload: getWebhookEventFixture(
-    "workflow_job",
+    GithubEvent.WorkflowJob,
     (ex) => ex.action === "completed"
   ),
 };
@@ -59,7 +60,7 @@ const output: WorkflowsOutput = {
 
 const collectMetricsResponse: MetricData[] = [
   {
-    trigger_event_signature: TriggerEventSignature.WorkflowJob,
+    trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
     metric_signature: MetricSignature.WorkflowJob,
     created_at: 100,
     output,
@@ -68,7 +69,7 @@ const collectMetricsResponse: MetricData[] = [
     status: "success",
   },
   {
-    trigger_event_signature: TriggerEventSignature.WorkflowJob,
+    trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
     metric_signature: MetricSignature.WorkflowJob,
     created_at: 100,
     output,
@@ -106,44 +107,44 @@ describe("storeData", () => {
     expect(
       (octokit.request as unknown as jest.Mock).mock.calls
     ).toMatchInlineSnapshot(`
-      [
-        [
-          "PUT /repos/{owner}/{repo}/contents/{path}",
-          {
-            "author": {
-              "email": "author_email",
-              "name": "author_name",
-            },
-            "committer": {
-              "email": "committer_email",
-              "name": "committer_name",
-            },
-            "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsIm1ldHJpY19zaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJjcmVhdGVkX2F0Ijo0MDAwLCJzdGFydGVkX2F0Ijo0MDAwLCJjb21wbGV0ZWRfYXQiOjUwMDAsImR1cmF0aW9uIjoxMDAwLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJ3b3JrZmxvd19uYW1lIjoid29ya2Zsb3ctbmFtZSIsInJ1bl9hdHRlbXB0IjoxLCJzdGVwcyI6W119LCJvd25lciI6Im93bmVyIiwicmVwbyI6InJlcG8iLCJzdGF0dXMiOiJzdWNjZXNzIn0=",
-            "message": "auto(data): add workflow-job - workflow-job for owner/repo",
-            "owner": "deven-org",
-            "path": "raw-data/owner/repo/workflow-job/100.json",
-            "repo": "telemetry-data",
-          },
-        ],
-        [
-          "PUT /repos/{owner}/{repo}/contents/{path}",
-          {
-            "author": {
-              "email": "author_email",
-              "name": "author_name",
-            },
-            "committer": {
-              "email": "committer_email",
-              "name": "committer_name",
-            },
-            "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsIm1ldHJpY19zaWduYXR1cmUiOiJ3b3JrZmxvdy1qb2IiLCJjcmVhdGVkX2F0IjoxMDAsIm91dHB1dCI6eyJjcmVhdGVkX2F0Ijo0MDAwLCJzdGFydGVkX2F0Ijo0MDAwLCJjb21wbGV0ZWRfYXQiOjUwMDAsImR1cmF0aW9uIjoxMDAwLCJzdGF0dXMiOiJjb21wbGV0ZWQiLCJ3b3JrZmxvd19uYW1lIjoid29ya2Zsb3ctbmFtZSIsInJ1bl9hdHRlbXB0IjoxLCJzdGVwcyI6W119LCJvd25lciI6Im93bmVyIiwicmVwbyI6InJlcG8iLCJzdGF0dXMiOiJzdWNjZXNzIn0=",
-            "message": "auto(data): add workflow-job - workflow-job for owner/repo",
-            "owner": "deven-org",
-            "path": "raw-data/owner/repo/workflow-job/100.json",
-            "repo": "telemetry-data",
-          },
-        ],
-      ]
-    `);
+[
+  [
+    "PUT /repos/{owner}/{repo}/contents/{path}",
+    {
+      "author": {
+        "email": "author_email",
+        "name": "author_name",
+      },
+      "committer": {
+        "email": "committer_email",
+        "name": "committer_name",
+      },
+      "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6ImdpdGh1Yjo6d29ya2Zsb3dfam9iIiwibWV0cmljX3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsImNyZWF0ZWRfYXQiOjEwMCwib3V0cHV0Ijp7ImNyZWF0ZWRfYXQiOjQwMDAsInN0YXJ0ZWRfYXQiOjQwMDAsImNvbXBsZXRlZF9hdCI6NTAwMCwiZHVyYXRpb24iOjEwMDAsInN0YXR1cyI6ImNvbXBsZXRlZCIsIndvcmtmbG93X25hbWUiOiJ3b3JrZmxvdy1uYW1lIiwicnVuX2F0dGVtcHQiOjEsInN0ZXBzIjpbXX0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyIsInN0YXR1cyI6InN1Y2Nlc3MifQ==",
+      "message": "auto(data): add github::workflow_job - workflow-job for owner/repo",
+      "owner": "deven-org",
+      "path": "raw-data/owner/repo/workflow-job/100.json",
+      "repo": "telemetry-data",
+    },
+  ],
+  [
+    "PUT /repos/{owner}/{repo}/contents/{path}",
+    {
+      "author": {
+        "email": "author_email",
+        "name": "author_name",
+      },
+      "committer": {
+        "email": "committer_email",
+        "name": "committer_name",
+      },
+      "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6ImdpdGh1Yjo6d29ya2Zsb3dfam9iIiwibWV0cmljX3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsImNyZWF0ZWRfYXQiOjEwMCwib3V0cHV0Ijp7ImNyZWF0ZWRfYXQiOjQwMDAsInN0YXJ0ZWRfYXQiOjQwMDAsImNvbXBsZXRlZF9hdCI6NTAwMCwiZHVyYXRpb24iOjEwMDAsInN0YXR1cyI6ImNvbXBsZXRlZCIsIndvcmtmbG93X25hbWUiOiJ3b3JrZmxvdy1uYW1lIiwicnVuX2F0dGVtcHQiOjEsInN0ZXBzIjpbXX0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyIsInN0YXR1cyI6InN1Y2Nlc3MifQ==",
+      "message": "auto(data): add github::workflow_job - workflow-job for owner/repo",
+      "owner": "deven-org",
+      "path": "raw-data/owner/repo/workflow-job/100.json",
+      "repo": "telemetry-data",
+    },
+  ],
+]
+`);
   });
 });

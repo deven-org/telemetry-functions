@@ -2,12 +2,12 @@
 
 - [Metric Envelope](#metric-envelope)
 - [Trigger Events](#trigger-events)
-  - [`check-suite` (GitHub Event)](#check-suite-github-event)
-  - [`create` (Github Event)](#create-github-event)
-  - [`deployment` (GitHub Event)](#deployment-github-event)
-  - [`deven-tooling-usage` (Custom Event)](#deven-tooling-usage-custom-event)
-  - [`pull-request` (GitHub event)](#pull-request-github-event)
-  - [`workflow-job` (GitHub Event)](#workflow-job-github-event)
+  - [`github::check_suite`](#githubcheck_suite)
+  - [`github::create`](#githubcreate)
+  - [`github::deployment`](#githubdeployment)
+  - [`github::pull_request`](#githubpull_request)
+  - [`github::workflow_job`](#githubworkflow_job)
+  - [`deven::tooling-usage`](#deventooling-usage)
 - [Metrics](#metrics)
   - [`check-suite` for Completed Check Suites](#check-suite-for-completed-check-suites)
   - [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
@@ -30,7 +30,7 @@ All collected metric data has an "envelope" object containing a `trigger_event_s
   "created_at": 1679419755468,
   "owner": "deven-org",
   "repo": "telemetry-functions",
-  "trigger_event_signature": "pull-request",
+  "trigger_event_signature": "github::pull_request",
   "metric_signature": "release-versions",
   "output": {
     "pull_number": 12,
@@ -81,7 +81,7 @@ type MetricEnvelope<Output extends object> = {
 The following events are the possible triggers for collecting metrics.
 Each trigger's name is the respective `trigger_event_signature` ID.
 
-### `check-suite` (GitHub Event)
+### `github::check_suite`
 
 This event occurs when there is activity relating to a check suite.
 
@@ -91,7 +91,7 @@ Metrics:
 
 - [`check-suite` for Completed Check Suites](#check-suite-for-completed-check-suites)
 
-### `create` (Github Event)
+### `github::create`
 
 This event occurs when a Git branch or tag is created.
 
@@ -101,7 +101,7 @@ Metrics:
 
 - [`release-versions` for created Tags with valid semver version](#release-versions-for-merged-or-closed-pull-requests)
 
-### `deployment` (GitHub Event)
+### `github::deployment`
 
 This event occurs when there is activity relating to deployments.
 
@@ -111,7 +111,30 @@ Metrics:
 
 - [`deployment` for Created Deployments](#deployment-for-created-deployments)
 
-### `deven-tooling-usage` (Custom Event)
+### `github::pull_request`
+
+This event occurs when there is activity on a pull request.
+
+Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request
+
+Metrics:
+
+- [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
+- [`CommitsPerPr` for Merged Pull Requests](#commitsperpr-for-merged-pull-requests)
+- [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
+
+### `github::workflow_job`
+
+This event occurs when there is activity relating to a job in a GitHub Actions workflow.
+
+Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_job
+
+Metrics:
+
+- [`test-coverage` for Completed Workflow Jobs mentioning tests](#test-coverage-for-completed-workflow-jobs-mentioning-tests)
+- [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
+
+### `deven::tooling-usage`
 
 This event may be triggered via a request to the deployed webhook and only identifies a repository. Where & when this should be triggered is TBD.
 
@@ -137,29 +160,6 @@ type ToolingUsageBody = {
 };
 ```
 
-### `pull-request` (GitHub event)
-
-This event occurs when there is activity on a pull request.
-
-Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request
-
-Metrics:
-
-- [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
-- [`CommitsPerPr` for Merged Pull Requests](#commitsperpr-for-merged-pull-requests)
-- [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
-
-### `workflow-job` (GitHub Event)
-
-This event occurs when there is activity relating to a job in a GitHub Actions workflow.
-
-Event Docs: https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_job
-
-Metrics:
-
-- [`test-coverage` for Completed Workflow Jobs mentioning tests](#test-coverage-for-completed-workflow-jobs-mentioning-tests)
-- [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
-
 ## Metrics
 
 These are all the different metrics that can currently be collected.
@@ -171,7 +171,7 @@ These are all the different metrics that can currently be collected.
 
 Triggers:
 
-- [`check-suite` (GitHub Event)](#check-suite-github-event)
+- [`github::check_suite`](#githubcheck_suite)
 
 Condition, detecting completed check suites:
 
@@ -229,7 +229,7 @@ type CheckSuiteMetricsOutput = {
 
 Triggers:
 
-- [`pull-request` (GitHub event)](#pull-request-github-event)
+- [`github::pull_request`](#githubpull_request)
 
 Condition, detecting merged or closed pull requests:
 
@@ -316,7 +316,7 @@ type CodeReviewInvolvementOutput = {
 
 Triggers:
 
-- [`pull-request` (GitHub event)](#pull-request-github-event)
+- [`github::pull_request`](#githubpull_request)
 
 Condition, detecting merged Pull Requests:
 
@@ -388,7 +388,7 @@ type CommitsPerPrOutput = {
 
 Triggers:
 
-- [`deployment` (GitHub Event)](#deployment-github-event)
+- [`github::deployment`](#githubdeployment)
 
 Condition, detecting newly created deployments:
 
@@ -466,7 +466,7 @@ type CheckSuiteMetricsOutput = {
 
 Triggers:
 
-- [`pull-request` (GitHub event)](#pull-request-github-event)
+- [`github::pull_request`](#githubpull_request)
 
 Expecting that most documentation (especially when documentation-skeleton is used) is done in `.md` files, the metric tracks how many `.md` files have been changed with each pull request.
 
@@ -515,7 +515,7 @@ type DocumentationUpdatedOutput = {
 
 Triggers:
 
-- [`create` (GitHub event)](#create-github-event)
+- [`github::create`](#githubcreate)
 
 Condition, detecting created tag with valid semver version:
 
@@ -569,7 +569,7 @@ type ReleaseVersionsOutput = {
 
 Triggers:
 
-- [`deven-tooling-usage` (Custom Event)](#deven-tooling-usage-custom-event)
+- [`deven::tooling-usage`](#deventooling-usage)
 
 (No Condition)
 
@@ -617,7 +617,7 @@ type ToolingUsageOutput = {
 
 Triggers:
 
-- [`workflow-job` (GitHub Event)](#workflow-job-github-event)
+- [`github::workflow_job`](#githubworkflow_job)
 
 Condition, detecting completed jobs, that seem to mention tests in their name,
 the workflow name, or in the steps:
@@ -722,7 +722,7 @@ type TestCoverageOutput = {
 
 Triggers:
 
-- [`workflow-job` (GitHub Event)](#workflow-job-github-event)
+- [`github::workflow_job`](#githubworkflow_job)
 
 Condition, detecting completed jobs:
 

@@ -2099,7 +2099,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;
@@ -2662,7 +2662,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;
@@ -16084,7 +16084,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;
@@ -16666,7 +16666,7 @@ exports[`code-review-involvement handles a range of mocked pull_request events: 
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;

@@ -1,12 +1,16 @@
-import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
+import {
+  TriggerEventSignature,
+  SignedTriggerEvent,
+  GithubEvent,
+} from "../../../interfaces";
 import { isSignedAsPullRequestMerged } from "../metrics-conditions";
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
 
 describe("Documentation Updated metric condition: isSignedAsPullRequestMerged", () => {
   it("returns false if event is not signed as PullRequest", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.CheckSuite,
-      payload: getWebhookEventFixture("check_suite"),
+      trigger_event_signature: TriggerEventSignature.GithubCheckSuite,
+      payload: getWebhookEventFixture(GithubEvent.CheckSuite),
       created_at: 100,
     };
 
@@ -15,9 +19,9 @@ describe("Documentation Updated metric condition: isSignedAsPullRequestMerged", 
 
   it("returns false if event is a PullRequest but not closed", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.PullRequest,
+      trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       payload: getWebhookEventFixture(
-        "pull_request",
+        GithubEvent.PullRequest,
         (ex) => ex.action !== "closed"
       ),
       created_at: 100,
@@ -28,9 +32,9 @@ describe("Documentation Updated metric condition: isSignedAsPullRequestMerged", 
 
   it("returns false if event is a closed PullRequest but not merged", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.PullRequest,
+      trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       payload: getWebhookEventFixture(
-        "pull_request",
+        GithubEvent.PullRequest,
         (ex) => ex.action === "closed" && !ex.pull_request.merged
       ),
       created_at: 100,
@@ -41,12 +45,12 @@ describe("Documentation Updated metric condition: isSignedAsPullRequestMerged", 
 
   it("returns true if event is a closed and merged PullRequest", async () => {
     const fixture = getWebhookEventFixture(
-      "pull_request",
+      GithubEvent.PullRequest,
       (ex) => ex.action === "closed" && ex.pull_request.merged
     );
 
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.PullRequest,
+      trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       // there's no merged example yet, we'll have to get one from an unmerged one
       payload: fixture,
       created_at: 100,

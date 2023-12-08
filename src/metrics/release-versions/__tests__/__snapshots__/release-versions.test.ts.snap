@@ -807,7 +807,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "create",
+    "trigger_event_signature": "github::create",
   },
 ]
 `;
@@ -959,7 +959,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "create",
+    "trigger_event_signature": "github::create",
   },
 ]
 `;
@@ -1111,7 +1111,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "create",
+    "trigger_event_signature": "github::create",
   },
 ]
 `;
@@ -1267,7 +1267,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "create",
+    "trigger_event_signature": "github::create",
   },
 ]
 `;
@@ -1433,7 +1433,7 @@ exports[`release-versions handles a range of mocked create events: create fixtur
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "create",
+    "trigger_event_signature": "github::create",
   },
 ]
 `;
