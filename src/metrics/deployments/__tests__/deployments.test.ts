@@ -3,6 +3,7 @@ import {
   TriggerEventSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
@@ -57,7 +58,7 @@ describe("deployments", () => {
   it("event gets signed as deployment event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "deployment",
+      sourceEventSignature: GithubEvent.Deployment,
       payload: mockedDeploymentEvent,
     };
 
@@ -78,7 +79,7 @@ describe("deployments", () => {
 
     expect(result).toMatchObject([
       {
-        trigger_event_signature: TriggerEventSignature.Deployment,
+        trigger_event_signature: TriggerEventSignature.GithubDeployment,
         created_at: FAKE_NOW,
         status: "success",
         output: {},
@@ -89,7 +90,7 @@ describe("deployments", () => {
   it("sets time_since_last_deploy to null if there was no previous deploy on env", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "deployment",
+      sourceEventSignature: GithubEvent.Deployment,
       payload: mockedDeploymentEvent,
     };
 
@@ -130,7 +131,7 @@ describe("deployments", () => {
   it("sets status to networkError if deployments fetch fails", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "deployment",
+      sourceEventSignature: GithubEvent.Deployment,
       payload: mockedDeploymentEvent,
     };
 
@@ -167,7 +168,7 @@ describe("deployments", () => {
   it("sets status to networkError if package_json fetch fails", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "deployment",
+      sourceEventSignature: GithubEvent.Deployment,
       payload: mockedDeploymentEvent,
     };
 
@@ -201,7 +202,7 @@ describe("deployments", () => {
   });
 
   it("handles a range of mocked deployment events", async () => {
-    const fixtures = getWebhookEventFixtureList("deployment");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.Deployment);
 
     Mocktokit.mocks[
       "GET /repos/{owner}/{repo}/deployments?environment={environment}"
@@ -220,7 +221,7 @@ describe("deployments", () => {
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "deployment",
+          sourceEventSignature: GithubEvent.Deployment,
           payload: fix,
         })
       )

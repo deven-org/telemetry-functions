@@ -177,7 +177,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "deployment",
+    "trigger_event_signature": "github::deployment",
   },
 ]
 `;
@@ -457,7 +457,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "deployment",
+    "trigger_event_signature": "github::deployment",
   },
 ]
 `;
@@ -645,7 +645,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "deployment",
+    "trigger_event_signature": "github::deployment",
   },
 ]
 `;
@@ -837,7 +837,7 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "deployment",
+    "trigger_event_signature": "github::deployment",
   },
 ]
 `;

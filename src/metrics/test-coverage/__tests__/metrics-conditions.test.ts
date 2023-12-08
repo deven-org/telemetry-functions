@@ -1,12 +1,16 @@
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
+import {
+  TriggerEventSignature,
+  SignedTriggerEvent,
+  GithubEvent,
+} from "../../../interfaces";
 import { isSignedAsWorkflowJobTestCoverage } from "../metrics-conditions";
 
 describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", () => {
   it("returns false if event is not signed as WorkflowJob", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.CheckSuite,
-      payload: getWebhookEventFixture("check_suite"),
+      trigger_event_signature: TriggerEventSignature.GithubCheckSuite,
+      payload: getWebhookEventFixture(GithubEvent.CheckSuite),
       created_at: 100,
     };
 
@@ -15,9 +19,9 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
 
   it("returns false if event is signed as WorkflowJob but not completed", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: getWebhookEventFixture(
-        "workflow_job",
+        GithubEvent.WorkflowJob,
         (ex) => ex.action !== "completed"
       ),
       created_at: 100,
@@ -28,7 +32,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
 
   it("returns false if event is signed as completed WorkflowJob but no name is about tests", async () => {
     const payload = getWebhookEventFixture(
-      "workflow_job",
+      GithubEvent.WorkflowJob,
       (ex) => ex.action === "completed" && ex.workflow_job.steps.length > 0
     );
 
@@ -39,7 +43,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
     }
 
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: payload,
       created_at: 100,
     };
@@ -49,7 +53,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
 
   it("returns true if event is signed as completed WorkflowJob and job name is about tests", async () => {
     const payload = getWebhookEventFixture(
-      "workflow_job",
+      GithubEvent.WorkflowJob,
       (ex) => ex.action === "completed"
     );
 
@@ -60,7 +64,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
     }
 
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: payload,
       created_at: 100,
     };
@@ -70,7 +74,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
 
   it("returns true if event is signed as completed WorkflowJob and the workflow name is about tests", async () => {
     const payload = getWebhookEventFixture(
-      "workflow_job",
+      GithubEvent.WorkflowJob,
       (ex) => ex.action === "completed"
     );
 
@@ -81,7 +85,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
     }
 
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: payload,
       created_at: 100,
     };
@@ -91,7 +95,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
 
   it("returns true if event is signed as completed WorkflowJob and a step name is about tests", async () => {
     const payload = getWebhookEventFixture(
-      "workflow_job",
+      GithubEvent.WorkflowJob,
       (ex) => ex.action === "completed" && ex.workflow_job.steps.length > 0
     );
 
@@ -103,7 +107,7 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
     payload.workflow_job.steps[0].name = "run jest";
 
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: payload,
       created_at: 100,
     };

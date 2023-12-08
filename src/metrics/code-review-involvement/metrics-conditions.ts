@@ -11,7 +11,10 @@ export const isSignedAsPullRequestClosed = (
   triggerEvent: SignedTriggerEvent
 ) => {
   if (
-    !validateEventSignature(triggerEvent, TriggerEventSignature.PullRequest)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubPullRequest
+    )
   ) {
     return false;
   }

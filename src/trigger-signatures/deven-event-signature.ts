@@ -1,11 +1,11 @@
-import { TriggerEventSignature } from "../interfaces";
+import { DevenEvent, TriggerEventSignature } from "../interfaces";
 
 export function identifyDevenEventSignature(
   devenEvent: string
 ): TriggerEventSignature | null {
   switch (devenEvent) {
-    case "tooling-usage":
-      return TriggerEventSignature.ToolingUsage;
+    case DevenEvent.ToolingUsage:
+      return TriggerEventSignature.DevenToolingUsage;
     default:
       return null;
   }

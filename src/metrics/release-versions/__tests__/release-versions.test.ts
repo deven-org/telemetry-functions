@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 
@@ -48,7 +49,7 @@ describe("release-versions", () => {
   it("event gets signed as create event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "create",
+      sourceEventSignature: GithubEvent.TagOrBranchCreation,
       payload: mockedCheckSuite,
     };
 
@@ -58,7 +59,8 @@ describe("release-versions", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        trigger_event_signature: TriggerEventSignature.TagOrBranchCreation,
+        trigger_event_signature:
+          TriggerEventSignature.GithubTagOrBranchCreation,
       },
     ]);
   });
@@ -66,7 +68,7 @@ describe("release-versions", () => {
   it("returns collected metrics", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "create",
+      sourceEventSignature: GithubEvent.TagOrBranchCreation,
       payload: mockedCheckSuite,
     };
 
@@ -85,7 +87,8 @@ describe("release-versions", () => {
             version: "1.2.3",
           },
         },
-        trigger_event_signature: TriggerEventSignature.TagOrBranchCreation,
+        trigger_event_signature:
+          TriggerEventSignature.GithubTagOrBranchCreation,
         owner: "owner",
         repo: "repo_name",
         metric_signature: MetricSignature.ReleaseVersions,
@@ -95,13 +98,15 @@ describe("release-versions", () => {
   });
 
   it("handles a range of mocked create events", async () => {
-    const fixtures = getWebhookEventFixtureList("create");
+    const fixtures = getWebhookEventFixtureList(
+      GithubEvent.TagOrBranchCreation
+    );
 
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "create",
+          sourceEventSignature: GithubEvent.TagOrBranchCreation,
           payload: fix,
         })
       )

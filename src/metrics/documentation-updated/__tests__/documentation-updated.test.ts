@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrMerged from "./fixtures/mocked-pull-request-merged.json";
@@ -78,7 +79,7 @@ describe("documentation-updated", () => {
   it("event gets signed as pull_request event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrMerged,
     };
 
@@ -94,7 +95,7 @@ describe("documentation-updated", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       },
     ]);
   });
@@ -102,7 +103,7 @@ describe("documentation-updated", () => {
   it("returns collected metrics", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrMerged,
     };
 
@@ -117,7 +118,7 @@ describe("documentation-updated", () => {
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
         metric_signature: MetricSignature.DocumentationUpdated,
         status: "success",
         output: {
@@ -134,7 +135,7 @@ describe("documentation-updated", () => {
   it("reports over_100_files if result is paginated", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrMerged,
     };
 
@@ -151,7 +152,7 @@ describe("documentation-updated", () => {
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
         metric_signature: MetricSignature.DocumentationUpdated,
         status: "success",
         output: {
@@ -168,7 +169,7 @@ describe("documentation-updated", () => {
   it("sets status to networkError if pr_files fetch fails", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrMerged,
     };
 
@@ -182,7 +183,7 @@ describe("documentation-updated", () => {
     expect(output).toMatchObject([
       {
         created_at: FAKE_NOW,
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
         metric_signature: MetricSignature.DocumentationUpdated,
         status: "networkError",
         output: {
@@ -194,7 +195,7 @@ describe("documentation-updated", () => {
   });
 
   it("handles a range of mocked pull_request events", async () => {
-    const fixtures = getWebhookEventFixtureList("pull_request");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.PullRequest);
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
       async () => ({
@@ -206,7 +207,7 @@ describe("documentation-updated", () => {
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "pull_request",
+          sourceEventSignature: GithubEvent.PullRequest,
           payload: fix,
         })
       )

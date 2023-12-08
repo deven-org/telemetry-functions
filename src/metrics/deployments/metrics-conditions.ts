@@ -8,7 +8,12 @@ import { validateEventSignature } from "../../shared/validate-event-signature";
 import { DeploymentPayload } from "./interfaces";
 
 export const isSignedAsDeployment = (triggerEvent: SignedTriggerEvent) => {
-  if (!validateEventSignature(triggerEvent, TriggerEventSignature.Deployment)) {
+  if (
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubDeployment
+    )
+  ) {
     return false;
   }
 

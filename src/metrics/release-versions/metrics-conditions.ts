@@ -12,7 +12,7 @@ export const isSignedAsTagCreateEvent = (triggerEvent: SignedTriggerEvent) => {
   if (
     !validateEventSignature(
       triggerEvent,
-      TriggerEventSignature.TagOrBranchCreation
+      TriggerEventSignature.GithubTagOrBranchCreation
     )
   ) {
     return false;

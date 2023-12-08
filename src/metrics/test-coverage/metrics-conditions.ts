@@ -12,7 +12,10 @@ export const isSignedAsWorkflowJobTestCoverage = (
   triggerEvent: SignedTriggerEvent
 ) => {
   if (
-    !validateEventSignature(triggerEvent, TriggerEventSignature.WorkflowJob)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubWorkflowJob
+    )
   ) {
     return false;
   }
