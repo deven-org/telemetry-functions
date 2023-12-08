@@ -5,6 +5,8 @@ import {
 } from "../../../interfaces";
 import { isSignedAsPullRequestMerged } from "../metrics-conditions";
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
+import { ErrorForLogger } from "../../../core";
+import { LogWarnings } from "../../../shared/log-messages";
 
 describe("Documentation Updated metric condition: isSignedAsPullRequestMerged", () => {
   it("returns false if event is not signed as PullRequest", async () => {
@@ -15,6 +17,21 @@ describe("Documentation Updated metric condition: isSignedAsPullRequestMerged", 
     };
 
     expect(isSignedAsPullRequestMerged(event)).toBeFalsy();
+  });
+
+  it("throws skip if event is from data repo", async () => {
+    const payload = getWebhookEventFixture(GithubEvent.PullRequest);
+    payload.repository.full_name = "data-repo-owner/data-repo-name";
+
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.GithubPullRequest,
+      payload,
+      created_at: 100,
+    };
+
+    expect(() => isSignedAsPullRequestMerged(event)).toThrow(
+      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+    );
   });
 
   it("returns false if event is a PullRequest but not closed", async () => {

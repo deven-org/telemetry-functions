@@ -4,6 +4,7 @@ import {
   SignedTriggerEvent,
   TriggerEventSignature,
 } from "../../interfaces";
+import { abortIfDataRepo } from "../../shared/abort-if-data-repo";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { WorkflowsPayload } from "./interfaces";
 
@@ -16,6 +17,8 @@ export const isSignedAsWorkflowJob = (triggerEvent: SignedTriggerEvent) => {
   ) {
     return false;
   }
+
+  abortIfDataRepo(triggerEvent.payload.repository.full_name);
 
   if (triggerEvent.payload.action !== "completed") {
     return false;

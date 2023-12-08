@@ -4,6 +4,8 @@ import {
   SignedTriggerEvent,
   GithubEvent,
 } from "../../../interfaces";
+import { ErrorForLogger } from "../../../core";
+import { LogWarnings } from "../../../shared/log-messages";
 import { isSignedAsCheckSuiteCompleted } from "../metrics-conditions";
 
 describe("Check Suite metric condition: isSignedAsCheckSuiteCompleted", () => {
@@ -15,6 +17,21 @@ describe("Check Suite metric condition: isSignedAsCheckSuiteCompleted", () => {
     };
 
     expect(isSignedAsCheckSuiteCompleted(event)).toBeFalsy();
+  });
+
+  it("throws skip if event is from data repo", async () => {
+    const payload = getWebhookEventFixture(GithubEvent.CheckSuite);
+    payload.repository.full_name = "data-repo-owner/data-repo-name";
+
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.GithubCheckSuite,
+      payload,
+      created_at: 100,
+    };
+
+    expect(() => isSignedAsCheckSuiteCompleted(event)).toThrow(
+      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+    );
   });
 
   it("returns false if event is signed as CheckSuite but not completed", async () => {

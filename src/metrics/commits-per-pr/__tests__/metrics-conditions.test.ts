@@ -4,6 +4,8 @@ import {
   SignedTriggerEvent,
   GithubEvent,
 } from "../../../interfaces";
+import { ErrorForLogger } from "../../../core";
+import { LogWarnings } from "../../../shared/log-messages";
 import { isSignedAsCommitsPerPr } from "../metrics-conditions";
 
 describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
@@ -15,6 +17,21 @@ describe("Commits Per PR metric condition: isSignedAsCommitsPerPr", () => {
     };
 
     expect(isSignedAsCommitsPerPr(event)).toBeFalsy();
+  });
+
+  it("throws skip if event is from data repo", async () => {
+    const payload = getWebhookEventFixture(GithubEvent.PullRequest);
+    payload.repository.full_name = "data-repo-owner/data-repo-name";
+
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.GithubPullRequest,
+      payload,
+      created_at: 100,
+    };
+
+    expect(() => isSignedAsCommitsPerPr(event)).toThrow(
+      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+    );
   });
 
   it("returns false if event is signed as PullRequest but not closed", async () => {

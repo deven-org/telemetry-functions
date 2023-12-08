@@ -4,6 +4,7 @@ import {
   SignedTriggerEvent,
   TriggerEventSignature,
 } from "../../interfaces";
+import { abortIfDataRepo } from "../../shared/abort-if-data-repo";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { validatePrWasMerged } from "../../shared/validate-pr-was-merged";
 import { CommitsPerPrPayload } from "./interfaces";
@@ -17,6 +18,8 @@ export const isSignedAsCommitsPerPr = (triggerEvent: SignedTriggerEvent) => {
   ) {
     return false;
   }
+
+  abortIfDataRepo(triggerEvent.payload.repository.full_name);
 
   if (triggerEvent.payload.action !== "closed") {
     return false;
