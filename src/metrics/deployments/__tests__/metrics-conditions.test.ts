@@ -4,6 +4,8 @@ import {
   SignedTriggerEvent,
   GithubEvent,
 } from "../../../interfaces";
+import { ErrorForLogger } from "../../../core";
+import { LogWarnings } from "../../../shared/log-messages";
 import { isSignedAsDeployment } from "../metrics-conditions";
 
 describe("Deployment metric condition: isSignedAsDeployment", () => {
@@ -15,6 +17,21 @@ describe("Deployment metric condition: isSignedAsDeployment", () => {
     };
 
     expect(isSignedAsDeployment(event)).toBeFalsy();
+  });
+
+  it("throws skip if event is from data repo", async () => {
+    const payload = getWebhookEventFixture(GithubEvent.Deployment);
+    payload.repository.full_name = "data-repo-owner/data-repo-name";
+
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.GithubDeployment,
+      payload,
+      created_at: 100,
+    };
+
+    expect(() => isSignedAsDeployment(event)).toThrow(
+      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+    );
   });
 
   it("returns false if event is signed as Deployment but not with the action created", async () => {

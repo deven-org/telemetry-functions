@@ -121,9 +121,9 @@ describe("storeData", () => {
       },
       "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6ImdpdGh1Yjo6d29ya2Zsb3dfam9iIiwibWV0cmljX3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsImNyZWF0ZWRfYXQiOjEwMCwib3V0cHV0Ijp7ImNyZWF0ZWRfYXQiOjQwMDAsInN0YXJ0ZWRfYXQiOjQwMDAsImNvbXBsZXRlZF9hdCI6NTAwMCwiZHVyYXRpb24iOjEwMDAsInN0YXR1cyI6ImNvbXBsZXRlZCIsIndvcmtmbG93X25hbWUiOiJ3b3JrZmxvdy1uYW1lIiwicnVuX2F0dGVtcHQiOjEsInN0ZXBzIjpbXX0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyIsInN0YXR1cyI6InN1Y2Nlc3MifQ==",
       "message": "auto(data): add github::workflow_job => workflow-job for owner/repo",
-      "owner": "deven-org",
+      "owner": "data-repo-owner",
       "path": "raw-data/owner/repo/workflow-job/100.json",
-      "repo": "telemetry-data",
+      "repo": "data-repo-name",
     },
   ],
   [
@@ -139,9 +139,9 @@ describe("storeData", () => {
       },
       "content": "eyJ0cmlnZ2VyX2V2ZW50X3NpZ25hdHVyZSI6ImdpdGh1Yjo6d29ya2Zsb3dfam9iIiwibWV0cmljX3NpZ25hdHVyZSI6IndvcmtmbG93LWpvYiIsImNyZWF0ZWRfYXQiOjEwMCwib3V0cHV0Ijp7ImNyZWF0ZWRfYXQiOjQwMDAsInN0YXJ0ZWRfYXQiOjQwMDAsImNvbXBsZXRlZF9hdCI6NTAwMCwiZHVyYXRpb24iOjEwMDAsInN0YXR1cyI6ImNvbXBsZXRlZCIsIndvcmtmbG93X25hbWUiOiJ3b3JrZmxvdy1uYW1lIiwicnVuX2F0dGVtcHQiOjEsInN0ZXBzIjpbXX0sIm93bmVyIjoib3duZXIiLCJyZXBvIjoicmVwbyIsInN0YXR1cyI6InN1Y2Nlc3MifQ==",
       "message": "auto(data): add github::workflow_job => workflow-job for owner/repo",
-      "owner": "deven-org",
+      "owner": "data-repo-owner",
       "path": "raw-data/owner/repo/workflow-job/100.json",
-      "repo": "telemetry-data",
+      "repo": "data-repo-name",
     },
   ],
 ]

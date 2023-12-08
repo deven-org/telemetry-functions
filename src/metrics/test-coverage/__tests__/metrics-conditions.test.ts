@@ -4,6 +4,8 @@ import {
   SignedTriggerEvent,
   GithubEvent,
 } from "../../../interfaces";
+import { ErrorForLogger } from "../../../core";
+import { LogWarnings } from "../../../shared/log-messages";
 import { isSignedAsWorkflowJobTestCoverage } from "../metrics-conditions";
 
 describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", () => {
@@ -15,6 +17,21 @@ describe("Test Coverage metric condition: isSignedAsWorkflowJobTestCoverage", ()
     };
 
     expect(isSignedAsWorkflowJobTestCoverage(event)).toBeFalsy();
+  });
+
+  it("throws skip if event is from data repo", async () => {
+    const payload = getWebhookEventFixture(GithubEvent.WorkflowJob);
+    payload.repository.full_name = "data-repo-owner/data-repo-name";
+
+    const event: SignedTriggerEvent = {
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
+      payload,
+      created_at: 100,
+    };
+
+    expect(() => isSignedAsWorkflowJobTestCoverage(event)).toThrow(
+      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+    );
   });
 
   it("returns false if event is signed as WorkflowJob but not completed", async () => {

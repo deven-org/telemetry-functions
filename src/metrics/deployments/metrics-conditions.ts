@@ -4,6 +4,7 @@ import {
   SignedTriggerEvent,
   TriggerEventSignature,
 } from "../../interfaces";
+import { abortIfDataRepo } from "../../shared/abort-if-data-repo";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { DeploymentPayload } from "./interfaces";
 
@@ -16,6 +17,8 @@ export const isSignedAsDeployment = (triggerEvent: SignedTriggerEvent) => {
   ) {
     return false;
   }
+
+  abortIfDataRepo(triggerEvent.payload.repository.full_name);
 
   if (triggerEvent.payload.action !== "created") {
     return false;

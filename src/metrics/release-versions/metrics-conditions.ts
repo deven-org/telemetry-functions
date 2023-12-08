@@ -7,6 +7,7 @@ import {
 } from "../../interfaces";
 import { validateEventSignature } from "../../shared/validate-event-signature";
 import { ReleaseVersionsPayload } from "./interfaces";
+import { abortIfDataRepo } from "../../shared/abort-if-data-repo";
 
 export const isSignedAsTagCreateEvent = (triggerEvent: SignedTriggerEvent) => {
   if (
@@ -17,6 +18,8 @@ export const isSignedAsTagCreateEvent = (triggerEvent: SignedTriggerEvent) => {
   ) {
     return false;
   }
+
+  abortIfDataRepo(triggerEvent.payload.repository.full_name);
 
   if (triggerEvent.payload.ref_type !== "tag") {
     return false;
