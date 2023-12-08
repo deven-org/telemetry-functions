@@ -1,4 +1,4 @@
-import { getErrorForCatcher, logger } from ".";
+import { ErrorForLogger, logger } from ".";
 import { LogInfos, LogWarnings } from "../shared/log-messages";
 import { SignedTriggerEvent, RawEvent } from "../interfaces";
 import { identifyTriggerEventSignature } from "../trigger-signatures";
@@ -11,10 +11,10 @@ export async function addSignature(
   const signature = identifyTriggerEventSignature(source, sourceEventSignature);
 
   if (signature === null) {
-    throw getErrorForCatcher({
-      level: "skip",
-      message: LogWarnings.signingEventSignatureNotRecognized,
-    });
+    throw new ErrorForLogger(
+      "skip",
+      LogWarnings.signingEventSignatureNotRecognized
+    );
   }
 
   logger.info(LogInfos.eventSigned, signature);

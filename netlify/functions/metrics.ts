@@ -1,6 +1,7 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { handler as collectMetricsHandler } from "../../src/handler";
 import { RawEvent, TriggerSource } from "../../src/interfaces";
+import { LogErrors } from "../../src/shared/log-messages";
 
 const headerSourceMap: Record<string, TriggerSource> = {
   ["x-github-event"]: TriggerSource.Github,
@@ -35,15 +36,10 @@ export const handler: Handler = async (event: HandlerEvent) => {
 
     return { statusCode: 204 };
   } catch (e: unknown) {
+    // Responding with an error code here lets us easily resend events from GitHub
     return {
       statusCode: 500,
-      body:
-        typeof e === "object" &&
-        e !== null &&
-        "message" in e &&
-        typeof e.message === "string"
-          ? e.message
-          : "server error",
+      body: LogErrors.genericServerError,
     };
   }
 };
