@@ -28,7 +28,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:dev": "jest --watch",
-    "test:update-snapshots": "jest -u",
+    "test:update-snapshots": "jest -u && biome format --write .",
     "doc:install": "deven-documentation-skeleton install",
     "doc:check": "deven-documentation-skeleton check",
     "doc:update": "deven-documentation-skeleton update",

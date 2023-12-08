@@ -1,4 +1,4 @@
-import { getErrorForCatcher, logger } from ".";
+import { ErrorForLogger, logger } from ".";
 import cloneDeep from "lodash.clonedeep";
 import metricsConditions from "../metrics-conditions";
 import { LogSuccess, LogWarnings } from "../shared/log-messages";
@@ -20,10 +20,10 @@ export const collectMetrics = async (
   }
 
   if (collectedMetrics.length === 0) {
-    throw getErrorForCatcher({
-      level: "skip",
-      message: LogWarnings.collectMetricsSignatureNotRecognized,
-    });
+    throw new ErrorForLogger(
+      "skip",
+      LogWarnings.collectMetricsSignatureNotRecognized
+    );
   }
 
   return collectedMetrics;
