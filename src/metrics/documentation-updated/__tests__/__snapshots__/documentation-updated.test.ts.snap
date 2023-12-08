@@ -16018,7 +16018,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;
@@ -16590,7 +16590,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "owner": "Codertocat",
     "repo": "Hello-World",
     "status": "success",
-    "trigger_event_signature": "pull-request",
+    "trigger_event_signature": "github::pull_request",
   },
 ]
 `;

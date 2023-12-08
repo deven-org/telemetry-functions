@@ -1,12 +1,16 @@
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { TriggerEventSignature, SignedTriggerEvent } from "../../../interfaces";
+import {
+  TriggerEventSignature,
+  SignedTriggerEvent,
+  GithubEvent,
+} from "../../../interfaces";
 import { isSignedAsWorkflowJob } from "../metrics-conditions";
 
 describe("Workflows metric condition: isSignedAsWorkflowJob", () => {
   it("returns false if event is not signed as WorkflowJob", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.CheckSuite,
-      payload: getWebhookEventFixture("check_suite"),
+      trigger_event_signature: TriggerEventSignature.GithubCheckSuite,
+      payload: getWebhookEventFixture(GithubEvent.CheckSuite),
       created_at: 100,
     };
 
@@ -15,9 +19,9 @@ describe("Workflows metric condition: isSignedAsWorkflowJob", () => {
 
   it("returns false if event is signed as WorkflowJob but not completed", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: getWebhookEventFixture(
-        "workflow_job",
+        GithubEvent.WorkflowJob,
         (ex) => ex.action !== "completed"
       ),
       created_at: 100,
@@ -28,9 +32,9 @@ describe("Workflows metric condition: isSignedAsWorkflowJob", () => {
 
   it("returns true if event is signed as completed WorkflowJob", async () => {
     const event: SignedTriggerEvent = {
-      trigger_event_signature: TriggerEventSignature.WorkflowJob,
+      trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       payload: getWebhookEventFixture(
-        "workflow_job",
+        GithubEvent.WorkflowJob,
         (ex) => ex.action === "completed"
       ),
       created_at: 100,

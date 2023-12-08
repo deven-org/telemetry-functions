@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
@@ -49,7 +50,7 @@ describe("workflows", () => {
   it("event gets signed as workflow_job event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompleted,
     };
 
@@ -59,7 +60,7 @@ describe("workflows", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        trigger_event_signature: TriggerEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       },
     ]);
   });
@@ -67,7 +68,7 @@ describe("workflows", () => {
   it("returns collected metrics", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompleted,
     };
 
@@ -110,20 +111,20 @@ describe("workflows", () => {
             },
           ],
         },
-        trigger_event_signature: TriggerEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
         metric_signature: MetricSignature.WorkflowJob,
       },
     ]);
   });
 
   it("handles a range of mocked workflow_job events", async () => {
-    const fixtures = getWebhookEventFixtureList("workflow_job");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.WorkflowJob);
 
     const output = await Promise.all(
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "workflow_job",
+          sourceEventSignature: GithubEvent.WorkflowJob,
           payload: fix,
         })
       )

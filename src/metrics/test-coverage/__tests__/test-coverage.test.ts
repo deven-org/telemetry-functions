@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
@@ -58,7 +59,7 @@ describe("Test_Coverage", () => {
   it("event gets signed as test_coverage event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompletedWithTestName,
     };
 
@@ -68,7 +69,7 @@ describe("Test_Coverage", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        trigger_event_signature: TriggerEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
       },
     ]);
   });
@@ -76,7 +77,7 @@ describe("Test_Coverage", () => {
   it("collects no metrics if not about test", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompleted,
     };
 
@@ -88,7 +89,7 @@ describe("Test_Coverage", () => {
   it("returns collected metrics (with test in job name)", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompletedWithTestName,
     };
 
@@ -97,7 +98,7 @@ describe("Test_Coverage", () => {
     expect(output).toStrictEqual([
       {
         created_at: FAKE_NOW,
-        trigger_event_signature: TriggerEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
         metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
@@ -119,7 +120,7 @@ describe("Test_Coverage", () => {
   it("returns collected metrics (with test in workflow name)", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompletedWithTestWorkflowName,
     };
 
@@ -128,7 +129,7 @@ describe("Test_Coverage", () => {
     expect(output).toStrictEqual([
       {
         created_at: FAKE_NOW,
-        trigger_event_signature: TriggerEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
         metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
@@ -150,7 +151,7 @@ describe("Test_Coverage", () => {
   it("returns collected metrics (with test in step names)", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "workflow_job",
+      sourceEventSignature: GithubEvent.WorkflowJob,
       payload: mockedWorkflowJobCompletedWithTestSteps,
     };
 
@@ -159,7 +160,7 @@ describe("Test_Coverage", () => {
     expect(output).toStrictEqual([
       {
         created_at: FAKE_NOW,
-        trigger_event_signature: TriggerEventSignature.WorkflowJob,
+        trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
         metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
@@ -198,7 +199,7 @@ describe("Test_Coverage", () => {
   });
 
   it("handles a range of mocked workflow_job events", async () => {
-    const fixtures = getWebhookEventFixtureList("workflow_job");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.WorkflowJob);
 
     fixtures.forEach((fix) => (fix.workflow_job.name = "Run tests"));
 
@@ -206,7 +207,7 @@ describe("Test_Coverage", () => {
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "workflow_job",
+          sourceEventSignature: GithubEvent.WorkflowJob,
           payload: fix,
         })
       )

@@ -9,7 +9,10 @@ import { WorkflowsPayload } from "./interfaces";
 
 export const isSignedAsWorkflowJob = (triggerEvent: SignedTriggerEvent) => {
   if (
-    !validateEventSignature(triggerEvent, TriggerEventSignature.WorkflowJob)
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubWorkflowJob
+    )
   ) {
     return false;
   }

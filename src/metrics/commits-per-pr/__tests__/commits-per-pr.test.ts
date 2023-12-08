@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
@@ -88,7 +89,7 @@ describe("commits-per-pr", () => {
   it("event gets signed as pull_request event", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrClosed,
     };
 
@@ -103,7 +104,7 @@ describe("commits-per-pr", () => {
       {
         created_at: expect.any(Number),
         output: {},
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       },
     ]);
   });
@@ -111,7 +112,7 @@ describe("commits-per-pr", () => {
   it("returns collected metrics", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrClosed,
     };
 
@@ -155,7 +156,7 @@ describe("commits-per-pr", () => {
         owner: "owner",
         repo: "repo_name",
         metric_signature: MetricSignature.CommitsPerPr,
-        trigger_event_signature: TriggerEventSignature.PullRequest,
+        trigger_event_signature: TriggerEventSignature.GithubPullRequest,
         status: "success",
       },
     ]);
@@ -164,7 +165,7 @@ describe("commits-per-pr", () => {
   it("sets status to networkError if commits fetch fails", async () => {
     const eventBody: RawEvent = {
       source: TriggerSource.Github,
-      sourceEventSignature: "pull_request",
+      sourceEventSignature: GithubEvent.PullRequest,
       payload: mockedPrClosed,
     };
 
@@ -187,13 +188,13 @@ describe("commits-per-pr", () => {
       owner: "owner",
       repo: "repo_name",
       metric_signature: MetricSignature.CommitsPerPr,
-      trigger_event_signature: TriggerEventSignature.PullRequest,
+      trigger_event_signature: TriggerEventSignature.GithubPullRequest,
       status: "networkError",
     });
   });
 
   it("handles a range of mocked pull_request events", async () => {
-    const fixtures = getWebhookEventFixtureList("pull_request");
+    const fixtures = getWebhookEventFixtureList(GithubEvent.PullRequest);
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/commits"] =
       async () => ({
@@ -205,7 +206,7 @@ describe("commits-per-pr", () => {
       fixtures.map((fix) =>
         handler({
           source: TriggerSource.Github,
-          sourceEventSignature: "pull_request",
+          sourceEventSignature: GithubEvent.PullRequest,
           payload: fix,
         })
       )

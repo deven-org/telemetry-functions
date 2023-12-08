@@ -10,7 +10,12 @@ import { CheckSuitePayload } from "./interfaces";
 export const isSignedAsCheckSuiteCompleted = (
   triggerEvent: SignedTriggerEvent
 ) => {
-  if (!validateEventSignature(triggerEvent, TriggerEventSignature.CheckSuite)) {
+  if (
+    !validateEventSignature(
+      triggerEvent,
+      TriggerEventSignature.GithubCheckSuite
+    )
+  ) {
     return false;
   }
 

@@ -24,14 +24,34 @@ export enum TriggerSource {
   Unknown = "unknown",
 }
 
-export enum TriggerEventSignature {
-  WorkflowJob = "workflow-job",
-  ToolingUsage = "deven-tooling-usage",
-  PullRequest = "pull-request",
-  CheckSuite = "check-suite",
+// These correspond to the actual event names we receive from GitHub!
+export enum GithubEvent {
+  WorkflowJob = "workflow_job",
+  PullRequest = "pull_request",
+  CheckSuite = "check_suite",
   Deployment = "deployment",
   TagOrBranchCreation = "create",
 }
+
+export enum DevenEvent {
+  ToolingUsage = "tooling-usage",
+}
+
+/* eslint-disable @typescript-eslint/prefer-literal-enum-member
+   --------
+   There is no good alternative for checking that the enum members satisfy the
+   pattern.
+*/
+export enum TriggerEventSignature {
+  GithubWorkflowJob = `${TriggerSource.Github}::${GithubEvent.WorkflowJob}`,
+  GithubPullRequest = `${TriggerSource.Github}::${GithubEvent.PullRequest}`,
+  GithubCheckSuite = `${TriggerSource.Github}::${GithubEvent.CheckSuite}`,
+  GithubDeployment = `${TriggerSource.Github}::${GithubEvent.Deployment}`,
+  GithubTagOrBranchCreation = `${TriggerSource.Github}::${GithubEvent.TagOrBranchCreation}`,
+  DevenToolingUsage = `${TriggerSource.Deven}::${DevenEvent.ToolingUsage}`,
+}
+// reenable rule
+/* eslint-enable @typescript-eslint/prefer-literal-enum-member */
 
 export enum MetricSignature {
   CheckSuite = "check-suite",
@@ -46,12 +66,12 @@ export enum MetricSignature {
 }
 
 interface TriggerEventPayloadMap {
-  [TriggerEventSignature.WorkflowJob]: WorkflowJobEvent;
-  [TriggerEventSignature.ToolingUsage]: ToolingUsagePayload;
-  [TriggerEventSignature.PullRequest]: PullRequestEvent;
-  [TriggerEventSignature.CheckSuite]: CheckSuiteEvent;
-  [TriggerEventSignature.Deployment]: DeploymentEvent;
-  [TriggerEventSignature.TagOrBranchCreation]: CreateEvent;
+  [TriggerEventSignature.GithubWorkflowJob]: WorkflowJobEvent;
+  [TriggerEventSignature.DevenToolingUsage]: ToolingUsagePayload;
+  [TriggerEventSignature.GithubPullRequest]: PullRequestEvent;
+  [TriggerEventSignature.GithubCheckSuite]: CheckSuiteEvent;
+  [TriggerEventSignature.GithubDeployment]: DeploymentEvent;
+  [TriggerEventSignature.GithubTagOrBranchCreation]: CreateEvent;
 }
 
 interface MetricSignatureOutputMap {

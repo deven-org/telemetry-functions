@@ -3,6 +3,7 @@ import {
   MetricSignature,
   RawEvent,
   TriggerSource,
+  DevenEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
@@ -40,7 +41,7 @@ describe("tooling-usage", () => {
 
   const eventBody: RawEvent = {
     source: TriggerSource.Deven,
-    sourceEventSignature: "tooling-usage",
+    sourceEventSignature: DevenEvent.ToolingUsage,
     payload: {
       owner: "test-owner",
       repo: "test-repo",
@@ -75,7 +76,7 @@ describe("tooling-usage", () => {
       {
         created_at: FAKE_NOW,
         output: {},
-        trigger_event_signature: TriggerEventSignature.ToolingUsage,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
         owner: "test-owner",
         repo: "test-repo",
       },
@@ -102,7 +103,7 @@ describe("tooling-usage", () => {
             version: null,
           },
         },
-        trigger_event_signature: TriggerEventSignature.ToolingUsage,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
         metric_signature: MetricSignature.ToolingUsage,
         owner: "test-owner",
         repo: "test-repo",
@@ -130,7 +131,7 @@ describe("tooling-usage", () => {
             version: null,
           },
         },
-        trigger_event_signature: TriggerEventSignature.ToolingUsage,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
         metric_signature: MetricSignature.ToolingUsage,
         owner: "test-owner",
         repo: "test-repo",
@@ -158,7 +159,7 @@ describe("tooling-usage", () => {
             version: null,
           },
         },
-        trigger_event_signature: TriggerEventSignature.ToolingUsage,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
         metric_signature: MetricSignature.ToolingUsage,
         owner: "test-owner",
         repo: "test-repo",
@@ -186,7 +187,7 @@ describe("tooling-usage", () => {
             version: "2.0.0",
           },
         },
-        trigger_event_signature: TriggerEventSignature.ToolingUsage,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
         metric_signature: MetricSignature.ToolingUsage,
         owner: "test-owner",
         repo: "test-repo",
@@ -210,7 +211,7 @@ describe("tooling-usage", () => {
         output: {
           documentation_skeleton_config: null,
         },
-        trigger_event_signature: TriggerEventSignature.ToolingUsage,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
         metric_signature: MetricSignature.ToolingUsage,
         owner: "test-owner",
         repo: "test-repo",
