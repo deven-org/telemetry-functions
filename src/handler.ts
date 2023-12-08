@@ -1,5 +1,5 @@
 import { collectMetrics } from "./core/collect-metrics";
-import { errorCatcher, ErrorForCatcher, storeData } from "./core";
+import { ErrorForLogger, errorLogger, storeData } from "./core";
 import { logger } from "./core/logger";
 import { LogInfos } from "./shared/log-messages";
 import { addSignature } from "./core/add-signature";
@@ -21,7 +21,12 @@ export const handler = async (
     if (collectedMetrics.length > 0) {
       return await storeData(collectedMetrics);
     }
-  } catch (e) {
-    errorCatcher(e as ErrorForCatcher);
+  } catch (e: unknown) {
+    errorLogger(e);
+    // Don't propagate non-error throws, i.e. "skip"
+    const nonError = e instanceof ErrorForLogger && e.level !== "error";
+    if (!nonError) {
+      throw e;
+    }
   }
 };
