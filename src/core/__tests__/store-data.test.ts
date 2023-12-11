@@ -1,18 +1,16 @@
-import octokit from "../../core/octokit";
-// imports needed for mocking to succeed
-import "../../core/collect-metrics";
-import "../../core/add-signature";
 import {
   TriggerEventSignature,
   MetricData,
   MetricSignature,
-  TriggerSource,
-  GithubEvent,
 } from "../../interfaces";
-import { handler } from "../../handler";
-import "../logger";
 import { WorkflowsOutput } from "../../metrics/workflows/interfaces";
-import { getWebhookEventFixture } from "../../__tests__/fixtures/github-webhook-events";
+import { Mocktokit } from "../../__tests__/mocktokit";
+import { storeData } from "../store-data";
+
+jest.mock(
+  "../octokit.ts",
+  () => jest.requireActual("../../__tests__/mocktokit").octokitModuleMock
+);
 
 jest.mock("../logger", () => ({
   __esModule: true,
@@ -21,29 +19,14 @@ jest.mock("../logger", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: jest.fn((e) => {
+      // let tests fail if unexpected error gets reported
+      throw e;
+    }),
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),
     skip: jest.fn(),
-  },
-}));
-
-const dataSignatureResponse = {
-  trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
-  created_at: 100,
-  payload: getWebhookEventFixture(
-    GithubEvent.WorkflowJob,
-    (ex) => ex.action === "completed"
-  ),
-};
-
-jest.mock("../../core/add-signature", () => ({
-  __esModule: true,
-  addSignature: () => {
-    return new Promise((res) => {
-      res(dataSignatureResponse);
-    });
   },
 }));
 
@@ -58,7 +41,7 @@ const output: WorkflowsOutput = {
   steps: [],
 };
 
-const collectMetricsResponse: MetricData[] = [
+const metricData: MetricData[] = [
   {
     trigger_event_signature: TriggerEventSignature.GithubWorkflowJob,
     metric_signature: MetricSignature.WorkflowJob,
@@ -79,34 +62,22 @@ const collectMetricsResponse: MetricData[] = [
   },
 ];
 
-jest.mock("../../core/collect-metrics", () => ({
-  __esModule: true,
-  collectMetrics: () => collectMetricsResponse,
-}));
-
-jest.mock("../../core/octokit", () => ({
-  __esModule: true,
-  default: {
-    request: jest.fn(),
-  },
-}));
-
 describe("storeData", () => {
-  it("pushes the enhanced data event to the data repo as json file", async () => {
-    const event = {
-      source: TriggerSource.Unknown,
-      sourceEventSignature: "event-signature",
-      payload: {
-        foo: "foo",
-        bar: "bar",
-      },
-    };
-    await handler(event);
+  afterEach(() => {
+    expect(Mocktokit.unexpectedRequestsMade).toStrictEqual([]);
+  });
 
-    expect(octokit.request).toHaveBeenCalledTimes(2);
-    expect(
-      (octokit.request as unknown as jest.Mock).mock.calls
-    ).toMatchInlineSnapshot(`
+  it("pushes the enhanced data event to the data repo as json file", async () => {
+    const putRequest = jest.fn(async () => undefined);
+    Mocktokit.reset({
+      // endpoint to save json data
+      "PUT /repos/{owner}/{repo}/contents/{path}": putRequest,
+    });
+
+    await storeData(metricData);
+
+    expect(putRequest).toHaveBeenCalledTimes(2);
+    expect(putRequest.mock.calls).toMatchInlineSnapshot(`
 [
   [
     "PUT /repos/{owner}/{repo}/contents/{path}",
