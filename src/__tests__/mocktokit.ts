@@ -22,8 +22,13 @@ class MocktokitImpl {
 
 export const Mocktokit = new MocktokitImpl();
 
-/** mock implementation for core/octokit.ts to use with jest.mock() */
-export const octokitModuleMock = {
+/**
+ * mock implementation for core/octokit.ts to use with jest.mock()
+ *
+ * Note that for simplicity, both importable octokit instances (general read
+ * access & data repo write access) point to the same mocktokit instance.
+ */
+export const octokitModuleMock: Record<string, unknown> = {
   __esModule: true,
   default: {
     request: async (endpoint: string, ...rest) => {
@@ -33,3 +38,5 @@ export const octokitModuleMock = {
     },
   },
 };
+
+octokitModuleMock.octokitForDataRepo = octokitModuleMock.default;

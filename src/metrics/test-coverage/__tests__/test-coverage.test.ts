@@ -30,7 +30,10 @@ jest.mock("../../../core/logger.ts", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: (e: unknown) => {
+      // end test if unexpected error is logged
+      throw e;
+    },
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),
