@@ -20,6 +20,8 @@ jest.mock(
   () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
 );
 
+const MOCK_SERVER_ERROR = new Error("mocked network error");
+
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
   logger: {
@@ -27,7 +29,12 @@ jest.mock("../../../core/logger.ts", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: (e: unknown) => {
+      // end test if unexpected error is logged
+      if (e !== MOCK_SERVER_ERROR) {
+        throw e;
+      }
+    },
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),
@@ -175,7 +182,7 @@ describe("documentation-updated", () => {
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/pulls/{pull_number}/files"] =
       async () => {
-        throw new Error("mocked network error");
+        throw MOCK_SERVER_ERROR;
       };
 
     const output = await handler(eventBody);

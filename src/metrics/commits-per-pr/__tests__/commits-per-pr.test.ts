@@ -9,6 +9,7 @@ import { handler } from "../../../handler";
 import mockedPrClosed from "./fixtures/mocked-pull-request-closed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 import { Mocktokit } from "../../../__tests__/mocktokit";
+import { LogErrors } from "../../../shared/log-messages";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -60,7 +61,12 @@ jest.mock("../../../core/logger.ts", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: (e: unknown) => {
+      if (e !== LogErrors.networkErrorCommitsPerPR) {
+        // end test if unexpected error is logged
+        throw e;
+      }
+    },
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),

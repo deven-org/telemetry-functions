@@ -11,6 +11,7 @@ import mockedDeploymentList from "./fixtures/mocked-deployment-list.json";
 import mockedPackageJson from "./fixtures/mocked-package.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 import { Mocktokit } from "../../../__tests__/mocktokit";
+import { LogErrors } from "../../../shared/log-messages";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -29,7 +30,17 @@ jest.mock("../../../core/logger.ts", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: (e: unknown) => {
+      if (
+        ![
+          LogErrors.networkErrorPackageJson,
+          LogErrors.networkErrorDeployments,
+        ].includes(e as LogErrors)
+      ) {
+        // end test if unexpected error is logged
+        throw e;
+      }
+    },
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),
@@ -72,7 +83,7 @@ describe("deployments", () => {
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
       async () => ({
         headers: {},
-        data: mockedPackageJson,
+        data: { content: encode(JSON.stringify(mockedPackageJson)) },
       });
 
     const result = await handler(eventBody);
@@ -214,7 +225,7 @@ describe("deployments", () => {
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
       async () => ({
         headers: {},
-        data: mockedPackageJson,
+        data: { content: encode(JSON.stringify(mockedPackageJson)) },
       });
 
     const result = await Promise.all(

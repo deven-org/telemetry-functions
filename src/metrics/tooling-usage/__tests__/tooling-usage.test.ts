@@ -19,6 +19,10 @@ jest.mock(
   () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
 );
 
+const MOCK_SERVER_ERROR = Object.assign(new Error("test: server error"), {
+  status: 500,
+});
+
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
   logger: {
@@ -26,7 +30,12 @@ jest.mock("../../../core/logger.ts", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: (e: unknown) => {
+      // end test if unexpected error is logged
+      if (e !== MOCK_SERVER_ERROR) {
+        throw e;
+      }
+    },
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),
@@ -197,9 +206,7 @@ describe("tooling-usage", () => {
 
   it("sets status to networkError and config to null if config fetch fails", async () => {
     Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => {
-      const error: Error & { status?: number } = new Error("test: not found");
-      error.status = 500;
-      throw error;
+      throw MOCK_SERVER_ERROR;
     };
 
     const result = await handler(eventBody);

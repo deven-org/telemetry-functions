@@ -170,8 +170,8 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
         "time_since_last_deploy": 152114500000,
       },
       "package_json": {
-        "is_parsable": false,
-        "version": null,
+        "is_parsable": true,
+        "version": "1.1.0",
       },
     },
     "owner": "Codertocat",
@@ -450,8 +450,8 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
         "time_since_last_deploy": 235354157000,
       },
       "package_json": {
-        "is_parsable": false,
-        "version": null,
+        "is_parsable": true,
+        "version": "1.1.0",
       },
     },
     "owner": "Codertocat",
@@ -638,8 +638,8 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
         "time_since_last_deploy": 152114500000,
       },
       "package_json": {
-        "is_parsable": false,
-        "version": null,
+        "is_parsable": true,
+        "version": "1.1.0",
       },
     },
     "owner": "Codertocat",
@@ -830,8 +830,8 @@ exports[`deployments handles a range of mocked deployment events: deployment fix
         "time_since_last_deploy": 152114500000,
       },
       "package_json": {
-        "is_parsable": false,
-        "version": null,
+        "is_parsable": true,
+        "version": "1.1.0",
       },
     },
     "owner": "Codertocat",

@@ -6,7 +6,7 @@ import {
   GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
-
+import { Mocktokit } from "../../../__tests__/mocktokit";
 import mockedCheckSuite from "./fixtures/mocked-tag-create-event.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
@@ -15,14 +15,10 @@ jest.mock("../../../metrics-conditions.ts", () =>
   jest.requireActual("../metrics-conditions")
 );
 
-const octokitResponse = {};
-
-jest.mock("./../../../core/octokit.ts", () => ({
-  __esModule: true,
-  default: {
-    request: () => octokitResponse,
-  },
-}));
+jest.mock(
+  "./../../../core/octokit.ts",
+  () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
+);
 
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
@@ -31,7 +27,10 @@ jest.mock("../../../core/logger.ts", () => ({
     config: jest.fn(),
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
+    error: (e: unknown) => {
+      // end test if unexpected error is logged
+      throw e;
+    },
     complete: jest.fn(),
     success: jest.fn(),
     pending: jest.fn(),
@@ -44,6 +43,17 @@ describe("release-versions", () => {
 
   beforeAll(() => {
     jest.useFakeTimers({ now: FAKE_NOW });
+  });
+
+  beforeEach(() => {
+    Mocktokit.reset({
+      // endpoint to save json data
+      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
+    });
+  });
+
+  afterEach(() => {
+    expect(Mocktokit.unexpectedRequestsMade).toStrictEqual([]);
   });
 
   it("event gets signed as create event", async () => {
