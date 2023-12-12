@@ -59,9 +59,51 @@ Source folders and files should be named in kebab-case (e.g. `src/trigger-signat
 
 ## System Description
 
-### System Components Diagram
+### System Flow Diagram
 
-![DEVEN Telemetry system components diagram](./assets/deven-org_telemetry-functions_diagram.jpg)
+```mermaid
+flowchart TB
+        direction TB
+        Legend ~~~ Flow
+        subgraph Legend
+        Start([Name]) ~~~|Start/End| empty1[ ]
+        StartPlanned([Name]) ~~~|Not implemented Start/End| empty1[ ]
+        Process[Name] ~~~|Process| empty1[ ]
+        Decision{Value/Question} ~~~|Decision| empty1[ ]
+        Data[/Name/] ~~~|Data| empty1[ ]
+        Database[(Name)] ~~~|Database| empty1[ ]
+        style empty1 display:none;
+        start1[ ] --->|Connector| stop1[ ]
+        style start1 display:none;
+        style stop1 display:none;
+        style StartPlanned stroke-dasharray: 5 5,stroke:#aaa;
+        end
+        subgraph Flow [Process Flow Overview]
+            direction LR
+            GithubEventStart([Github Event]) --> EventObject[/Event Object/]
+            ManualRunEventStart([Manual Run]) --> EventObject
+            CronJobEventStart([Cron Job]) --> EventObject
+            EventObject --> CheckRequestType[Check request type]
+            CheckRequestType -->|parse| ToBeDefined[To be defined] 
+            CheckRequestType -->|collect| AddSignature[Add Signature]
+            AddSignature --> SignedEventObject[/Signed Event Object/]
+            SignedEventObject --> CheckMetricConditions[Check Metric Conditions]
+            CheckMetricConditions --> IsValidCondition{Is valid condition?}
+            IsValidCondition -->|No| IsLastConditionItem
+            IsValidCondition -->|Yes| AddToMetricStack[Add to Metric Stack]
+            AddToMetricStack --> IsLastConditionItem{Is Last Item}
+            IsLastConditionItem -->|No| CheckMetricConditions
+            IsLastConditionItem -->|Yes| MetricsStack[/Metrics Stack/]
+            MetricsStack --> CollectMetricData[Collect Metric Data]
+            CollectMetricData --> IsLastStackItem{Last Stack Item?}
+            IsLastStackItem -->|No| CollectMetricData
+            IsLastStackItem -->|Yes| StoreMetricsData[Store Metrics Data]
+            StoreMetricsData --> GithubDataRepo[(Github Data Repo)]
+            GithubDataRepo --> End([End Process])
+            style ManualRunEventStart stroke-dasharray: 5 5,stroke:#aaa;
+            style CronJobEventStart stroke-dasharray: 5 5,stroke:#aaa;
+        end
+```
 
 ### Data Events
 
