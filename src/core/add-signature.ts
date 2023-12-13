@@ -1,7 +1,8 @@
-import { ErrorForLogger, logger } from ".";
 import { LogInfos, LogWarnings } from "../shared/log-messages";
 import { SignedTriggerEvent, RawEvent } from "../interfaces";
 import { identifyTriggerEventSignature } from "../trigger-signatures";
+import { ErrorForLogger } from "./error-logger";
+import { logger } from "./logger";
 
 export async function addSignature(
   data: RawEvent

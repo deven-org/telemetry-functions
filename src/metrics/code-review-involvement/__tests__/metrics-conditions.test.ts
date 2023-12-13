@@ -5,7 +5,7 @@ import {
 } from "../../../interfaces";
 import { isSignedAsPullRequestClosed } from "../metrics-conditions";
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { ErrorForLogger } from "../../../core";
+import { ErrorForLogger } from "../../../core/error-logger";
 import { LogWarnings } from "../../../shared/log-messages";
 
 describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed", () => {

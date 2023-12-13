@@ -1,8 +1,9 @@
-import { ErrorForLogger, logger } from ".";
 import cloneDeep from "lodash.clonedeep";
 import metricsConditions from "../metrics-conditions";
 import { LogSuccess, LogWarnings } from "../shared/log-messages";
 import { MetricData, SignedTriggerEvent } from "../interfaces";
+import { ErrorForLogger } from "./error-logger";
+import { logger } from "./logger";
 
 export const collectMetrics = async (
   triggerEvent: SignedTriggerEvent
