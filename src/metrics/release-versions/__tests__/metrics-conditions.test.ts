@@ -6,7 +6,7 @@ import {
   GithubEvent,
 } from "../../../interfaces";
 import { isSignedAsTagCreateEvent } from "../metrics-conditions";
-import { ErrorForLogger } from "../../../core";
+import { ErrorForLogger } from "../../../core/error-logger";
 import { LogWarnings } from "../../../shared/log-messages";
 
 describe("Release Versions metric condition: isSignedAsTagCreateEvent", () => {

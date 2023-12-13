@@ -9,7 +9,7 @@ import {
   TriggerEventSignature,
   TriggerSource,
 } from "../interfaces";
-import { Mocktokit } from "./mocktokit";
+import { Mocktokit, STORE_DATA_MOCKS } from "./mocktokit";
 
 jest.mock(
   "../core/octokit.ts",
@@ -50,9 +50,7 @@ describe("handler", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.reset({
-      // endpoint to save json data
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
+    Mocktokit.reset(STORE_DATA_MOCKS, {
       // endpoint tooling usage uses for getting repo info
       ["GET /repos/{owner}/{repo}/contents/{path}"]: async () => {
         throw EXPECTED_ERROR;

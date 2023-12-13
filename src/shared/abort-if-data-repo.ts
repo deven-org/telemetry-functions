@@ -1,8 +1,12 @@
-import { ErrorForLogger } from "../core";
+import { ErrorForLogger } from "../core/error-logger";
+import { getRequiredEnvVar } from "./get-env-var";
 import { LogWarnings } from "./log-messages";
 
 export function abortIfDataRepo(fullRepoName) {
-  if (fullRepoName === `${process.env.REPO_OWNER}/${process.env.REPO_NAME}`) {
+  const owner = getRequiredEnvVar("REPO_OWNER");
+  const name = getRequiredEnvVar("REPO_NAME");
+
+  if (fullRepoName === `${owner}/${name}`) {
     throw new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo);
   }
 }

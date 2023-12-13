@@ -11,7 +11,7 @@ import mockedWorkflowJobCompletedWithTestSteps from "./fixtures/mocked-workflow-
 import mockedWorkflowJobCompletedWithTestWorkflowName from "./fixtures/mocked-workflow-job-completed-with-test-workflow.json";
 import mockedWorkflowJobCompletedWithTestName from "./fixtures/mocked-workflow-job-completed-with-test-name.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
-import { Mocktokit } from "../../../__tests__/mocktokit";
+import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -49,10 +49,7 @@ describe("Test_Coverage", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.reset({
-      // endpoint to save json data
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
-    });
+    Mocktokit.reset(STORE_DATA_MOCKS);
   });
 
   afterEach(() => {

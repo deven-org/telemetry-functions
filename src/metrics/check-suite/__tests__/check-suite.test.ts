@@ -9,7 +9,7 @@ import { handler } from "../../../handler";
 
 import mockedCheckSuite from "./fixtures/mocked-check-suite.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
-import { Mocktokit } from "../../../__tests__/mocktokit";
+import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -47,10 +47,7 @@ describe("check-suite", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.reset({
-      // endpoint to save json data
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
-    });
+    Mocktokit.reset(STORE_DATA_MOCKS);
   });
 
   afterEach(() => {
