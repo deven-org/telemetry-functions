@@ -6,7 +6,7 @@ import {
   GithubEvent,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
-import { Mocktokit } from "../../../__tests__/mocktokit";
+import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
 import mockedCheckSuite from "./fixtures/mocked-tag-create-event.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 
@@ -46,10 +46,7 @@ describe("release-versions", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.reset({
-      // endpoint to save json data
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
-    });
+    Mocktokit.reset(STORE_DATA_MOCKS);
   });
 
   afterEach(() => {

@@ -1,9 +1,10 @@
 import { collectMetrics } from "./core/collect-metrics";
-import { ErrorForLogger, errorLogger, storeData } from "./core";
+import { storeData } from "./core";
 import { logger } from "./core/logger";
 import { LogInfos } from "./shared/log-messages";
 import { addSignature } from "./core/add-signature";
 import { MetricData, RawEvent } from "./interfaces";
+import { ErrorForLogger, errorLogger } from "./core/error-logger";
 
 export const handler = async (
   event: RawEvent
@@ -23,8 +24,10 @@ export const handler = async (
     }
   } catch (e: unknown) {
     errorLogger(e);
+
     // Don't propagate non-error throws, i.e. "skip"
     const nonError = e instanceof ErrorForLogger && e.level !== "error";
+
     if (!nonError) {
       throw e;
     }

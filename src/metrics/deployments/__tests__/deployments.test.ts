@@ -10,7 +10,7 @@ import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
 import mockedDeploymentList from "./fixtures/mocked-deployment-list.json";
 import mockedPackageJson from "./fixtures/mocked-package.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
-import { Mocktokit } from "../../../__tests__/mocktokit";
+import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
 import { LogErrors } from "../../../shared/log-messages";
 
 // Only collect this metric
@@ -56,10 +56,7 @@ describe("deployments", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.reset({
-      // endpoint to save json data
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
-    });
+    Mocktokit.reset(STORE_DATA_MOCKS);
   });
 
   afterEach(() => {

@@ -23,9 +23,6 @@ export class ErrorForLogger extends Error {
   }
 }
 
-export const getErrorForLogger = (error: ErrorForLogger): ErrorForLogger =>
-  error;
-
 export const errorLogger = (error: unknown) => {
   if (error instanceof ErrorForLogger) {
     logger[error.level](error.message, ...error.params);

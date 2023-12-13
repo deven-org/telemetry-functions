@@ -8,7 +8,7 @@ import {
 import { handler } from "../../../handler";
 import mockedWorkflowJobCompleted from "./fixtures/mocked-workflow-job-completed.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
-import { Mocktokit } from "../../../__tests__/mocktokit";
+import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -46,10 +46,7 @@ describe("workflows", () => {
   });
 
   beforeEach(() => {
-    Mocktokit.reset({
-      // endpoint to save json data
-      ["PUT /repos/{owner}/{repo}/contents/{path}"]: async () => undefined,
-    });
+    Mocktokit.reset(STORE_DATA_MOCKS);
   });
 
   afterEach(() => {

@@ -7,7 +7,12 @@ export enum LogErrors {
   parseErrorPackageJson = "Could not parse content of package.json for owner/repo: '%s'",
   releaseVersionsUnexpectedInvalidVersion = "Unexpected invalid Release Version",
   genericServerError = "Server Error - Check the logs",
-  couldNotStoreData = "The following data could not be stored (see previous logs for detailed errors): %s'",
+  couldNotStoreData = "The following data could not be stored (see previous logs for detailed errors): '%s'",
+  envVarRequired = "Required environment variable is not set: '%s'",
+  envVarNotANumber = "Environment variable is set but not parsable as an integer: '%s'",
+  envVatUnsafeInt = "Environment variable is set but not parsable as a safe integer: '%s'",
+  dataRepoNoReadAccess = "The data repository could not be accessed (status: '%s'). If the repo exists, this can mean that the REPO_WRITE_ACCESS_TOKEN has no read (and write) permissions for the repo",
+  dataRepoNoWriteAccess = "Could not write to repo (status: '%s'). Likely missing write permissions for the data repo using REPO_WRITE_ACCESS_TOKEN",
 }
 
 export enum LogInfos {
