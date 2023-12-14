@@ -76,6 +76,7 @@ export const collectDeploymentMetrics = async (
     .request("GET /repos/{owner}/{repo}/contents/{path}", {
       owner: owner,
       repo: repo,
+      ref: payload.deployment.sha,
       path: "package.json",
     })
     .catch(() => {
