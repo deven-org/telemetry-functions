@@ -396,6 +396,12 @@ Condition, detecting newly created deployments:
 payload.action === "created";
 ```
 
+> [!WARNING]
+> The `package_json` field always contains information about the root package
+> json of the repo at the state of the commit that was deployed.
+> There is no guarantee that the version field has anything to do with the
+> deployment. (Consider e.g. monorepos)
+
 <details><summary>Example JSON for deployment output</summary>
 
 ```json
@@ -446,6 +452,11 @@ type CheckSuiteMetricsOutput = {
   /**
    * General information about the package.json.
    * null if package.json cannot be fetched (status: 'networkError')
+   * 
+   * NOTE: this will always look at the root package json of the repo at the
+   * state of the commit that was deployed.
+   * There is no guarantee that the version field has anything
+   * to do with the deployment
    */
   package_json: null | {
     /** Boolean if the retrieved package.json file is successfully parsed */
