@@ -73,13 +73,40 @@ In addition, you'll need to log in to Github in your browser.
 
 2. Create a new file in the root directory named `.env` and paste the list of environment variables in, exactly as it appears in the env.template file.
 
-### Usage
+### Usage with manual triggering
 
 1. In the command line, start the Netlify function with:
 
 ```sh
-  netlify functions:serve
+npm run dev:netlify
 ```
+
+This way you can test the netlify function and manually send events to the
+`http://localhost:9999/.netlify/functions/metrics`, e.g. using the provided
+Postman collection.
+
+### Usage with GitHub triggers
+
+> [!WARNING]
+> Since this method reads and writes actual GitHub data, _channelled through a
+> third-party service_, make sure you don't add the webhook to repositories with
+> sensitive or private data. Also don't allow access to such repos using the
+> configured tokens!
+
+Alternatively, if you set up valid tokens (one for a repo to write into, and one
+for reading from source repositories), you can test the function as it would run
+in production by running
+
+```sh
+npm run dev
+```
+
+This will both start the function as above, and also create a webhook proxy
+using [Smee](https://smee.io) as recommended by GitHub.
+That will forward events sent to a newly created, publically reachable, URL to
+your local function instance.
+The webhook URL is logged to the terminal, so that you can configure it for the
+source organisation or repo.
 
 ## How to test
 
