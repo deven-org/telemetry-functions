@@ -4,6 +4,7 @@ import {
   RawEvent,
   TriggerSource,
   GithubEvent,
+  MetricSignature,
 } from "../../../interfaces";
 import { handler } from "../../../handler";
 import mockedDeploymentEvent from "./fixtures/mocked-deployment.json";
@@ -12,6 +13,7 @@ import mockedPackageJson from "./fixtures/mocked-package.json";
 import { getWebhookEventFixtureList } from "../../../__tests__/fixtures/github-webhook-events";
 import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
 import { LogErrors } from "../../../shared/log-messages";
+import cloneDeep from "lodash.clonedeep";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -70,17 +72,16 @@ describe("deployments", () => {
       payload: mockedDeploymentEvent,
     };
 
-    Mocktokit.mocks[
-      "GET /repos/{owner}/{repo}/deployments?environment={environment}"
-    ] = async () => ({
-      headers: {},
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
       data: mockedDeploymentList,
     });
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
       async () => ({
-        headers: {},
-        data: { content: encode(JSON.stringify(mockedPackageJson)) },
+        data: {
+          type: "file",
+          content: encode(JSON.stringify(mockedPackageJson)),
+        },
       });
 
     const result = await handler(eventBody);
@@ -102,17 +103,16 @@ describe("deployments", () => {
       payload: mockedDeploymentEvent,
     };
 
-    Mocktokit.mocks[
-      "GET /repos/{owner}/{repo}/deployments?environment={environment}"
-    ] = async () => ({
-      headers: {},
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
       data: [],
     });
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
       async () => ({
-        headers: {},
-        data: { content: encode(JSON.stringify(mockedPackageJson)) },
+        data: {
+          type: "file",
+          content: encode(JSON.stringify(mockedPackageJson)),
+        },
       });
 
     const result = await handler(eventBody);
@@ -129,7 +129,8 @@ describe("deployments", () => {
           time_since_last_deploy: null,
         },
         package_json: {
-          is_parsable: true,
+          exists: true,
+          parsable: true,
           version: "1.1.0",
         },
       },
@@ -143,16 +144,16 @@ describe("deployments", () => {
       payload: mockedDeploymentEvent,
     };
 
-    Mocktokit.mocks[
-      "GET /repos/{owner}/{repo}/deployments?environment={environment}"
-    ] = async () => {
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => {
       throw new Error("mocked deployments network error");
     };
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
       async () => ({
-        headers: {},
-        data: { content: encode(JSON.stringify(mockedPackageJson)) },
+        data: {
+          type: "file",
+          content: encode(JSON.stringify(mockedPackageJson)),
+        },
       });
 
     const result = await handler(eventBody);
@@ -166,7 +167,8 @@ describe("deployments", () => {
         env: "production",
         environment_deployments: null,
         package_json: {
-          is_parsable: true,
+          exists: true,
+          parsable: true,
           version: "1.1.0",
         },
       },
@@ -180,10 +182,7 @@ describe("deployments", () => {
       payload: mockedDeploymentEvent,
     };
 
-    Mocktokit.mocks[
-      "GET /repos/{owner}/{repo}/deployments?environment={environment}"
-    ] = async () => ({
-      headers: {},
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
       data: mockedDeploymentList,
     });
 
@@ -209,20 +208,169 @@ describe("deployments", () => {
     });
   });
 
+  it("sets exists: false, if config file is missing (or not a file)", async () => {
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: GithubEvent.Deployment,
+      payload: mockedDeploymentEvent,
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
+      data: mockedDeploymentList,
+    });
+
+    const expected = {
+      created_at: FAKE_NOW,
+      owner: "deven-org",
+      repo: "telemetry-functions",
+      trigger_event_signature: TriggerEventSignature.GithubDeployment,
+      metric_signature: MetricSignature.Deployment,
+      status: "success",
+      output: {
+        deploy_time: 1658193553000,
+        duration: 86400000,
+        env: "production",
+        environment_deployments: {
+          is_initial_deployment: false,
+          time_since_last_deploy: 252374400000,
+        },
+        package_json: {
+          exists: false,
+          parsable: null,
+          version: null,
+        },
+      },
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] = async () => {
+      throw Object.assign(new Error("test: not found"), {
+        status: 404,
+      });
+    };
+
+    expect(await handler(eventBody)).toStrictEqual([expected]);
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
+      async () => ({
+        data: {
+          type: "symlink",
+          content: {},
+        },
+      });
+
+    expect(await handler(eventBody)).toStrictEqual([expected]);
+  });
+
+  it("sets parsable to false and version to null, if package json is not a parsable object", async () => {
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: GithubEvent.Deployment,
+      payload: mockedDeploymentEvent,
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
+      data: mockedDeploymentList,
+    });
+
+    const expected = {
+      created_at: FAKE_NOW,
+      owner: "deven-org",
+      repo: "telemetry-functions",
+      trigger_event_signature: TriggerEventSignature.GithubDeployment,
+      metric_signature: MetricSignature.Deployment,
+      status: "success",
+      output: {
+        deploy_time: 1658193553000,
+        duration: 86400000,
+        env: "production",
+        environment_deployments: {
+          is_initial_deployment: false,
+          time_since_last_deploy: 252374400000,
+        },
+        package_json: {
+          exists: true,
+          parsable: false,
+          version: null,
+        },
+      },
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
+      async () => ({
+        data: { type: "file", content: encode("null") },
+      });
+
+    expect(await handler(eventBody)).toStrictEqual([expected]);
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
+      async () => ({
+        data: { type: "file", content: encode("non-JSON") },
+      });
+
+    expect(await handler(eventBody)).toStrictEqual([expected]);
+  });
+
+  it("sets version to null, if package json version is not a string", async () => {
+    const eventBody: RawEvent = {
+      source: TriggerSource.Github,
+      sourceEventSignature: GithubEvent.Deployment,
+      payload: mockedDeploymentEvent,
+    };
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
+      data: mockedDeploymentList,
+    });
+
+    const packageJson = cloneDeep(mockedPackageJson);
+    // @ts-expect-error -- purposefully changing the type
+    packageJson.version = 12;
+
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
+      async () => ({
+        data: { type: "file", content: encode(JSON.stringify(packageJson)) },
+      });
+
+    const result = await handler(eventBody);
+
+    expect(result).toStrictEqual([
+      {
+        created_at: FAKE_NOW,
+        owner: "deven-org",
+        repo: "telemetry-functions",
+        trigger_event_signature: TriggerEventSignature.GithubDeployment,
+        metric_signature: MetricSignature.Deployment,
+        status: "success",
+        output: {
+          deploy_time: 1658193553000,
+          duration: 86400000,
+          env: "production",
+          environment_deployments: {
+            is_initial_deployment: false,
+            time_since_last_deploy: 252374400000,
+          },
+          package_json: {
+            exists: true,
+            parsable: true,
+            version: null,
+          },
+        },
+      },
+    ]);
+  });
+
   it("handles a range of mocked deployment events", async () => {
     const fixtures = getWebhookEventFixtureList(GithubEvent.Deployment);
 
-    Mocktokit.mocks[
-      "GET /repos/{owner}/{repo}/deployments?environment={environment}"
-    ] = async () => ({
-      headers: {},
+    Mocktokit.mocks["GET /repos/{owner}/{repo}/deployments"] = async () => ({
       data: mockedDeploymentList,
     });
 
     Mocktokit.mocks["GET /repos/{owner}/{repo}/contents/{path}"] =
       async () => ({
-        headers: {},
-        data: { content: encode(JSON.stringify(mockedPackageJson)) },
+        data: {
+          type: "file",
+          content: encode(JSON.stringify(mockedPackageJson)),
+        },
       });
 
     const result = await Promise.all(
