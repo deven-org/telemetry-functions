@@ -28,7 +28,7 @@ export enum LogWarnings {
   collectMetricsSignatureNotRecognized = "It is not possible to collect metrics from this event.",
   documentationSkeletonConfigNotFound = "No documentation skeleton config file found. Owner/Repo is: '%s'",
   documentationSkeletonConfigNotParsable = "Could not parse content of documentation skeleton config for owner/repo: '%s'",
-  documentationSkeletonConfigNonStringVersion = "Focumentation skeleton config version field does not contain string. Owner/Repo is: '%s'",
+  documentationSkeletonConfigNonStringVersion = "Documentation skeleton config version field does not contain string. Owner/Repo is: '%s'",
   rootPackageJsonNotFound = "No root package.json file found. Owner/Repo is: '%s'",
   rootPackageJsonNotParsable = "Could not parse content of package.json for owner/repo: '%s'",
   rootPackageJsonNonStringVersion = "Root package.json version field does not contain string. Owner/Repo is: '%s'",
