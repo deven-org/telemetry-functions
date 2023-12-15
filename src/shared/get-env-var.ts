@@ -28,7 +28,7 @@ export class EnvVarAccessError extends ErrorForLogger {
   }
 
   static unsafeInt(name): EnvVarAccessError {
-    return new EnvVarAccessError("error", LogErrors.envVatUnsafeInt, name);
+    return new EnvVarAccessError("error", LogErrors.envVarUnsafeInt, name);
   }
 }
 
@@ -90,7 +90,6 @@ export function getRequiredEnvVar(name: KnownEnvironmentVariable): string {
 
 /**
  * access and parse a numeric environment variable and return it
- * returns null if not set or empty
  *
  * @throws {EnvVarAccessError} value must be set and parsable as a number
  */
