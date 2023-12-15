@@ -7,67 +7,66 @@ import {
 } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
 import octokit from "../../core/octokit";
-import { decode } from "js-base64";
-import { LogWarnings } from "../../shared/log-messages";
+import { LogErrors, LogWarnings } from "../../shared/log-messages";
+import { octokitJsonResponseHandler } from "../../shared/octokit-json-response-handler";
 
 export const collectToolingUsageMetrics = async (
   triggerEvent: SignedTriggerEvent
 ): Promise<MetricData<MetricSignature.ToolingUsage>> => {
-  const payload = triggerEvent.payload as ToolingUsagePayload;
+  const { owner, repo } = triggerEvent.payload as ToolingUsagePayload;
 
   let status: MetricDataStatus = "success";
   const output: ToolingUsageOutput = {
     documentation_skeleton_config: null,
   };
 
-  const configResponse = await octokit
-    .request("GET /repos/{owner}/{repo}/contents/{path}", {
-      owner: payload.owner,
-      repo: payload.repo,
+  const configResponse = await octokitJsonResponseHandler(
+    octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+      owner,
+      repo,
       path: "deven-skeleton-install.config.json",
     })
-    .catch((e: unknown) => {
-      if (e && typeof e == "object" && "status" in e && e.status === 404) {
-        logger.warn(
-          LogWarnings.documentationSkeletonConfigNotFound,
-          `${payload.owner}/${payload.repo}`
-        );
-        return "missing";
-      }
+  );
 
+  switch (configResponse.variant) {
+    case "unexpected-error":
       status = "networkError";
-      logger.error(e);
-      return null;
-    });
-
-  if (configResponse === "missing") {
-    output.documentation_skeleton_config = {
-      exists: false,
-      parsable: null,
-      version: null,
-    };
-  } else if (configResponse !== null) {
-    let parsedConfig: unknown;
-
-    try {
-      parsedConfig = JSON.parse(decode(configResponse.data["content"]));
-    } catch (e) {
-      parsedConfig = null;
-    }
-
-    if (
-      parsedConfig === null ||
-      typeof parsedConfig !== "object" ||
-      Array.isArray(parsedConfig)
-    ) {
+      logger.error(
+        LogErrors.networkErrorDocumentationSkeletonConfig,
+        `${owner}/${repo}`
+      );
+      output.documentation_skeleton_config = null;
+      break;
+    case "missing":
+      logger.warn(
+        LogWarnings.documentationSkeletonConfigNotFound,
+        `${owner}/${repo}`
+      );
+      output.documentation_skeleton_config = {
+        exists: false,
+        parsable: null,
+        version: null,
+      };
+      break;
+    case "unparsable":
+      logger.warn(
+        LogWarnings.documentationSkeletonConfigNotParsable,
+        `${owner}/${repo}`
+      );
       output.documentation_skeleton_config = {
         exists: true,
         parsable: false,
         version: null,
       };
-    } else {
-      const version = "version" in parsedConfig ? parsedConfig.version : null;
-      if (typeof version !== "string") {
+      break;
+    case "parsable":
+    default:
+      // ^ TS will error if there is a new variant that has different content
+      if (typeof configResponse.content.version !== "string") {
+        logger.warn(
+          LogWarnings.documentationSkeletonConfigNonStringVersion,
+          `${owner}/${repo}`
+        );
         output.documentation_skeleton_config = {
           exists: true,
           parsable: true,
@@ -77,18 +76,17 @@ export const collectToolingUsageMetrics = async (
         output.documentation_skeleton_config = {
           exists: true,
           parsable: true,
-          version,
+          version: configResponse.content.version,
         };
       }
-    }
   }
 
   return {
     created_at: triggerEvent.created_at,
     trigger_event_signature: triggerEvent.trigger_event_signature,
     metric_signature: MetricSignature.ToolingUsage,
-    owner: payload.owner,
-    repo: payload.repo,
+    owner,
+    repo,
     status,
     output,
   };

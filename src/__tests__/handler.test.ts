@@ -2,7 +2,7 @@ import * as moduleAddSignature from "../core/add-signature";
 import * as moduleCollectMetrics from "../core/collect-metrics";
 import { handler } from "../handler";
 import { logger } from "../core/logger";
-import { LogWarnings } from "../shared/log-messages";
+import { LogErrors, LogWarnings } from "../shared/log-messages";
 import {
   DevenEvent,
   GithubEvent,
@@ -16,8 +16,6 @@ jest.mock(
   () => jest.requireActual("../__tests__/mocktokit").octokitModuleMock
 );
 
-const EXPECTED_ERROR = new Error("known test error");
-
 jest.mock("../core/logger", () => ({
   __esModule: true,
   logger: {
@@ -27,7 +25,7 @@ jest.mock("../core/logger", () => ({
     warn: jest.fn(),
     error: jest.fn((e) => {
       // let tests fail if unexpected error gets reported
-      if (e !== EXPECTED_ERROR) {
+      if (e !== LogErrors.networkErrorDocumentationSkeletonConfig) {
         throw e;
       }
     }),
@@ -53,7 +51,7 @@ describe("handler", () => {
     Mocktokit.reset(STORE_DATA_MOCKS, {
       // endpoint tooling usage uses for getting repo info
       ["GET /repos/{owner}/{repo}/contents/{path}"]: async () => {
-        throw EXPECTED_ERROR;
+        throw new Error("known test error");
       },
     });
   });

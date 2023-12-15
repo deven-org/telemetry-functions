@@ -26,6 +26,6 @@ export type ToolingUsageOutput = {
      * If config was found, parsed, and version is set: the version specified
      * Otherwise null
      */
-    version: string | null;
+    version: null | string;
   };
 };
