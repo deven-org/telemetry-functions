@@ -451,7 +451,8 @@ type CheckSuiteMetricsOutput = {
 
   /**
    * General information about the package.json.
-   * null if package.json cannot be fetched (status: 'networkError')
+   * null means the data could not be fetched due to reasons other than the file
+   * not existing (status: 'networkError').
    * 
    * NOTE: this will always look at the root package json of the repo at the
    * state of the commit that was deployed.
@@ -459,16 +460,20 @@ type CheckSuiteMetricsOutput = {
    * to do with the deployment
    */
   package_json: null | {
-    /** Boolean if the retrieved package.json file is successfully parsed */
-    is_parsable: boolean;
+    /** Does the package.json exist */
+    exists: boolean;
 
     /**
-     * Version field of root package.json in repo default branch.
-     * null if there is no valid version found in package.json.
-     *
-     * NOTE: type is guessed since the json file might contain anything / not include a version
+     * Is the package.json parsable?
+     * null if file doesn't exist
      */
-    version: string | null;
+    parsable: null | boolean;
+
+    /**
+     * If package.json was found, parsed, and version is string: the version specified
+     * Otherwise null
+     */
+    version: null | string;
   };
 };
 ```
@@ -619,7 +624,7 @@ type ToolingUsageOutput = {
      * If config was found, parsed, and version is set: the version specified
      * Otherwise null
      */
-    version: string | null;
+    version: null | string;
   };
 };
 ```

@@ -11,10 +11,10 @@ import {
   DeploymentPayload,
   PackageJsonInformation,
 } from "./interfaces";
-import { decode } from "js-base64";
 import { getTimestamp } from "../../shared/get-timestamp";
 import { logger } from "../../core";
-import { LogErrors } from "../../shared/log-messages";
+import { LogErrors, LogWarnings } from "../../shared/log-messages";
+import { octokitJsonResponseHandler } from "../../shared/octokit-json-response-handler";
 
 export const collectDeploymentMetrics = async (
   triggerEvent: SignedTriggerEvent
@@ -33,14 +33,11 @@ export const collectDeploymentMetrics = async (
   let packageJson: PackageJsonInformation = null;
 
   const deploymentResponse = await octokit
-    .request(
-      "GET /repos/{owner}/{repo}/deployments?environment={environment}",
-      {
-        owner: owner,
-        repo: repo,
-        environment: env,
-      }
-    )
+    .request("GET /repos/{owner}/{repo}/deployments", {
+      owner: owner,
+      repo: repo,
+      environment: env,
+    })
     .catch(() => {
       status = "networkError";
       logger.error(
@@ -72,34 +69,45 @@ export const collectDeploymentMetrics = async (
     }
   }
 
-  const packageJsonResponse = await octokit
-    .request("GET /repos/{owner}/{repo}/contents/{path}", {
+  const packageJsonResponse = await octokitJsonResponseHandler(
+    octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
       owner: owner,
       repo: repo,
       ref: payload.deployment.sha,
       path: "package.json",
     })
-    .catch(() => {
+  );
+
+  switch (packageJsonResponse.variant) {
+    case "unexpected-error":
       status = "networkError";
       logger.error(LogErrors.networkErrorPackageJson, `${owner}/${repo}`);
-      return null;
-    });
-
-  if (packageJsonResponse) {
-    try {
-      const content = JSON.parse(decode(packageJsonResponse.data["content"]));
-
-      packageJson = {
-        is_parsable: true,
-        version: content.version,
-      };
-    } catch (error: unknown) {
-      packageJson = {
-        is_parsable: false,
-        version: null,
-      };
-      logger.error(LogErrors.parseErrorPackageJson, `${owner}/${repo}`);
-    }
+      packageJson = null;
+      break;
+    case "missing":
+      logger.warn(LogWarnings.rootPackageJsonNotFound, `${owner}/${repo}`);
+      packageJson = { exists: false, parsable: null, version: null };
+      break;
+    case "unparsable":
+      logger.warn(LogWarnings.rootPackageJsonNotParsable, `${owner}/${repo}`);
+      packageJson = { exists: true, parsable: false, version: null };
+      break;
+    case "parsable":
+    default:
+      // ^ TS will error if there is a new variant that has different content
+      if (typeof packageJsonResponse.content.version !== "string") {
+        logger.warn(
+          LogWarnings.rootPackageJsonNonStringVersion,
+          `${owner}/${repo}`
+        );
+        packageJson = { exists: true, parsable: true, version: null };
+      } else {
+        packageJson = {
+          exists: true,
+          parsable: true,
+          version: packageJsonResponse.content.version,
+        };
+      }
   }
 
   const output: DeploymentOutput = {

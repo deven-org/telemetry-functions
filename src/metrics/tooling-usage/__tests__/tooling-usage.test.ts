@@ -8,6 +8,7 @@ import {
 import { handler } from "../../../handler";
 import { encode } from "js-base64";
 import { Mocktokit, STORE_DATA_MOCKS } from "../../../__tests__/mocktokit";
+import { LogErrors } from "../../../shared/log-messages";
 
 // Only collect this metric
 jest.mock("../../../metrics-conditions.ts", () =>
@@ -19,10 +20,6 @@ jest.mock(
   () => jest.requireActual("../../../__tests__/mocktokit").octokitModuleMock
 );
 
-const MOCK_SERVER_ERROR = Object.assign(new Error("test: server error"), {
-  status: 500,
-});
-
 jest.mock("../../../core/logger.ts", () => ({
   __esModule: true,
   logger: {
@@ -32,7 +29,7 @@ jest.mock("../../../core/logger.ts", () => ({
     warn: jest.fn(),
     error: (e: unknown) => {
       // end test if unexpected error is logged
-      if (e !== MOCK_SERVER_ERROR) {
+      if (e !== LogErrors.networkErrorDocumentationSkeletonConfig) {
         throw e;
       }
     },
@@ -72,6 +69,7 @@ describe("tooling-usage", () => {
   it("event gets signed as a toolingUsage event", async () => {
     Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => ({
       data: {
+        type: "file",
         content: encode(JSON.stringify({})),
       },
     });
@@ -89,65 +87,81 @@ describe("tooling-usage", () => {
     ]);
   });
 
-  it("sets exists: false, if config file is missing", async () => {
-    Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => {
-      const error: Error & { status?: number } = new Error("test: not found");
-      error.status = 404;
-      throw error;
+  it("sets exists: false, if config file is missing (or not a file)", async () => {
+    const expected = {
+      created_at: FAKE_NOW,
+      status: "success",
+      output: {
+        documentation_skeleton_config: {
+          exists: false,
+          parsable: null,
+          version: null,
+        },
+      },
+      trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
+      metric_signature: MetricSignature.ToolingUsage,
+      owner: "test-owner",
+      repo: "test-repo",
     };
 
-    const result = await handler(eventBody);
+    Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => {
+      throw Object.assign(new Error("test: not found"), {
+        status: 404,
+      });
+    };
 
-    expect(result).toStrictEqual([
-      {
-        created_at: FAKE_NOW,
-        status: "success",
-        output: {
-          documentation_skeleton_config: {
-            exists: false,
-            parsable: null,
-            version: null,
-          },
-        },
-        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
-        metric_signature: MetricSignature.ToolingUsage,
-        owner: "test-owner",
-        repo: "test-repo",
-      },
-    ]);
-  });
+    expect(await handler(eventBody)).toStrictEqual([expected]);
 
-  it("sets exists: true, if config file is available", async () => {
     Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => ({
       data: {
+        type: "dir",
+        content: [],
+      },
+    });
+
+    expect(await handler(eventBody)).toStrictEqual([expected]);
+  });
+
+  it("sets parsable: false if config file is not parsable as an object", async () => {
+    const expected = {
+      created_at: FAKE_NOW,
+      status: "success",
+      output: {
+        documentation_skeleton_config: {
+          exists: true,
+          parsable: false,
+          version: null,
+        },
+      },
+      trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
+      metric_signature: MetricSignature.ToolingUsage,
+      owner: "test-owner",
+      repo: "test-repo",
+    };
+
+    Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => ({
+      data: {
+        type: "file",
         content: encode(JSON.stringify([1, 2, 3])),
       },
     });
 
-    const result = await handler(eventBody);
+    expect(await handler(eventBody)).toStrictEqual([expected]);
 
-    expect(result).toStrictEqual([
-      {
-        created_at: FAKE_NOW,
-        status: "success",
-        output: {
-          documentation_skeleton_config: {
-            exists: true,
-            parsable: false,
-            version: null,
-          },
-        },
-        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
-        metric_signature: MetricSignature.ToolingUsage,
-        owner: "test-owner",
-        repo: "test-repo",
+    Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => ({
+      data: {
+        type: "file",
+        content: encode("non-JSON"),
       },
-    ]);
+    });
+
+    expect(await handler(eventBody)).toStrictEqual([expected]);
   });
 
   it("sets parsable: true, if config file is parsable", async () => {
     Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => ({
       data: {
+        type: "file",
         content: encode(JSON.stringify({ some: "data" })),
       },
     });
@@ -176,6 +190,7 @@ describe("tooling-usage", () => {
   it("returns version if available in deven-documentation-skeleton config file", async () => {
     Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => ({
       data: {
+        type: "file",
         content: encode(JSON.stringify({ version: "2.0.0" })),
       },
     });
@@ -203,7 +218,9 @@ describe("tooling-usage", () => {
 
   it("sets status to networkError and config to null if config fetch fails", async () => {
     Mocktokit.mocks[GET_CONFIG_ENDPOINT] = async () => {
-      throw MOCK_SERVER_ERROR;
+      throw Object.assign(new Error("test: server error"), {
+        status: 500,
+      });
     };
 
     const result = await handler(eventBody);

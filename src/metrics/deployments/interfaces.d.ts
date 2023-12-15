@@ -17,16 +17,20 @@ export type DeploymentInformation = null | {
 };
 
 export type PackageJsonInformation = null | {
-  /** Boolean if the retrieved package.json file is successfully parsed */
-  is_parsable: boolean;
+  /** Does the package.json exist */
+  exists: boolean;
 
   /**
-   * Version field of root package.json in repo default branch.
-   * null if there is no valid version found in package.json.
-   *
-   * NOTE: type is guessed since the json file might contain anything / not include a version
+   * Is the package.json parsable?
+   * null if file doesn't exist
    */
-  version: string | null;
+  parsable: null | boolean;
+
+  /**
+   * If package.json was found, parsed, and version is string: the version specified
+   * Otherwise null
+   */
+  version: null | string;
 };
 
 export interface DeploymentOutput {
@@ -47,12 +51,13 @@ export interface DeploymentOutput {
 
   /**
    * General information about the package.json.
-   * null if package.json cannot be fetched (status: 'networkError')
+   * null means the data could not be fetched due to reasons other than the file
+   * not existing (status: 'networkError').
    *
    * NOTE: this will always look at the root package json of the repo at the
    * state of the commit that was deployed.
-   * There is no guarantee that the version field has anything to do with the
-   * deployment.
+   * There is no guarantee that the version field has anything
+   * to do with the deployment
    */
   package_json: PackageJsonInformation;
 }
