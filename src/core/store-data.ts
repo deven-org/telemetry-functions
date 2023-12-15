@@ -1,12 +1,13 @@
 import { MetricData } from "../interfaces";
 import { octokitForDataRepo } from "./octokit";
 import { ErrorForLogger } from "./error-logger";
-import { LogErrors } from "../shared/log-messages";
+import { LogErrors, LogInfos, LogWarnings } from "../shared/log-messages";
 import {
   getOptionalEnvVar,
   getOptionalNumericEnvVar,
   getRequiredEnvVar,
 } from "../shared/get-env-var";
+import { logger } from "./logger";
 
 export class StoreDataError extends ErrorForLogger {
   name = "StoreDataError";
@@ -54,15 +55,16 @@ export const storeData = async (metricData: MetricData[]) => {
     throw new Error("storeData must be called with at least one dataset");
   }
 
-  const owner = getRequiredEnvVar("REPO_OWNER");
-  const repo = getRequiredEnvVar("REPO_NAME");
-  const repoPath = getRequiredEnvVar("REPO_PATH");
-  const targetBranch = getRequiredEnvVar("TARGET_BRANCH");
+  const dataRepoOwner = getRequiredEnvVar("REPO_OWNER");
+  const dataRepo = getRequiredEnvVar("REPO_NAME");
+  const dataRepoPath = getRequiredEnvVar("REPO_PATH");
+  const dataRepoTargetBranch = getRequiredEnvVar("TARGET_BRANCH");
+
   const retriesAllowed = getOptionalNumericEnvVar("CONFLICT_RETRIES") ?? 0;
 
   // Build the tree of added files from the metric data
   const fileTree = metricData.map((data) => ({
-    path: `${repoPath}/${data.owner}/${data.repo}/${data.metric_signature}/${data.created_at}.json`,
+    path: `${dataRepoPath}/${data.owner}/${data.repo}/${data.metric_signature}/${data.created_at}.json`,
     mode: "100644" as const,
     // UTF-8 encoded plaintext files can be sent as a plain string.
     content: `${JSON.stringify(data)}\n`,
@@ -79,7 +81,7 @@ export const storeData = async (metricData: MetricData[]) => {
     warning about the token not having read access in case the request fails.
   */
   try {
-    headShas = await getHeadShas(owner, repo, targetBranch);
+    headShas = await getHeadShas(dataRepoOwner, dataRepo, dataRepoTargetBranch);
   } catch (e: unknown) {
     if (e instanceof Error && "status" in e && typeof e.status === "number") {
       throw StoreDataError.noReadAccess(e.status);
@@ -105,8 +107,8 @@ export const storeData = async (metricData: MetricData[]) => {
       data: { sha: newTreeSha },
     } = await octokitForDataRepo
       .request("POST /repos/{owner}/{repo}/git/trees", {
-        owner,
-        repo,
+        owner: dataRepoOwner,
+        repo: dataRepo,
         base_tree: headShas.treeSha,
         tree: fileTree,
       })
@@ -165,8 +167,8 @@ export const storeData = async (metricData: MetricData[]) => {
     } = await octokitForDataRepo.request(
       "POST /repos/{owner}/{repo}/git/commits",
       {
-        owner,
-        repo,
+        owner: dataRepoOwner,
+        repo: dataRepo,
         message: `auto(data): add metrics from ${commitMessageTrigger} for ${triggerOwner}/${triggerRepo}`,
         author,
         committer,
@@ -192,27 +194,39 @@ export const storeData = async (metricData: MetricData[]) => {
       await octokitForDataRepo.request(
         "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
         {
-          owner,
-          repo,
-          ref: `heads/${targetBranch}`,
+          owner: dataRepoOwner,
+          repo: dataRepo,
+          ref: `heads/${dataRepoTargetBranch}`,
           sha: newCommitSha,
           force: false,
         }
       );
     } catch (e: unknown) {
       if (tryNumber === retriesAllowed) {
+        logger.warn(
+          LogWarnings.storeDataConflictRetriesMaximumReached,
+          retriesAllowed.toString(10)
+        );
         // out of retries, just throw the error
         throw e;
       }
+
+      logger.info(LogInfos.storeDataCheckingHead);
       // Check if we should retry due to a changed HEAD
-      const newHeadShas = await getHeadShas(owner, repo, targetBranch);
+      const newHeadShas = await getHeadShas(
+        dataRepoOwner,
+        dataRepo,
+        dataRepoTargetBranch
+      );
       if (newHeadShas.commitSha === headShas.commitSha) {
+        logger.warn(LogWarnings.storeDataNotAConflict);
         // nothing changed, error has a different cause
         throw e;
       }
-      headShas = newHeadShas;
 
       // Let's go for another round 🎠
+      headShas = newHeadShas;
+      logger.info(LogInfos.storeDataRetrying);
       continue;
     }
 
