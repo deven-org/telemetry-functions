@@ -60,6 +60,8 @@ export const storeData = async (metricData: MetricData[]) => {
   const dataRepoPath = getRequiredEnvVar("REPO_PATH");
   const dataRepoTargetBranch = getRequiredEnvVar("TARGET_BRANCH");
 
+  // If CONFLICT_RETRIES is set to -1 the condition for step [2-4/4] is not fulfilled and
+  // there is no attempt to store the data.
   const retriesAllowed = getOptionalNumericEnvVar("CONFLICT_RETRIES") ?? 0;
 
   // Build the tree of added files from the metric data

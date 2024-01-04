@@ -7,9 +7,9 @@ Thank you for taking the time to contribute to **telemetry-functions**! We since
 - [Chapters](#chapters)
 - [New contributor guide](#new-contributor-guide)
 - [Getting started](#getting-started)
-  - [:file_folder: File Structure](#file_folder-file-structure)
+  - [:file\_folder: File Structure](#file_folder-file-structure)
 - [System Description](#system-description)
-  - [System Components Diagram](#system-components-diagram)
+  - [System Flow Diagram](#system-flow-diagram)
   - [Data Events](#data-events)
   - [Event Signatures](#event-signatures)
   - [Metrics Signatures](#metrics-signatures)
@@ -84,7 +84,7 @@ flowchart TB
             ManualRunEventStart([Manual Run]) --> EventObject
             CronJobEventStart([Cron Job]) --> EventObject
             EventObject --> CheckRequestType[Check request type]
-            CheckRequestType -->|parse| ToBeDefined[To be defined] 
+            CheckRequestType -->|parse| ToBeDefined[To be defined]
             CheckRequestType -->|collect| AddSignature[Add Signature]
             AddSignature --> SignedEventObject[/Signed Event Object/]
             SignedEventObject --> CheckMetricConditions[Check Metric Conditions]
@@ -149,6 +149,8 @@ The storeData function is the final step in the telemetry-functions process. sto
 - `AUTHOR_EMAIL`
 
 These variables are stored in Netlify for production, but when running the app locally, a `.env` file should be added to the root folder. The `.env` file should use the format established in the `/.env.template` file already in the repo.
+
+The variable `CONFLICT_RETRIES` is used to define the number of attempts to store the data in the github repository. If it's not set it defaults to 0, that means there is no retry if the data can't be stored with the first attempt. For testing purposes the variable could also be set to -1, so that the data isn't stored at all.
 
 ### OAuth App
 
