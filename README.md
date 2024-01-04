@@ -15,7 +15,8 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [Setup](#setup)
-    - [Usage](#usage)
+    - [Usage with manual triggering](#usage-with-manual-triggering)
+    - [Usage with GitHub triggers](#usage-with-github-triggers)
   - [How to test](#how-to-test)
   - [Contributing](#contributing)
   - [License](#license)
@@ -70,6 +71,7 @@ In addition, you'll need to log in to Github in your browser.
 - COMMITTER_EMAIL
 - AUTHOR_NAME
 - AUTHOR_EMAIL
+- CONFLICT_RETRIES
 
 2. Create a new file in the root directory named `.env` and paste the list of environment variables in, exactly as it appears in the env.template file.
 
