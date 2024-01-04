@@ -4,19 +4,21 @@
 
 ## Content
 
-- [Content](#content)
-- [Overall Structure](#overall-structure)
-  - [Code base](#code-base)
-  - [Documentation and testing](#documentation-and-testing)
-  - [CI/CD](#cicd)
-  - [Usage](#usage)
-- [Technical Decisions](#technical-decisions)
-  - [Hybrid Paradigm](#hybrid-paradigm)
-    - [Real-time event collection](#real-time-event-collection)
-    - [Asynchronous collection](#asynchronous-collection)
-  - [Conclusion](#conclusion)
-- [Data duplication](#data-duplication)
-- [Webhook Events \& Collected Metrics](#webhook-events--collected-metrics)
+- [Architecture](#architecture)
+  - [Content](#content)
+  - [Overall Structure](#overall-structure)
+    - [Code base](#code-base)
+    - [Documentation and testing](#documentation-and-testing)
+    - [CI/CD](#cicd)
+    - [Usage](#usage)
+  - [Technical Decisions](#technical-decisions)
+    - [Hybrid Paradigm](#hybrid-paradigm)
+      - [Real-time event collection](#real-time-event-collection)
+      - [Asynchronous collection](#asynchronous-collection)
+    - [Conclusion](#conclusion)
+  - [Data duplication](#data-duplication)
+  - [Github Webhook Events \& Collected Metrics](#github-webhook-events--collected-metrics)
+    - [Adding a Webhook to a Project](#adding-a-webhook-to-a-project)
 
 ## Overall Structure
 
@@ -72,7 +74,7 @@ The hybrid paradigm used in telemetry-functions enables the project to collect m
 
 The hybrid approach and the multiple ways of triggering the metrics collection create the possibility of gathering the same information multiple times. While data duplication may occur in this part of the process, it is allowed because all the collected data is identified with unique IDs. The second part of the process, responsible for parsing and merging all the collected metrics into a more comprehensive database, prevents duplicated entries by using the unique IDs. This ensures that the final database contains only the necessary information without redundancy, making it easier to analyze and draw conclusions.
 
-## Webhook Events & Collected Metrics
+## Github Webhook Events & Collected Metrics
 
 To collect the metrics the list of github webhook events subscribed with oauth app are
 
@@ -82,3 +84,15 @@ To collect the metrics the list of github webhook events subscribed with oauth a
 - workflow_job
 
 More details about when each webhook event occurs, together with a detailed list of all metrics they trigger, see [METRICS.md](./METRICS.md).
+
+### Adding a Webhook to a Project
+
+In order to add a webhook to collect data of a project a new webhook has to be created within the Github organization or within a specific Github repository.
+
+The trigger events should be selected individually to avoid unnecessary traffic. The currently used events are named:
+
+- Branch or tag creation
+- Check suites
+- Deployments
+- Pull requests
+- Workflow jobs
