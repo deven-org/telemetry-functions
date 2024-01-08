@@ -6,11 +6,8 @@ export type WorkflowJobTestCoverageOutput = {
   /** GitHub Job ID */
   id: number;
 
-  /** Job status (always "completed" due to condition) */
-  status: string;
-
   /** Job conclusion, see GitHub docs */
-  conclusion: string;
+  conclusion: "success" | "failure" | "cancelled" | "skipped";
 
   /** If the workflow that ran this job seems to be about tests */
   is_workflow_name_about_test: boolean;
@@ -29,11 +26,8 @@ export type WorkflowJobTestCoverageOutput = {
     /** Step name */
     name: string;
 
-    /** Step status (always "completed" due to condition) */
-    status: string;
-
     /** Step conclusion, see github docs */
-    conclusion: string;
+    conclusion: "success" | "failure" | "skipped";
 
     /** Step number */
     number: number;

@@ -662,7 +662,6 @@ GitHub docs on events with action "completed":
 ```json
 {
   "id": 12224450936,
-  "status": "completed",
   "conclusion": "success",
   "is_workflow_name_about_test": true,
   "has_failed_steps": false,
@@ -670,7 +669,6 @@ GitHub docs on events with action "completed":
   "steps_about_test": [
     {
       "name": "Run test",
-      "status": "completed",
       "conclusion": "success",
       "number": 6,
       "started_at": 1679580535000,
@@ -690,11 +688,8 @@ type TestCoverageOutput = {
   /** GitHub Job ID */
   id: number;
 
-  /** Job status (always "completed" due to condition) */
-  status: "completed";
-
-  /** Job conclusion, see GitHub docs */
-  conclusion: string;
+  /** Job conclusion, see github docs */
+  conclusion: "success" | "failure" | "cancelled" | "skipped";
 
   /** If the workflow that ran this job seems to be about tests */
   is_workflow_name_about_test: boolean;
@@ -713,11 +708,8 @@ type TestCoverageOutput = {
     /** Step name */
     name: string;
 
-    /** Step status (always "completed" due to condition) */
-    status: "completed";
-
     /** Step conclusion, see github docs */
-    conclusion: string;
+    conclusion: "success" | "failure" | "skipped";
 
     /** Step number */
     number: number;
@@ -758,13 +750,12 @@ GitHub docs on events with action "completed":
   "started_at": 1697612757000,
   "completed_at": 1697612766000,
   "duration": 9000,
-  "status": "completed",
+  "conclusion": "success",
   "workflow_name": "pages build and deployment",
   "run_attempt": 1,
   "steps": [
     {
       "name": "Set up job",
-      "status": "completed",
       "conclusion": "success",
       "number": 1,
       "started_at": 1697612757000,
@@ -773,7 +764,6 @@ GitHub docs on events with action "completed":
     },
     {
       "name": "Deploy to GitHub Pages",
-      "status": "completed",
       "conclusion": "success",
       "number": 2,
       "started_at": 1697612758000,
@@ -782,7 +772,6 @@ GitHub docs on events with action "completed":
     },
     {
       "name": "Complete job",
-      "status": "completed",
       "conclusion": "success",
       "number": 3,
       "started_at": 1697612764000,
@@ -811,8 +800,8 @@ type WorkflowJobOutput = {
   /** Job run duration in ms */
   duration: number;
 
-  /** X Job status (always "completed" due to condition) */
-  status: "completed";
+  /** Job conclusion, see github docs */
+  conclusion: "success" | "failure" | "cancelled" | "skipped";
 
   /** The name of the workflow this job was executed in, if there is one */
   workflow_name: string | null;
@@ -825,11 +814,8 @@ type WorkflowJobOutput = {
     /** Step name */
     name: string;
 
-    /** Step status (always "completed" due to condition) */
-    status: "completed";
-
     /** Step conclusion, see github docs */
-    conclusion: string;
+    conclusion: "success" | "failure" | "skipped";
 
     /** Step number */
     number: number;

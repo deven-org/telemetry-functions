@@ -19,16 +19,21 @@ export const collectWorkflowsMetrics = async (
   const createdAt = getTimestamp(payload.workflow_job.created_at);
   const startedAt = getTimestamp(payload.workflow_job.started_at);
   const duration = completedAt - startedAt;
-  const status = payload.workflow_job.status;
+  const conclusion = payload.workflow_job.conclusion;
   const workflowName = payload.workflow_job.workflow_name;
   const runAttempt = payload.workflow_job.run_attempt;
 
   // For completed jobs, all steps must be completed too.
   const steps = (payload.workflow_job.steps as WorkflowStepCompleted[]).map(
-    ({ name, status, conclusion, number, started_at, completed_at }) => ({
+    ({
       name,
-      status,
-      conclusion,
+      conclusion: stepConclusion,
+      number,
+      started_at,
+      completed_at,
+    }) => ({
+      name,
+      conclusion: stepConclusion,
       number,
       started_at: getTimestamp(started_at),
       completed_at: getTimestamp(completed_at),
@@ -40,7 +45,7 @@ export const collectWorkflowsMetrics = async (
     completed_at: completedAt,
     created_at: createdAt,
     started_at: startedAt,
-    status,
+    conclusion,
     workflow_name: workflowName,
     run_attempt: runAttempt,
     duration,
