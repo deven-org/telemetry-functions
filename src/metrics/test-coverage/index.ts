@@ -18,7 +18,6 @@ export const collectWorkflowsTestCoverageMetrics = async (
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
-  const status = payload.workflow_job.status;
   const conclusion = payload.workflow_job.conclusion;
   const id = payload.workflow_job.id;
 
@@ -30,9 +29,8 @@ export const collectWorkflowsTestCoverageMetrics = async (
   // For completed jobs, all steps must be completed too.
   const stepsAboutTest = (payload.workflow_job.steps as WorkflowStepCompleted[])
     .filter((step) => isNameAboutTest(step.name))
-    .map(({ name, status, conclusion, number, started_at, completed_at }) => ({
+    .map(({ name, conclusion, number, started_at, completed_at }) => ({
       name,
-      status,
       conclusion,
       number,
       started_at: getTimestamp(started_at),
@@ -49,7 +47,6 @@ export const collectWorkflowsTestCoverageMetrics = async (
 
   const output: WorkflowJobTestCoverageOutput = {
     id,
-    status,
     conclusion,
     is_job_name_about_test: isJobNameAboutTest,
     is_workflow_name_about_test: isWorkflowNameAboutTest,
