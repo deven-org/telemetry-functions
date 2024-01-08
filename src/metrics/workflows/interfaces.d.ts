@@ -15,8 +15,8 @@ export type WorkflowsOutput = {
   /** Job run duration in ms */
   duration: number;
 
-  /** Job status (always "completed" due to condition) */
-  status: string;
+  /** Job conclusion, see github docs */
+  conclusion: "success" | "failure" | "cancelled" | "skipped";
 
   /** The name of the workflow this job was executed in, if there is one */
   workflow_name: string | null;
@@ -29,11 +29,8 @@ export type WorkflowsOutput = {
     /** Step name */
     name: string;
 
-    /** Step status (always "completed" due to condition) */
-    status: string;
-
     /** Step conclusion, see github docs */
-    conclusion: string;
+    conclusion: "success" | "failure" | "skipped";
 
     /** Step number */
     number: number;

@@ -102,7 +102,6 @@ describe("Test_Coverage", () => {
         metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
-          status: "completed",
           conclusion: "failure",
           is_job_name_about_test: true,
           is_workflow_name_about_test: false,
@@ -133,7 +132,6 @@ describe("Test_Coverage", () => {
         metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
-          status: "completed",
           conclusion: "failure",
           is_job_name_about_test: false,
           is_workflow_name_about_test: true,
@@ -164,7 +162,6 @@ describe("Test_Coverage", () => {
         metric_signature: MetricSignature.TestCoverage,
         output: {
           id: 12126810024,
-          status: "completed",
           conclusion: "failure",
           is_job_name_about_test: false,
           is_workflow_name_about_test: false,
@@ -176,7 +173,6 @@ describe("Test_Coverage", () => {
               name: "Run jest",
               number: 2,
               started_at: 1679311625000,
-              status: "completed",
             },
             {
               completed_at: 1679311686000,
@@ -185,7 +181,6 @@ describe("Test_Coverage", () => {
               name: "Run cypress",
               number: 2,
               started_at: 1679311626000,
-              status: "completed",
             },
           ],
           has_failed_steps: true,

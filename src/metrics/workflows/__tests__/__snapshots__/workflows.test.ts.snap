@@ -439,11 +439,11 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
     "metric_signature": "workflow-job",
     "output": {
       "completed_at": 1628159896000,
+      "conclusion": "failure",
       "created_at": 1628159638000,
       "duration": 198000,
       "run_attempt": 1,
       "started_at": 1628159698000,
-      "status": "completed",
       "steps": [
         {
           "completed_at": 1628159171000,
@@ -452,7 +452,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Set up job",
           "number": 1,
           "started_at": 1628159168000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159172000,
@@ -461,7 +460,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run actions/checkout@v2",
           "number": 2,
           "started_at": 1628159171000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159172000,
@@ -470,7 +468,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run actions/setup-node@v2",
           "number": 3,
           "started_at": 1628159172000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159172000,
@@ -479,7 +476,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Get yarn cache directory path",
           "number": 4,
           "started_at": 1628159172000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159175000,
@@ -488,7 +484,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run actions/cache@v2",
           "number": 5,
           "started_at": 1628159172000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159185000,
@@ -497,7 +492,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run yarn install",
           "number": 6,
           "started_at": 1628159175000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159187000,
@@ -506,7 +500,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run yarn run js-lint",
           "number": 7,
           "started_at": 1628159185000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159188000,
@@ -515,7 +508,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run yarn run format-check",
           "number": 8,
           "started_at": 1628159187000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159188000,
@@ -524,7 +516,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Post Run actions/cache@v2",
           "number": 14,
           "started_at": 1628159188000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159188000,
@@ -533,7 +524,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Post Run actions/setup-node@v2",
           "number": 15,
           "started_at": 1628159188000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159188000,
@@ -542,7 +532,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Post Run actions/checkout@v2",
           "number": 16,
           "started_at": 1628159188000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159188000,
@@ -551,7 +540,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Complete job",
           "number": 17,
           "started_at": 1628159188000,
-          "status": "completed",
         },
       ],
       "workflow_name": "CodeQL",
@@ -801,11 +789,11 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
     "metric_signature": "workflow-job",
     "output": {
       "completed_at": 1628159896000,
+      "conclusion": "success",
       "created_at": 1628159638000,
       "duration": 198000,
       "run_attempt": 1,
       "started_at": 1628159698000,
-      "status": "completed",
       "steps": [
         {
           "completed_at": 1628159171000,
@@ -814,7 +802,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Set up job",
           "number": 1,
           "started_at": 1628159168000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159171000,
@@ -823,7 +810,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Checkout Repo",
           "number": 2,
           "started_at": 1628159171000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159175000,
@@ -832,7 +818,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Install Ruby",
           "number": 3,
           "started_at": 1628159171000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159181000,
@@ -841,7 +826,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run Rubocop",
           "number": 4,
           "started_at": 1628159175000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159185000,
@@ -850,7 +834,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run Brakeman",
           "number": 5,
           "started_at": 1628159181000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159186000,
@@ -859,7 +842,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Run Bundle Audit",
           "number": 6,
           "started_at": 1628159185000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159186000,
@@ -868,7 +850,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Post Checkout Repo",
           "number": 12,
           "started_at": 1628159186000,
-          "status": "completed",
         },
         {
           "completed_at": 1628159186000,
@@ -877,7 +858,6 @@ exports[`workflows handles a range of mocked workflow_job events: workflow_job f
           "name": "Complete job",
           "number": 13,
           "started_at": 1628159186000,
-          "status": "completed",
         },
       ],
       "workflow_name": "CodeQL",

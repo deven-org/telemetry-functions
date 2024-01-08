@@ -87,14 +87,13 @@ describe("workflows", () => {
           completed_at: 1679311634000,
           created_at: 1679311618000,
           started_at: 1679311624000,
-          status: "completed",
+          conclusion: "failure",
           workflow_name: "Parse Data",
           run_attempt: 1,
           duration: 10000,
           steps: [
             {
               name: "Set up job",
-              status: "completed",
               conclusion: "success",
               number: 1,
               started_at: 1679311623000,
@@ -107,7 +106,6 @@ describe("workflows", () => {
               name: "Check out repository code",
               number: 2,
               started_at: 1679311625000,
-              status: "completed",
             },
           ],
         },
