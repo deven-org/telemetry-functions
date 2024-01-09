@@ -1,4 +1,4 @@
-import { ErrorForLogger } from "../core/error-logger";
+import { ErrorForLogger, ErrorLevel } from "../core/error-logger";
 import { LogErrors } from "./log-messages";
 
 type KnownEnvironmentVariable =
@@ -20,15 +20,27 @@ export class EnvVarAccessError extends ErrorForLogger {
   name = "EnvVarAccessError";
 
   static required(name): EnvVarAccessError {
-    return new EnvVarAccessError("error", LogErrors.envVarRequired, name);
+    return new EnvVarAccessError(
+      ErrorLevel.Error,
+      LogErrors.envVarRequired,
+      name
+    );
   }
 
   static nan(name): EnvVarAccessError {
-    return new EnvVarAccessError("error", LogErrors.envVarNotANumber, name);
+    return new EnvVarAccessError(
+      ErrorLevel.Error,
+      LogErrors.envVarNotANumber,
+      name
+    );
   }
 
   static unsafeInt(name): EnvVarAccessError {
-    return new EnvVarAccessError("error", LogErrors.envVarUnsafeInt, name);
+    return new EnvVarAccessError(
+      ErrorLevel.Error,
+      LogErrors.envVarUnsafeInt,
+      name
+    );
   }
 }
 

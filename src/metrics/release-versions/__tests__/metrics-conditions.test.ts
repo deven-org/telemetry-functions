@@ -6,7 +6,7 @@ import {
   GithubEvent,
 } from "../../../interfaces";
 import { isSignedAsTagCreateEvent } from "../metrics-conditions";
-import { ErrorForLogger } from "../../../core/error-logger";
+import { ErrorForLogger, ErrorLevel } from "../../../core/error-logger";
 import { LogWarnings } from "../../../shared/log-messages";
 
 describe("Release Versions metric condition: isSignedAsTagCreateEvent", () => {
@@ -34,7 +34,7 @@ describe("Release Versions metric condition: isSignedAsTagCreateEvent", () => {
     };
 
     expect(() => isSignedAsTagCreateEvent(event)).toThrow(
-      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+      new ErrorForLogger(ErrorLevel.Skip, LogWarnings.repoIsDatabaseRepo)
     );
   });
 

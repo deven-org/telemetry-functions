@@ -2,7 +2,7 @@ import cloneDeep from "lodash.clonedeep";
 import metricsConditions from "../metrics-conditions";
 import { LogSuccess, LogWarnings } from "../shared/log-messages";
 import { MetricData, SignedTriggerEvent } from "../interfaces";
-import { ErrorForLogger } from "./error-logger";
+import { ErrorForLogger, ErrorLevel } from "./error-logger";
 import { logger } from "./logger";
 
 export const collectMetrics = async (
@@ -22,7 +22,7 @@ export const collectMetrics = async (
 
   if (collectedMetrics.length === 0) {
     throw new ErrorForLogger(
-      "skip",
+      ErrorLevel.Skip,
       LogWarnings.collectMetricsSignatureNotRecognized
     );
   }
