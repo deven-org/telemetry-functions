@@ -6,7 +6,11 @@ import {
 } from "../shared/log-messages";
 import { logger } from "./logger";
 
-type ErrorLevel = "error" | "warn" | "skip";
+export enum ErrorLevel {
+  Error = "error",
+  Warn = "warn",
+  Skip = "skip",
+}
 
 export class ErrorForLogger extends Error {
   level: ErrorLevel;

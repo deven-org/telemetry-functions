@@ -1,6 +1,6 @@
 import { MetricData } from "../interfaces";
 import { octokitForDataRepo } from "./octokit";
-import { ErrorForLogger } from "./error-logger";
+import { ErrorForLogger, ErrorLevel } from "./error-logger";
 import { LogErrors, LogInfos, LogWarnings } from "../shared/log-messages";
 import {
   getOptionalEnvVar,
@@ -14,7 +14,7 @@ export class StoreDataError extends ErrorForLogger {
 
   static noReadAccess(status: number): StoreDataError {
     return new StoreDataError(
-      "error",
+      ErrorLevel.Error,
       LogErrors.dataRepoNoReadAccess,
       status.toString()
     );
@@ -22,7 +22,7 @@ export class StoreDataError extends ErrorForLogger {
 
   static noWriteAccess(status: number): StoreDataError {
     return new StoreDataError(
-      "error",
+      ErrorLevel.Error,
       LogErrors.dataRepoNoWriteAccess,
       status.toString()
     );

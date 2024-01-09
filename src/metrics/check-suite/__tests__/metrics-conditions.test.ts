@@ -4,7 +4,7 @@ import {
   SignedTriggerEvent,
   GithubEvent,
 } from "../../../interfaces";
-import { ErrorForLogger } from "../../../core/error-logger";
+import { ErrorForLogger, ErrorLevel } from "../../../core/error-logger";
 import { LogWarnings } from "../../../shared/log-messages";
 import { isSignedAsCheckSuiteCompleted } from "../metrics-conditions";
 
@@ -30,7 +30,7 @@ describe("Check Suite metric condition: isSignedAsCheckSuiteCompleted", () => {
     };
 
     expect(() => isSignedAsCheckSuiteCompleted(event)).toThrow(
-      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+      new ErrorForLogger(ErrorLevel.Skip, LogWarnings.repoIsDatabaseRepo)
     );
   });
 
