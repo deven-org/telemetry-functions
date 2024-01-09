@@ -5,7 +5,7 @@ import {
 } from "../../../interfaces";
 import { isSignedAsPullRequestClosed } from "../metrics-conditions";
 import { getWebhookEventFixture } from "../../../__tests__/fixtures/github-webhook-events";
-import { ErrorForLogger } from "../../../core/error-logger";
+import { ErrorForLogger, ErrorLevel } from "../../../core/error-logger";
 import { LogWarnings } from "../../../shared/log-messages";
 
 describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed", () => {
@@ -30,7 +30,7 @@ describe("Code Review Involvement metric condition: isSignedAsPullRequestClosed"
     };
 
     expect(() => isSignedAsPullRequestClosed(event)).toThrow(
-      new ErrorForLogger("skip", LogWarnings.repoIsDatabaseRepo)
+      new ErrorForLogger(ErrorLevel.Skip, LogWarnings.repoIsDatabaseRepo)
     );
   });
 

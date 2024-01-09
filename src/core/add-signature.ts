@@ -1,7 +1,7 @@
 import { LogInfos, LogWarnings } from "../shared/log-messages";
 import { SignedTriggerEvent, RawEvent } from "../interfaces";
 import { identifyTriggerEventSignature } from "../trigger-signatures";
-import { ErrorForLogger } from "./error-logger";
+import { ErrorForLogger, ErrorLevel } from "./error-logger";
 import { logger } from "./logger";
 
 export async function addSignature(
@@ -13,7 +13,7 @@ export async function addSignature(
 
   if (signature === null) {
     throw new ErrorForLogger(
-      "skip",
+      ErrorLevel.Skip,
       LogWarnings.signingEventSignatureNotRecognized
     );
   }
