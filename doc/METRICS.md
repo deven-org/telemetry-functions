@@ -746,6 +746,7 @@ GitHub docs on events with action "completed":
 
 ```json
 {
+  "id": 12345679,
   "created_at": 1697612749000,
   "started_at": 1697612757000,
   "completed_at": 1697612766000,
@@ -788,6 +789,9 @@ Fields:
 
 ```ts
 type WorkflowJobOutput = {
+  /** Id of the workflow job */
+  id: number;
+
   /** Job creation time (UNIX ms) */
   created_at: number;
 
