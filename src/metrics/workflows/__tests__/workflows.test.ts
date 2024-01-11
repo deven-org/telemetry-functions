@@ -84,6 +84,7 @@ describe("workflows", () => {
       {
         created_at: FAKE_NOW,
         output: {
+          id: 12126810024,
           completed_at: 1679311634000,
           created_at: 1679311618000,
           started_at: 1679311624000,
