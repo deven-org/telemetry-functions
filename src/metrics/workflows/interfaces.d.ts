@@ -3,6 +3,9 @@ import { WorkflowJobCompletedEvent } from "@octokit/webhooks-types";
 export type WorkflowsPayload = WorkflowJobCompletedEvent;
 
 export type WorkflowsOutput = {
+  /** Id of the workflow job */
+  id: number;
+
   /** Job creation time (UNIX ms) */
   created_at: number;
 
