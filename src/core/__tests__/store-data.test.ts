@@ -35,6 +35,7 @@ jest.mock("../logger", () => ({
 
 const output: WorkflowsOutput = {
   id: 1234569,
+  head_sha: "sha-string",
   created_at: 4000,
   started_at: 4000,
   completed_at: 5000,
@@ -155,13 +156,13 @@ describe("storeData", () => {
     "repo": "data-repo-name",
     "tree": [
       {
-        "content": "{"trigger_event_signature":"github::workflow_job","metric_signature":"workflow-job","created_at":100,"output":{"id":1234569,"created_at":4000,"started_at":4000,"completed_at":5000,"duration":1000,"conclusion":"success","workflow_name":"workflow-name","run_attempt":1,"steps":[]},"owner":"owner","repo":"repo","status":"success"}
+        "content": "{"trigger_event_signature":"github::workflow_job","metric_signature":"workflow-job","created_at":100,"output":{"id":1234569,"head_sha":"sha-string","created_at":4000,"started_at":4000,"completed_at":5000,"duration":1000,"conclusion":"success","workflow_name":"workflow-name","run_attempt":1,"steps":[]},"owner":"owner","repo":"repo","status":"success"}
 ",
         "mode": "100644",
         "path": "raw-data/owner/repo/workflow-job/100.json",
       },
       {
-        "content": "{"trigger_event_signature":"github::workflow_job","metric_signature":"workflow-job","created_at":100,"output":{"id":1234569,"created_at":4000,"started_at":4000,"completed_at":5000,"duration":1000,"conclusion":"success","workflow_name":"workflow-name","run_attempt":1,"steps":[]},"owner":"owner","repo":"repo","status":"success"}
+        "content": "{"trigger_event_signature":"github::workflow_job","metric_signature":"workflow-job","created_at":100,"output":{"id":1234569,"head_sha":"sha-string","created_at":4000,"started_at":4000,"completed_at":5000,"duration":1000,"conclusion":"success","workflow_name":"workflow-name","run_attempt":1,"steps":[]},"owner":"owner","repo":"repo","status":"success"}
 ",
         "mode": "100644",
         "path": "raw-data/owner/repo/workflow-job/100.json",
