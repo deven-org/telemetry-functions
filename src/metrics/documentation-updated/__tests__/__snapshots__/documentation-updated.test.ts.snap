@@ -16009,6 +16009,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "created_at": 1700000000000,
     "metric_signature": "documentation-updated",
     "output": {
+      "head_sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
       "pr_files": {
         "md_files_changed": 4,
         "over_100_files": false,
@@ -16581,6 +16582,7 @@ exports[`documentation-updated handles a range of mocked pull_request events: pu
     "created_at": 1700000000000,
     "metric_signature": "documentation-updated",
     "output": {
+      "head_sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
       "pr_files": {
         "md_files_changed": 4,
         "over_100_files": false,

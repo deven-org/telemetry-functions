@@ -19,6 +19,7 @@ export const collectCommitsPerPrMetrics = async (
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
   const prId = payload.pull_request.id;
+  const headSha = payload.pull_request.head.sha;
   const additions = payload.pull_request.additions;
   const deletions = payload.pull_request.deletions;
 
@@ -56,6 +57,7 @@ export const collectCommitsPerPrMetrics = async (
 
   const output: CommitsPerPrOutput = {
     pr_id: prId,
+    head_sha: headSha,
     additions,
     deletions,
     commits,

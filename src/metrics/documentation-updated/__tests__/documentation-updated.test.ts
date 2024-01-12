@@ -131,6 +131,7 @@ describe("documentation-updated", () => {
             over_100_files: false,
             md_files_changed: 4,
           },
+          head_sha: "sha-string",
         },
       },
     ]);
@@ -165,6 +166,7 @@ describe("documentation-updated", () => {
             over_100_files: true,
             md_files_changed: 4,
           },
+          head_sha: "sha-string",
         },
       },
     ]);
@@ -193,6 +195,7 @@ describe("documentation-updated", () => {
         output: {
           pr_id: 42424242,
           pr_files: null,
+          head_sha: "sha-string",
         },
       },
     ]);

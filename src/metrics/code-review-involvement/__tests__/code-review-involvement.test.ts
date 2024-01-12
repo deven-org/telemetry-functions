@@ -84,6 +84,7 @@ describe("code-review-involvement", () => {
         created_at: FAKE_NOW,
         output: {
           pr_id: 42424242,
+          head_sha: "sha-string",
           merged: true,
           created_at: 1675866904000,
           updated_at: 1675863304000,

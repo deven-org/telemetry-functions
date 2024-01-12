@@ -28,6 +28,9 @@
     "additions": 10,
     "deletions": 5,
     "number": 10,
-    "title": "feat(foo): release 1.0.0"
+    "title": "feat(foo): release 1.0.0",
+    "head": {
+      "sha": "sha-string"
+    }
   }
 }
