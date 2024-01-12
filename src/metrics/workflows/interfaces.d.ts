@@ -6,6 +6,9 @@ export type WorkflowsOutput = {
   /** Id of the workflow job */
   id: number;
 
+  /** Sha of the head of the workflow job */
+  head_sha: string;
+
   /** Job creation time (UNIX ms) */
   created_at: number;
 

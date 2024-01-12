@@ -1,23 +1,24 @@
 # List of collected metrics
 
-- [Metric Envelope](#metric-envelope)
-- [Trigger Events](#trigger-events)
-  - [`github::check_suite`](#githubcheck_suite)
-  - [`github::create`](#githubcreate)
-  - [`github::deployment`](#githubdeployment)
-  - [`github::pull_request`](#githubpull_request)
-  - [`github::workflow_job`](#githubworkflow_job)
-  - [`deven::tooling-usage`](#deventooling-usage)
-- [Metrics](#metrics)
-  - [`check-suite` for Completed Check Suites](#check-suite-for-completed-check-suites)
-  - [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
-  - [`CommitsPerPr` for Merged Pull Requests](#commitsperpr-for-merged-pull-requests)
-  - [`deployment` for Created Deployments](#deployment-for-created-deployments)
-  - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
-  - [`release-versions` for created Tags with valid semver version](#release-versions-for-created-tags-with-valid-semver-version)
-  - [`tooling-usage` for a Repository](#tooling-usage-for-a-repository)
-  - [`test-coverage` for Completed Workflow Jobs mentioning tests](#test-coverage-for-completed-workflow-jobs-mentioning-tests)
-  - [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
+- [List of collected metrics](#list-of-collected-metrics)
+  - [Metric Envelope](#metric-envelope)
+  - [Trigger Events](#trigger-events)
+    - [`github::check_suite`](#githubcheck_suite)
+    - [`github::create`](#githubcreate)
+    - [`github::deployment`](#githubdeployment)
+    - [`github::pull_request`](#githubpull_request)
+    - [`github::workflow_job`](#githubworkflow_job)
+    - [`deven::tooling-usage`](#deventooling-usage)
+  - [Metrics](#metrics)
+    - [`check-suite` for Completed Check Suites](#check-suite-for-completed-check-suites)
+    - [`code-review-involvement` for Merged or Closed Pull Requests](#code-review-involvement-for-merged-or-closed-pull-requests)
+    - [`CommitsPerPr` for Merged Pull Requests](#commitsperpr-for-merged-pull-requests)
+    - [`deployment` for Created Deployments](#deployment-for-created-deployments)
+    - [`documentation-updated` for Merged Pull Requests](#documentation-updated-for-merged-pull-requests)
+    - [`release-versions` for created Tags with valid semver version](#release-versions-for-created-tags-with-valid-semver-version)
+    - [`tooling-usage` for a Repository](#tooling-usage-for-a-repository)
+    - [`test-coverage` for Completed Workflow Jobs mentioning tests](#test-coverage-for-completed-workflow-jobs-mentioning-tests)
+    - [`workflow-job` for Completed Workflow Jobs](#workflow-job-for-completed-workflow-jobs)
 
 ## Metric Envelope
 
@@ -453,7 +454,7 @@ type CheckSuiteMetricsOutput = {
    * General information about the package.json.
    * null means the data could not be fetched due to reasons other than the file
    * not existing (status: 'networkError').
-   * 
+   *
    * NOTE: this will always look at the root package json of the repo at the
    * state of the commit that was deployed.
    * There is no guarantee that the version field has anything
@@ -747,6 +748,7 @@ GitHub docs on events with action "completed":
 ```json
 {
   "id": 12345679,
+  "head_sha": "sha-string",
   "created_at": 1697612749000,
   "started_at": 1697612757000,
   "completed_at": 1697612766000,
@@ -791,6 +793,9 @@ Fields:
 type WorkflowJobOutput = {
   /** Id of the workflow job */
   id: number;
+
+  /** Sha of the head of the workflow job */
+  head_sha: string;
 
   /** Job creation time (UNIX ms) */
   created_at: number;
