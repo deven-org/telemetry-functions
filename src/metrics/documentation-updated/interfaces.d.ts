@@ -20,4 +20,7 @@ export type DocumentationUpdatedOutput = {
      */
     md_files_changed: number;
   };
+
+  /** Sha of the head of the workflow job */
+  head_sha: string;
 };

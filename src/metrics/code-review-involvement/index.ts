@@ -17,6 +17,7 @@ export const collectCodeReviewInvolvementMetrics = async (
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
   const prId = payload.pull_request.id;
+  const headSha = payload.pull_request.head.sha;
   const merged = payload.pull_request.merged;
   const createdAt = getTimestamp(payload.pull_request.created_at);
   const updatedAt = getTimestamp(payload.pull_request.updated_at);
@@ -47,6 +48,7 @@ export const collectCodeReviewInvolvementMetrics = async (
 
   const output: CodeReviewInvolvementOutput = {
     pr_id: prId,
+    head_sha: headSha,
     merged,
     created_at: createdAt,
     updated_at: updatedAt,

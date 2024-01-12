@@ -21,6 +21,7 @@ export const collectDocumentationUpdatedMetrics = async (
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
   const prId = payload.pull_request.id;
+  const headSha = payload.pull_request.head.sha;
 
   let status: MetricDataStatus = "success";
   let prFiles: DocumentationUpdatedOutput["pr_files"] = null;
@@ -53,6 +54,7 @@ export const collectDocumentationUpdatedMetrics = async (
   const output: DocumentationUpdatedOutput = {
     pr_id: prId,
     pr_files: prFiles,
+    head_sha: headSha,
   };
 
   return {
