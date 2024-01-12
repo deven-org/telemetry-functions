@@ -24,6 +24,9 @@ export interface CommitsPerPrOutput {
   /** Pull Request ID (not PR number) */
   pr_id: number;
 
+  /** Sha of the head of the workflow job */
+  head_sha: string;
+
   /** Number of additions (lines) determined by GitHub */
   additions: number;
 

@@ -243,6 +243,7 @@ payload.action === "closed";
 ```json
 {
   "pr_id": 279147437,
+  "head_sha": "sha-string",
   "merged": true,
   "created_at": 1697543339000,
   "updated_at": 1697612705000,
@@ -268,6 +269,9 @@ Fields:
 type CodeReviewInvolvementOutput = {
   /** Pull Request ID (not number) */
   pr_id: number;
+
+  /** Sha of the head of the workflow job */
+  head_sha: string;
 
   /** Was the PR merged or just closed? */
   merged: boolean;
@@ -330,6 +334,7 @@ payload.action === "closed" && payload.pull_request.merged;
 ```json
 {
   "pr_id": 279147437,
+  "head_sha": "sha-string",
   "additions": 692,
   "deletions": 417,
   "commits": 2,
@@ -354,6 +359,9 @@ Fields:
 type CommitsPerPrOutput = {
   /** Pull Request ID (not PR number) */
   pr_id: number;
+
+  /** Sha of the head of the workflow job */
+  head_sha: string;
 
   /** Number of additions (lines) determined by GitHub */
   additions: number;
@@ -498,7 +506,8 @@ payload.action === "closed" && payload.pull_request.merged;
 ```json
 {
   "pr_id": 279147437,
-  "md_files_changed": 3
+  "md_files_changed": 3,
+  "head_sha": "sha-string"
 }
 ```
 
@@ -525,6 +534,9 @@ type DocumentationUpdatedOutput = {
      */
     md_files_changed: number;
   };
+
+  /** Sha of the head of the workflow job */
+  head_sha: string;
 };
 ```
 

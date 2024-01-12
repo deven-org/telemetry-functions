@@ -132,6 +132,7 @@ describe("commits-per-pr", () => {
         created_at: FAKE_NOW,
         output: {
           pr_id: 42424242,
+          head_sha: "sha-string",
           additions: 10,
           deletions: 5,
           commits: {
@@ -184,6 +185,7 @@ describe("commits-per-pr", () => {
       created_at: FAKE_NOW,
       output: {
         pr_id: 42424242,
+        head_sha: "sha-string",
         additions: 10,
         deletions: 5,
         commits: null,
