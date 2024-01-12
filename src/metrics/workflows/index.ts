@@ -15,6 +15,7 @@ export const collectWorkflowsMetrics = async (
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
   const id = payload.workflow_job.id;
+  const headSha = payload.workflow_job.head_sha;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- for completed jobs completed_at must be set
   const completedAt = getTimestamp(payload.workflow_job.completed_at!);
   const createdAt = getTimestamp(payload.workflow_job.created_at);
@@ -44,6 +45,7 @@ export const collectWorkflowsMetrics = async (
 
   const output: WorkflowsOutput = {
     id,
+    head_sha: headSha,
     completed_at: completedAt,
     created_at: createdAt,
     started_at: startedAt,
