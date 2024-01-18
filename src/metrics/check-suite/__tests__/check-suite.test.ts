@@ -84,7 +84,9 @@ describe("check-suite", () => {
     expect(output).toStrictEqual([
       {
         output: {
+          id: 123456789,
           conclusion: "success",
+          head_sha: "headSHA",
           created_at: 1678724577000,
           updated_at: 1678728177000,
           is_app_owner: true,

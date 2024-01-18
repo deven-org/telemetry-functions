@@ -234,6 +234,8 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
+      "head_sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
+      "id": 118578147,
       "is_app_owner": false,
       "pull_requests": [
         {
@@ -462,6 +464,8 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
+      "head_sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
+      "id": 118578147,
       "is_app_owner": false,
       "pull_requests": [],
       "updated_at": 1557933674000,
@@ -712,6 +716,8 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
+      "head_sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
+      "id": 118578147,
       "is_app_owner": false,
       "pull_requests": [
         {
@@ -980,6 +986,8 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
+      "head_sha": "ec26c3e57ca3a959ca5aad62de7213c562f8c821",
+      "id": 118578147,
       "is_app_owner": false,
       "pull_requests": [
         {
