@@ -234,7 +234,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
-      "duration": 43000,
       "is_app_owner": false,
       "pull_requests": [
         {
@@ -463,7 +462,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
-      "duration": 43000,
       "is_app_owner": false,
       "pull_requests": [],
       "updated_at": 1557933674000,
@@ -714,7 +712,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
-      "duration": 43000,
       "is_app_owner": false,
       "pull_requests": [
         {
@@ -983,7 +980,6 @@ exports[`check-suite handles a range of mocked check_suite events: check_suite f
     "output": {
       "conclusion": "success",
       "created_at": 1557933631000,
-      "duration": 43000,
       "is_app_owner": false,
       "pull_requests": [
         {
