@@ -85,7 +85,6 @@ describe("check-suite", () => {
       {
         output: {
           conclusion: "success",
-          duration: 3600000,
           created_at: 1678724577000,
           updated_at: 1678728177000,
           is_app_owner: true,

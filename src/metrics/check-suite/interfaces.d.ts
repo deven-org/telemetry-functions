@@ -12,9 +12,6 @@ export interface CheckSuiteMetricsOutput {
   /** Check suite last updated time (UNIX ms) */
   updated_at: number;
 
-  /** duration in ms between creation and last update */
-  duration: number;
-
   /** Is check suite configured for / sent to a GitHub app? */
   is_app_owner: boolean;
 
