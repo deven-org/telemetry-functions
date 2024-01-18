@@ -191,7 +191,6 @@ GitHub docs on events with action "completed":
   "conclusion": "success",
   "created_at": 1681375410000,
   "updated_at": 1681375458000,
-  "duration": 48000,
   "is_app_owner": false,
   "pull_requests": [{ "id": 1297965631 }]
 }
@@ -211,9 +210,6 @@ type CheckSuiteMetricsOutput = {
 
   /** Check suite last updated time (UNIX ms) */
   updated_at: number;
-
-  /** duration in ms between creation and last update */
-  duration: number;
 
   /** Is check suite configured for / sent to a GitHub app? */
   is_app_owner: boolean;

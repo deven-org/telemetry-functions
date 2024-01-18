@@ -19,7 +19,6 @@ export const collectCheckSuiteMetrics = async (
   const conclusion = payload.check_suite.conclusion!;
   const isAppOwner = payload?.installation ? true : false;
   const updatedAt = getTimestamp(payload.check_suite.updated_at);
-  const duration = updatedAt - createdAt;
 
   const output: CheckSuiteMetricsOutput = {
     pull_requests: pullRequests,
@@ -27,7 +26,6 @@ export const collectCheckSuiteMetrics = async (
     conclusion,
     is_app_owner: isAppOwner,
     updated_at: updatedAt,
-    duration,
   };
 
   return {
