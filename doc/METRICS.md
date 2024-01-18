@@ -188,7 +188,9 @@ GitHub docs on events with action "completed":
 
 ```json
 {
+  "id": 123456789,
   "conclusion": "success",
+  "head_sha": "headSHA",
   "created_at": 1681375410000,
   "updated_at": 1681375458000,
   "is_app_owner": false,
@@ -202,8 +204,14 @@ Fields:
 
 ```ts
 type CheckSuiteMetricsOutput = {
+  /** Suite ID (see GitHub docs) */
+  id: number;
+
   /** Suite conclusion (see GitHub docs) */
   conclusion: string;
+
+  /** The SHA of the head commit that is being checked. */
+  head_sha: string;
 
   /** Check suite creation time (UNIX ms) */
   created_at: number;
