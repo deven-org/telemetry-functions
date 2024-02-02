@@ -1,13 +1,10 @@
 export enum LogErrors {
-  collectMetricsSignatureNotRecognized = "No collect-metrics function found for this event.",
-  wrongResolvedEnhancedEvents = "Enhanced Events are invalid.",
-  networkErrorCommitsPerPR = "Could not fetch commits for PR-Id: '%s'",
-  networkErrorDeployments = "Could not fetch deployments for owner/repo/env: '%s'",
+  networkErrorCommitsPerPR = "Could not fetch commits for PR-Id: '%s'\nError: %s",
+  networkErrorDeployments = "Could not fetch deployments for owner/repo/env: '%s'\nError: %s",
   networkErrorPackageJson = "Could not fetch package.json for owner/repo: '%s'",
   networkErrorDocumentationSkeletonConfig = "Could not fetch documentation-skeleton-config.json for owner/repo: '%s'",
-  releaseVersionsUnexpectedInvalidVersion = "Unexpected invalid Release Version",
+  releaseVersionsUnexpectedInvalidVersion = "Unexpected invalid Release Version: %s",
   genericServerError = "Server Error - Check the logs",
-  couldNotStoreData = "The following data could not be stored (see previous logs for detailed errors): '%s'",
   envVarRequired = "Required environment variable is not set: '%s'",
   envVarNotANumber = "Environment variable is set but not parsable as an integer: '%s'",
   envVarUnsafeInt = "Environment variable is set but not parsable as a safe integer: '%s'",
@@ -18,7 +15,6 @@ export enum LogErrors {
 export enum LogInfos {
   eventReceived = "Received '%s' event",
   eventSigned = "Event has been signed as: '%s'",
-  startCollectingMetrics = "Trying to collect metrics...",
   storeDataCheckingHead = "Store data failed, but we may try again. Fetching repo HEAD to check if we should retry storing data…",
   storeDataRetrying = "HEAD of data repo changed, retrying to store data...",
 }
