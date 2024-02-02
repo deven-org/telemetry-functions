@@ -32,9 +32,9 @@ export const collectCommitsPerPrMetrics = async (
       repo: repo,
       pull_number: payload.pull_request.number,
     })
-    .catch(() => {
+    .catch((error: unknown) => {
       status = "networkError";
-      logger.error(LogErrors.networkErrorCommitsPerPR, prId);
+      logger.error(LogErrors.networkErrorCommitsPerPR, prId, error);
       return null;
     });
 
