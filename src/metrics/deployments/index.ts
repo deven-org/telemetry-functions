@@ -38,11 +38,12 @@ export const collectDeploymentMetrics = async (
       repo: repo,
       environment: env,
     })
-    .catch(() => {
+    .catch((error: unknown) => {
       status = "networkError";
       logger.error(
         LogErrors.networkErrorDeployments,
-        `${owner}/${repo}/${env}`
+        `${owner}/${repo}/${env}`,
+        error
       );
       return null;
     });
