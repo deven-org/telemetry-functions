@@ -19,6 +19,13 @@
   - [Data duplication](#data-duplication)
   - [Github Webhook Events \& Collected Metrics](#github-webhook-events--collected-metrics)
     - [Adding a Webhook to a Project](#adding-a-webhook-to-a-project)
+  - [Github Tokens](#github-tokens)
+    - [GITHUB\_ACCESS\_TOKEN](#github_access_token)
+      - [Fine-Grained Token](#fine-grained-token)
+      - [Classic token](#classic-token)
+    - [REPO\_WRITE\_ACCESS\_TOKEN](#repo_write_access_token)
+      - [Fine-Grained Token](#fine-grained-token-1)
+      - [Classic token](#classic-token-1)
 
 ## Overall Structure
 
@@ -96,3 +103,150 @@ The trigger events should be selected individually to avoid unnecessary traffic.
 - Deployments
 - Pull requests
 - Workflow jobs
+
+## Github Tokens
+
+To use the telemetry project there are two GitHub access tokens that needs to be created and configured.
+Both are configured in the environment file. How to create the environment file is covered in the [README.md setup section](../README.md#setup).
+
+### GITHUB_ACCESS_TOKEN
+
+First we cover the creation of the `GITHUB_ACCESS_TOKEN`.
+This token is used to gather additional information about the repository.
+
+To create a new token one needs to navigate to the user settings in Github and in there to the `Developer Settings`, here a [deep link](https://github.com/settings/apps)
+
+Under `Personal access tokens` one can create two different kind of tokens, the classic and the fine-grained token.
+
+We recommend to create a fine-grained token.
+
+#### Fine-Grained Token
+
+In the `Personal access token` menu click on `Fine-grained tokens` and then click on the button `Generate new token`.
+
+Now fill out the form, below is a description of each field and the values/settings we recommend or are needed for the telemetry project to be used.
+
+**Token name**<br>
+We recommend to use a name that includes the why and what of the token, e.g. `READ_ACCESS_FOR_TELEMETRY_PROJECT`.
+
+**Expiration**<br>
+Our recommendation is to select 90 days or more (over `Custom...` selection). The expiration date can not be updated later.
+We also recommend that one creates a reminder for a few days before the token expires to coordinate the recreation of the token.
+
+**Description**<br>
+Here one can give more information about who created the token for what.
+
+**Resource owner**<br>
+If one is an administrator of a GitHub organization, this GitHub organization can be selected. If the telemetry project should be used for one specific organization we recommend to use the organization as resource owner.
+
+**Repository access**<br>
+Choose which repositories can be access with the new token.
+Our recommendation is to select `Only selected repositories`, if not more then 50 repositories should be connected to the telemetry project.
+
+If `Only selected repositories` was selected one needs to select all repositories in the dropdown (`Select repositories`) that appeared.
+
+**Repository permissions**<br>
+The following permissions need to be set to make sure the telemetry project can access all needed data.
+
+- `Contents` needs to be set to `Read-only`
+- `Deployments` needs to be set to `Read-only`
+- `Pull requests` needs to be set to `Read-only`
+
+**Account permissions**<br>
+The telemetry project does not need any account permissions.
+
+Now the new token can be created by clicking on the `Generate token` button.
+
+On the next page the new token is shown. It is important to copy that token and store it somewhere safe. This is the only time where the token can be copied!
+
+#### Classic token
+
+In the `Personal access token` menu click on `Tokens (classic)` and then click on the button `Generate new token` and select `Generate new token (classic)`.
+
+Now fill out the form, below is a description of each field and the values/settings we recommend or are needed for the telemetry project to be used.
+
+**Note**<br>
+We recommend to use a name that includes the why and what of the token, e.g. `READ_ACCESS_FOR_TELEMETRY_PROJECT`.
+
+**Expiration**<br>
+Our recommendation is to select 90 days or more (over `Custom...` selection). The expiration date can not be updated later.
+We also recommend that one creates a reminder for a few days before the token expires to coordinate the recreation of the token.
+
+**Select scopes**
+
+Select the checkbox next to the `repo` text. With the classic token creation we can't use a more fine grained option.
+
+Now the new token can be created by clicking on the `Generate token` button.
+
+On the next page the new token is shown. It is important to copy that token and store it somewhere safe. This is the only time where the token can be copied!
+
+### REPO_WRITE_ACCESS_TOKEN
+
+Here we cover the creation of the `REPO_WRITE_ACCESS_TOKEN`.
+This token is used to store the gather data in a private repository.
+
+**IMPORTANT**: a freshly created repository will not work. The data repository needs to have at least a `main` branch. We recommend to create an initial commit where a README.md is included that describes the content of the data repository.
+
+To create a new token one needs to navigate to the user settings in Github and in there to the `Developer Settings`, here a [deep link](https://github.com/settings/apps)
+
+Under `Personal access tokens` one can create two different kind of tokens, the classic and the fine-grained token.
+
+We recommend to create a fine-grained token.
+
+#### Fine-Grained Token
+
+In the `Personal access token` menu click on `Fine-grained tokens` and then click on the button `Generate new token`.
+
+Now fill out the form, below is a description of each field and the values/settings we recommend or are needed for the telemetry project to be used.
+
+**Token name**<br>
+We recommend to use a name that includes the why and what of the token, e.g. `WRITE_ACCESS_TO_TELEMETRY_DATA_REPOSITORY`.
+
+**Expiration**<br>
+Our recommendation is to select 90 days or more (over `Custom...` selection). The expiration date can not be updated later.
+We also recommend that one creates a reminder for a few days before the token expires to coordinate the recreation of the token.
+
+**Description**<br>
+Here one can give more information about who created the token for what.
+
+**Resource owner**<br>
+If one is an administrator of a GitHub organization, this GitHub organization can be selected. If the telemetry project should be used for one specific organization we recommend to use the organization as resource owner.
+
+**Repository access**<br>
+Choose which repositories can be access with the new token.
+Our recommendation is to choose `Only selected repositories`.
+
+After `Only selected repositories` was selected one needs to select the data repository in the dropdown (`Select repositories`) that appeared.
+
+**Repository permissions**<br>
+The following permission needs to be set to make sure the telemetry project can write the data into the repository.
+
+- `Contents` needs to be set to `Read and write`
+
+**Account permissions**<br>
+The telemetry project does not need any account permissions.
+
+Now the new token can be created by clicking on the `Generate token` button.
+
+On the next page the new token is shown. It is important to copy that token and store it somewhere safe. This is the only time where the token can be copied!
+
+#### Classic token
+
+In the `Personal access token` menu click on `Tokens (classic)` and then click on the button `Generate new token` and select `Generate new token (classic)`.
+
+Now fill out the form, below is a description of each field and the values/settings we recommend or are needed for the telemetry project to be used.
+
+**Note**<br>
+We recommend to use a name that includes the why and what of the token, e.g. `WRITE_ACCESS_TO_TELEMETRY_DATA_REPOSITORY`.
+
+**Expiration**<br>
+Our recommendation is to select 90 days or more (over `Custom...` selection). The expiration date can not be updated later.
+We also recommend that one creates a reminder for a few days before the token expires to coordinate the recreation of the token.
+
+**Select scopes**
+
+Select the checkbox next to the `repo` text. With the classic token creation we can't use a more fine grained option.
+
+Now the new token can be created by clicking on the `Generate token` button.
+
+On the next page the new token is shown. It is important to copy that token and store it somewhere safe. This is the only time where the token can be copied!
