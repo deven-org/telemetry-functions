@@ -6,9 +6,11 @@ import {
 } from "../../interfaces";
 import { WorkflowsOutput, WorkflowsPayload } from "./interfaces";
 import { getTimestamp } from "../../shared/get-timestamp";
+import { Octokit } from "@octokit/rest";
 
 export const collectWorkflowsMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  _repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.WorkflowJob>> => {
   const payload = triggerEvent.payload as WorkflowsPayload;
 

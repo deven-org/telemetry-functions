@@ -4,6 +4,8 @@ export enum LogErrors {
   networkErrorPackageJson = "Could not fetch package.json for owner/repo: '%s'",
   networkErrorDocumentationSkeletonConfig = "Could not fetch documentation-skeleton-config.json for owner/repo: '%s'",
   releaseVersionsUnexpectedInvalidVersion = "Unexpected invalid Release Version: %s",
+  badRequestError = "Bad Request",
+  forbiddenRequestError = "Forbidden: %s",
   genericServerError = "Server Error - Check the logs",
   envVarRequired = "Required environment variable is not set: '%s'",
   envVarNotANumber = "Environment variable is set but not parsable as an integer: '%s'",

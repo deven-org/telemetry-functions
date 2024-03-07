@@ -6,5 +6,6 @@ module.exports = {
     "^.+\\.ts$": "ts-jest",
   },
   setupFilesAfterEnv: ["<rootDir>/src/__tests__/setup.js"],
+  slowTestThreshold: 15,
   verbose: true,
 };

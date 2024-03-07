@@ -10,9 +10,11 @@ import {
 import { WorkflowStepCompleted } from "@octokit/webhooks-types";
 import { getTimestamp } from "../../shared/get-timestamp";
 import { isNameAboutTest } from "./is-name-about-test";
+import { Octokit } from "@octokit/rest";
 
 export const collectWorkflowsTestCoverageMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  _repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.TestCoverage>> => {
   const payload = triggerEvent.payload as TestCoveragePayload;
 

@@ -8,9 +8,11 @@ import {
   CodeReviewInvolvementPayload,
 } from "./interfaces";
 import { getTimestamp } from "../../shared/get-timestamp";
+import { Octokit } from "@octokit/rest";
 
 export const collectCodeReviewInvolvementMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  _repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.CodeReviewInvolvement>> => {
   const payload = triggerEvent.payload as CodeReviewInvolvementPayload;
 
