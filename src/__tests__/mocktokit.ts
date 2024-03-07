@@ -53,18 +53,18 @@ export const STORE_DATA_MOCKS: OctokitMockEndpoints = {
  */
 export const octokitModuleMock: Record<string, unknown> = {
   __esModule: true,
-  default: {
+  createOctokitForSourceRepo: () => ({
     request: async (endpoint: string, ...rest) => {
       const mockedRequest =
         Mocktokit.mocks[endpoint] ?? Mocktokit.unexpectedRequest;
       return mockedRequest(endpoint, ...rest);
     },
-  },
-  octokitForDataRepo: {
+  }),
+  createOctokitForDataRepo: () => ({
     request: async (endpoint: string, ...rest) => {
       const mockedRequest =
         Mocktokit.storeDataMocks[endpoint] ?? Mocktokit.unexpectedRequest;
       return mockedRequest(endpoint, ...rest);
     },
-  },
+  }),
 };

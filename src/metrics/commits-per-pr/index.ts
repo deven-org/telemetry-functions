@@ -1,5 +1,3 @@
-import octokit from "../../core/octokit";
-
 import {
   SignedTriggerEvent,
   MetricSignature,
@@ -10,11 +8,16 @@ import { Commits, CommitsPerPrOutput, CommitsPerPrPayload } from "./interfaces";
 import { getTimestamp } from "../../shared/get-timestamp";
 import { LogErrors } from "../../shared/log-messages";
 import { logger } from "../../core";
+import { Octokit } from "@octokit/rest";
 
 export const collectCommitsPerPrMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.CommitsPerPr>> => {
   const payload = triggerEvent.payload as CommitsPerPrPayload;
+  if (!repoClient) {
+    throw new Error("Missing parameter repoClient");
+  }
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
@@ -26,7 +29,7 @@ export const collectCommitsPerPrMetrics = async (
   let status: MetricDataStatus = "success";
   let commits: Commits = null;
 
-  const commitsResponse = await octokit
+  const commitsResponse = await repoClient
     .request("GET /repos/{owner}/{repo}/pulls/{pull_number}/commits", {
       owner: owner,
       repo: repo,

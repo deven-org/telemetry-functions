@@ -17,6 +17,7 @@ import {
   DeploymentEvent,
 } from "@octokit/webhooks-types";
 import { DocumentationUpdatedOutput } from "./metrics/documentation-updated/interfaces";
+import { Octokit } from "@octokit/rest";
 
 export enum TriggerSource {
   Github = "github",
@@ -134,5 +135,5 @@ export interface MetricData<T extends MetricSignature = MetricSignature>
 
 export type Conditions = [
   (event: SignedTriggerEvent) => boolean,
-  (event: SignedTriggerEvent) => Promise<MetricData>,
+  (event: SignedTriggerEvent, repoClient?: Octokit) => Promise<MetricData>,
 ][];

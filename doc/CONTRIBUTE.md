@@ -44,6 +44,10 @@ Our project has the following file structure:
     .
     └── .github                // GitLab CI/CD pipeline
     └── .netlify               // Dist folder created by Netlify CLI
+    └── aws
+        └── lambda             // Amazon Lambda script
+        └── lib                // Amazon CDK script
+    └── bin                    // Amazon CDK script
     └── doc                    // the documentation skeleton
     └── src
         └── core               // Core modules

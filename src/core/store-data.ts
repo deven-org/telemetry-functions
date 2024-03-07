@@ -1,5 +1,5 @@
 import { MetricData } from "../interfaces";
-import { octokitForDataRepo } from "./octokit";
+import { createOctokitForDataRepo } from "./octokit";
 import { ErrorForLogger, ErrorLevel } from "./error-logger";
 import { LogErrors, LogInfos, LogWarnings } from "../shared/log-messages";
 import {
@@ -8,6 +8,7 @@ import {
   getRequiredEnvVar,
 } from "../shared/get-env-var";
 import { logger } from "./logger";
+import { Octokit } from "@octokit/rest";
 
 export class StoreDataError extends ErrorForLogger {
   name = "StoreDataError";
@@ -30,13 +31,14 @@ export class StoreDataError extends ErrorForLogger {
 }
 
 async function getHeadShas(
+  repoClient: Octokit,
   owner: string,
   repo: string,
   branch: string
 ): Promise<{ commitSha: string; treeSha: string }> {
   const {
     data: [latestCommit],
-  } = await octokitForDataRepo.request("GET /repos/{owner}/{repo}/commits", {
+  } = await repoClient.request("GET /repos/{owner}/{repo}/commits", {
     owner,
     repo,
     sha: branch,
@@ -49,7 +51,10 @@ async function getHeadShas(
   };
 }
 
-export const storeData = async (metricData: MetricData[]) => {
+export const storeData = async (
+  metricData: MetricData[],
+  githubAccessToken?: string
+) => {
   if (metricData.length === 0) {
     // this is just a bug in our code and doesn't get a message in LogErrors
     throw new Error("storeData must be called with at least one dataset");
@@ -74,6 +79,8 @@ export const storeData = async (metricData: MetricData[]) => {
 
   let headShas: { commitSha: string; treeSha: string };
 
+  const dataRepoClient = createOctokitForDataRepo(githubAccessToken);
+
   /*
     [Step 1/4]
     
@@ -83,7 +90,12 @@ export const storeData = async (metricData: MetricData[]) => {
     warning about the token not having read access in case the request fails.
   */
   try {
-    headShas = await getHeadShas(dataRepoOwner, dataRepo, dataRepoTargetBranch);
+    headShas = await getHeadShas(
+      dataRepoClient,
+      dataRepoOwner,
+      dataRepo,
+      dataRepoTargetBranch
+    );
   } catch (e: unknown) {
     if (e instanceof Error && "status" in e && typeof e.status === "number") {
       throw StoreDataError.noReadAccess(e.status);
@@ -107,7 +119,7 @@ export const storeData = async (metricData: MetricData[]) => {
     */
     const {
       data: { sha: newTreeSha },
-    } = await octokitForDataRepo
+    } = await dataRepoClient
       .request("POST /repos/{owner}/{repo}/git/trees", {
         owner: dataRepoOwner,
         repo: dataRepo,
@@ -166,18 +178,15 @@ export const storeData = async (metricData: MetricData[]) => {
     */
     const {
       data: { sha: newCommitSha },
-    } = await octokitForDataRepo.request(
-      "POST /repos/{owner}/{repo}/git/commits",
-      {
-        owner: dataRepoOwner,
-        repo: dataRepo,
-        message: `auto(data): add metrics from ${commitMessageTrigger} for ${triggerOwner}/${triggerRepo}`,
-        author,
-        committer,
-        parents: [headShas.commitSha],
-        tree: newTreeSha,
-      }
-    );
+    } = await dataRepoClient.request("POST /repos/{owner}/{repo}/git/commits", {
+      owner: dataRepoOwner,
+      repo: dataRepo,
+      message: `auto(data): add metrics from ${commitMessageTrigger} for ${triggerOwner}/${triggerRepo}`,
+      author,
+      committer,
+      parents: [headShas.commitSha],
+      tree: newTreeSha,
+    });
 
     /*
       [Step 4/4]
@@ -193,7 +202,7 @@ export const storeData = async (metricData: MetricData[]) => {
       they will probably expire at some point.
     */
     try {
-      await octokitForDataRepo.request(
+      await dataRepoClient.request(
         "PATCH /repos/{owner}/{repo}/git/refs/{ref}",
         {
           owner: dataRepoOwner,
@@ -216,6 +225,7 @@ export const storeData = async (metricData: MetricData[]) => {
       logger.info(LogInfos.storeDataCheckingHead);
       // Check if we should retry due to a changed HEAD
       const newHeadShas = await getHeadShas(
+        dataRepoClient,
         dataRepoOwner,
         dataRepo,
         dataRepoTargetBranch

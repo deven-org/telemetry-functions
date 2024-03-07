@@ -4,7 +4,6 @@ import {
   MetricData,
   MetricDataStatus,
 } from "../../interfaces";
-import octokit from "../../core/octokit";
 import {
   DeploymentInformation,
   DeploymentOutput,
@@ -15,11 +14,16 @@ import { getTimestamp } from "../../shared/get-timestamp";
 import { logger } from "../../core";
 import { LogErrors, LogWarnings } from "../../shared/log-messages";
 import { octokitJsonResponseHandler } from "../../shared/octokit-json-response-handler";
+import { Octokit } from "@octokit/rest";
 
 export const collectDeploymentMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.Deployment>> => {
   const payload = triggerEvent.payload as DeploymentPayload;
+  if (!repoClient) {
+    throw new Error("Missing parameter repoClient");
+  }
 
   const owner = payload.repository.owner.login;
   const repo = payload.repository.name;
@@ -32,7 +36,7 @@ export const collectDeploymentMetrics = async (
   let deploymentInfo: DeploymentInformation = null;
   let packageJson: PackageJsonInformation = null;
 
-  const deploymentResponse = await octokit
+  const deploymentResponse = await repoClient
     .request("GET /repos/{owner}/{repo}/deployments", {
       owner: owner,
       repo: repo,
@@ -71,7 +75,7 @@ export const collectDeploymentMetrics = async (
   }
 
   const packageJsonResponse = await octokitJsonResponseHandler(
-    octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+    repoClient.request("GET /repos/{owner}/{repo}/contents/{path}", {
       owner: owner,
       repo: repo,
       ref: payload.deployment.sha,

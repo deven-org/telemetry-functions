@@ -6,14 +6,18 @@ import {
   MetricDataStatus,
 } from "../../interfaces";
 import { ToolingUsageOutput, ToolingUsagePayload } from "./interfaces";
-import octokit from "../../core/octokit";
 import { LogErrors, LogWarnings } from "../../shared/log-messages";
 import { octokitJsonResponseHandler } from "../../shared/octokit-json-response-handler";
+import { Octokit } from "@octokit/rest";
 
 export const collectToolingUsageMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.ToolingUsage>> => {
   const { owner, repo } = triggerEvent.payload as ToolingUsagePayload;
+  if (!repoClient) {
+    throw new Error("Missing parameter repoClient");
+  }
 
   let status: MetricDataStatus = "success";
   const output: ToolingUsageOutput = {
@@ -21,7 +25,7 @@ export const collectToolingUsageMetrics = async (
   };
 
   const configResponse = await octokitJsonResponseHandler(
-    octokit.request("GET /repos/{owner}/{repo}/contents/{path}", {
+    repoClient.request("GET /repos/{owner}/{repo}/contents/{path}", {
       owner,
       repo,
       path: "deven-skeleton-install.config.json",

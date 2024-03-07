@@ -83,16 +83,23 @@ describe("handler", () => {
       },
     };
 
-    await handler(event);
+    await handler(
+      event,
+      "githubAccessTokenSourceRepo",
+      "githubAccessTokenDataRepo"
+    );
 
-    expect(spyOnCollectMetrics).toBeCalledWith({
-      created_at: FAKE_NOW,
-      trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
-      payload: {
-        owner: "foo",
-        repo: "bar",
+    expect(spyOnCollectMetrics).toBeCalledWith(
+      {
+        created_at: FAKE_NOW,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
+        payload: {
+          owner: "foo",
+          repo: "bar",
+        },
       },
-    });
+      "githubAccessTokenSourceRepo"
+    );
   });
 
   it("doesn't call collectMetrics if the source is unknown", async () => {
@@ -141,15 +148,22 @@ describe("handler", () => {
       },
     };
 
-    await handler(event);
+    await handler(
+      event,
+      "githubAccessTokenSourceRepo",
+      "githubAccessTokenDataRepo"
+    );
 
-    expect(spyOnStoreData).toBeCalledWith({
-      created_at: FAKE_NOW,
-      trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
-      payload: {
-        owner: "foo",
-        repo: "bar",
+    expect(spyOnStoreData).toBeCalledWith(
+      {
+        created_at: FAKE_NOW,
+        trigger_event_signature: TriggerEventSignature.DevenToolingUsage,
+        payload: {
+          owner: "foo",
+          repo: "bar",
+        },
       },
-    });
+      "githubAccessTokenSourceRepo"
+    );
   });
 });

@@ -1,0 +1,87 @@
+name: Deployment
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+  release:
+    types: [published]
+
+env:
+  NODE_VERSION: "18"
+  AWS_REGION: eu-central-1
+  AWS_DEFAULT_REGION: eu-central-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  DOCKER_BUILDKIT: 1
+  REPO_NAME: ${{ vars.REPO_NAME }}
+  REPO_OWNER: ${{ vars.REPO_OWNER }}
+  REPO_PATH: ${{ vars.REPO_PATH }}
+  TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+            
+      - name: Setup node environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{env.NODE_VERSION}}
+          cache: npm
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Configure Github registry
+        run: |
+          npm config set @deven-org:registry=https://npm.pkg.github.com/
+          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GITHUB }}
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Setup slug variables
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            GIT_REF=main
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            GIT_REF=${{ github.head_ref }}
+          else
+            GIT_REF=${{ github.ref }}
+          fi
+          # Convert GIT_REF into a string usable in URLs:
+          # Convert to lowercase, replace invalid characters with a dash, remove leading/trailing dash, and shorten it to 63 chars
+          GIT_REF_SLUG=$(echo "${GIT_REF}" | tr "[:upper:]" "[:lower:]" | sed -r 's#refs/[^\/]*/##;s/[~\^]+//g;s/[^a-zA-Z0-9.]+/-/g;s/^-+\|-+$//g;s/^-*//;s/-*$//' | cut -c1-63)
+          echo "GIT_REF_SLUG=${GIT_REF_SLUG}" >> $GITHUB_ENV
+
+      - name: Setup release environment variables
+        if: github.event_name == 'release'
+        run: |
+          echo Deployment to PROD
+          echo "ENVIRONMENT_ID=main" >> $GITHUB_ENV
+      
+      - name: Setup non-release environment variables
+        if: github.event_name != 'release'
+        run: |
+          echo Deployment to TEST
+          echo "ENVIRONMENT_ID=${GIT_REF_SLUG}" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Deploy
+        run: |
+          npx aws-cdk synth
+          npx aws-cdk deploy --all --require-approval=never

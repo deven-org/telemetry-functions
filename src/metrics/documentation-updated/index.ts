@@ -8,15 +8,19 @@ import {
   DocumentationUpdatedOutput,
   DocumentationUpdatedPayload,
 } from "./interfaces";
-import octokit from "../../core/octokit";
 import { logger } from "../../core/logger";
+import { Octokit } from "@octokit/rest";
 
 const MARKDOWN_FILE_EXTENSION = ".md";
 
 export const collectDocumentationUpdatedMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.DocumentationUpdated>> => {
   const payload = triggerEvent.payload as DocumentationUpdatedPayload;
+  if (!repoClient) {
+    throw new Error("Missing parameter repoClient");
+  }
 
   const repo = payload.repository.name;
   const owner = payload.repository.owner.login;
@@ -26,7 +30,7 @@ export const collectDocumentationUpdatedMetrics = async (
   let status: MetricDataStatus = "success";
   let prFiles: DocumentationUpdatedOutput["pr_files"] = null;
 
-  const prFilesResponse = await octokit
+  const prFilesResponse = await repoClient
     .request("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
       owner: owner,
       repo: repo,

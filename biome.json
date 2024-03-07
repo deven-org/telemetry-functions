@@ -13,7 +13,9 @@
       "coverage",
       ".netlify",
       ".husky",
-      "postman"
+      "postman",
+      "cdk.out",
+      ".cdk.staging"
     ]
   },
   "javascript": {

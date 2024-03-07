@@ -2,12 +2,19 @@
 This chapter will explain everything to know about deployments for telemetry-functions.
 
 ## Content
-- [Tooling](#tooling)
-- [How to deploy](#how-to-deploy)
-- [Versioning](#versioning)
-- [Release Management](#release-management)
-- [Deployment Schedule](#deployment-schedule)
-- [Support](#support)
+- [Deployment](#deployment)
+  - [Content](#content)
+  - [Tooling](#tooling)
+  - [How to deploy](#how-to-deploy)
+  - [Versioning](#versioning)
+  - [Release Management](#release-management)
+  - [Deployment Schedule](#deployment-schedule)
+  - [Support](#support)
+  - [AWS Cloud Deployment](#aws-cloud-deployment)
+    - [Synthesize](#synthesize)
+    - [Deploy](#deploy)
+    - [Uninstall](#uninstall)
+    - [Secrets](#secrets)
 
 ## Tooling
 Telemetry-functions uses [Github Actions](https://github.com/features/actions) and [Release Please](https://github.com/googleapis/release-please) to automate the release process. The team chose these tools in order to eliminate as many human touch points as possible in the process. This is important because telemetry-functions will be worked on by many different people, so automating as much as possible will reduce complexity and help to eliminate errors.  
@@ -38,3 +45,53 @@ Telemetry-functions does not have a set deployment schedule, but rather uses CI/
 
 ## Support
 For support, please reach out to any current DEVEN team member or Ola Gasidlo-Braendel at [ola.gasidlo-braendel@accenture.com](mailto:ola.gasidlo-braendel@accenture.com).
+
+## AWS Cloud Deployment
+For deployment to AWS cloud, [AWS Cloud Development Kit (AWS CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) is used. CDK is part of dev dependencies and will be installed with `npm install`. An already globally installed CDK does not harm.
+
+If you are going to deploy Telemetry-functions to a new AWS account, run `npx aws-cdk bootstrap aws://123456789012/eu-central-1` once. Replace the number with the AWS account number. For details check the [documentation](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html).
+
+Multiple instances of Telemetry-functions can be installed side-by-side. Set environment variable `ENVIRONMENT_ID` to `main` for main installation, or any other value (e.g. the branch name). Only small letters, digits and hyphens are allowed. This environment name will become part of the AWS resource names and allows a separation of multiple installations. When `ENVIRONMENT_ID` is not set, the current user name will be used.
+
+Deployment via CDK requires two steps: Synthesizing and deployment.
+
+### Synthesize
+Run `npx aws-cdk synth` to synthesize a AWS CloudFormation template. This script uses the following environment variables, see [README](../README.md#setup) for details:
+
+Variable         | Required | Example
+---------------- | -------- | ----------------------
+REPO_NAME        | yes      | telemetry-data
+REPO_OWNER       | yes      | deven-org
+REPO_PATH        | yes      | raw-data
+TARGET_BRANCH    | yes      | main
+COMMITTER_NAME   | no       | John Doe
+COMMITTER_EMAIL  | no       | john.doe@telemetry.xyz
+AUTHOR_NAME      | no       | John Doe
+AUTHOR_EMAIL     | no       | john.doe@telemetry.xyz
+CONFLICT_RETRIES | no       | 2
+
+### Deploy
+Run `npx aws-cdk deploy --all` to deploy the software to AWS cloud. Add parameter `--require-approval=never` to skip the approval confirmation.
+
+After successful deployment, the webhook URL is printed on screen.
+In addition, the names of some parameters are printed. Please create all parameters in AWS Console. For details, see [below](#secrets).
+
+### Uninstall
+
+Run `npx aws-cdk destroy --all` to remove the installation. Add parameter `--force` to skip the confirmation.
+
+### Secrets
+Some parameters are not stored in environment variables as they contain secrets. The following values must be stored as secret string in parameter store of AWS Systems Managers. They are not created automatically, they have to be created by hand. Please follow exactly the names of the deployment script (see above) as they depend on the current environment. In main environment, the names are as below, in all other environments the names have a suffix, e.g. `/telemetry/parameter-branch`.
+
+- /telemetry/github-access-token/data
+  - Description: Github access token of repository where the data is stored
+  - Type: SecureString
+  - Value: *a personal GitHub access token, eligible to write to repository*
+- /telemetry/github-access-token/source
+  - Description: Github access token of repository where to get telemetry data from
+  - Type: SecureString
+  - Value: *a personal GitHub access token, eligible to read repository*
+- /telemetry/github-webhook-secret-token
+  - Description: secret token for GitHub web hook, [see Details](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks)
+  - Type: SecureString
+  - Value: *secret token*

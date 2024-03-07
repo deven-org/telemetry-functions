@@ -1,3 +1,4 @@
+import { Octokit } from "@octokit/rest";
 import {
   SignedTriggerEvent,
   MetricSignature,
@@ -11,7 +12,8 @@ import {
 } from "./interfaces";
 
 export const collectReleaseVersionsMetrics = async (
-  triggerEvent: SignedTriggerEvent
+  triggerEvent: SignedTriggerEvent,
+  _repoClient?: Octokit
 ): Promise<MetricData<MetricSignature.ReleaseVersions>> => {
   const payload = triggerEvent.payload as ReleaseVersionsPayload;
 
