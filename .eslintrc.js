@@ -34,5 +34,7 @@ module.exports = {
     "default-case": "error",
     // enforce kebab case file names
     "unicorn/filename-case": "error",
+    // suppress no-unused-vars errors if variable/parameter is prefixed with underscore
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
   },
 };

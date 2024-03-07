@@ -7,7 +7,9 @@ import { MetricData, RawEvent } from "./interfaces";
 import { ErrorForLogger, errorLogger } from "./core/error-logger";
 
 export const handler = async (
-  event: RawEvent
+  event: RawEvent,
+  githubAccessTokenSourceRepo?: string,
+  githubAccessTokenDataRepo?: string
 ): Promise<undefined | MetricData[]> => {
   logger.start(
     LogInfos.eventReceived,
@@ -17,10 +19,13 @@ export const handler = async (
   try {
     const signedEvent = await addSignature(event);
 
-    const collectedMetrics = await collectMetrics(signedEvent);
+    const collectedMetrics = await collectMetrics(
+      signedEvent,
+      githubAccessTokenSourceRepo
+    );
 
     if (collectedMetrics.length > 0) {
-      return await storeData(collectedMetrics);
+      return await storeData(collectedMetrics, githubAccessTokenDataRepo);
     }
   } catch (e: unknown) {
     errorLogger(e);

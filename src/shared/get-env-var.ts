@@ -1,7 +1,7 @@
 import { ErrorForLogger, ErrorLevel } from "../core/error-logger";
 import { LogErrors } from "./log-messages";
 
-type KnownEnvironmentVariable =
+export type KnownEnvironmentVariable =
   | "REPO_NAME"
   | "REPO_OWNER"
   | "REPO_PATH"

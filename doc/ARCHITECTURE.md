@@ -19,6 +19,11 @@
   - [Data duplication](#data-duplication)
   - [Github Webhook Events \& Collected Metrics](#github-webhook-events--collected-metrics)
     - [Adding a Webhook to a Project](#adding-a-webhook-to-a-project)
+  - [AWS Cloud Architecture](#aws-cloud-architecture)
+    - [AWS Lambda](#aws-lambda)
+    - [AWS Systems Manager](#aws-systems-manager)
+    - [Amazon API Gateway](#amazon-api-gateway)
+    - [Permissions](#permissions)
   - [Github Tokens](#github-tokens)
     - [GITHUB\_ACCESS\_TOKEN](#github_access_token)
       - [Fine-Grained Token](#fine-grained-token)
@@ -103,6 +108,30 @@ The trigger events should be selected individually to avoid unnecessary traffic.
 - Deployments
 - Pull requests
 - Workflow jobs
+
+## AWS Cloud Architecture
+
+The cloud architecture in AWS is kept minimal. This keeps both costs and complexity low. There is no VPC required as the code does not access AWS resources which are bound to a VPC.
+
+### AWS Lambda
+
+AWS Lambda is the runtime environment where the code is executed. The code is split into two parts:
+1. `lambda/handler.ts` validates the request. This code is AWS specific as it accesses further AWS resources, e.g. the storage where secrets are stored. If the request is valid, it is forwarded to `src/handler.ts`.
+2. `src/handler.ts` implements the business logic. This code is cloud agnostic.
+
+### AWS Systems Manager
+
+In this service the secrets are stored. All have prefix `/telemetry/`. Please check the [deployment section](./DEPLOYMENT.md#secrets) for a list of all secrets.
+
+### Amazon API Gateway
+
+This service accepts web requests, in this case the webhook requests of Github. It accepts POST requests to /telemetry only and forwards them to above Lambda function.
+
+To allow API Gateway logging to CloudWatch, an API Gateway account is created with all required permissions.
+
+### Permissions
+
+Lambda function is configured to accepts calls from API Gateway and to access secrets in Systems Manager.
 
 ## Github Tokens
 
