@@ -95,3 +95,6 @@ Some parameters are not stored in environment variables as they contain secrets.
   - Description: secret token for GitHub web hook, [see Details](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks)
   - Type: SecureString
   - Value: *secret token*
+
+To set the secrets find the AWS Systems Manager, then under `Application Management` select `Parameter Store`.
+Click on the `Create parameter` button. Fill out the form with the values provided in the list above.
