@@ -5,6 +5,62 @@
 
 ### Features
 
+* add AWS stack and resources, add documentation ([04c2421](https://github.com/deven-org/telemetry-functions/commit/04c24214230d9204bae3df3735ba8c9d5f48023e))
+* add dev mode to test function with actual github events ([ac50fe2](https://github.com/deven-org/telemetry-functions/commit/ac50fe2bc6ae768cf3641f82b2738fffc8159c65))
+* add ID and SHA to check-suite ([f28a6b8](https://github.com/deven-org/telemetry-functions/commit/f28a6b8d6e17f0cdcbcac28edf5aed5687a253af))
+* add metric for updated documentation ([389e952](https://github.com/deven-org/telemetry-functions/commit/389e9522100a6a2a56d7cb8dbcef04d2713da808))
+* add over100Files flag to documentation_updated ([c0278ab](https://github.com/deven-org/telemetry-functions/commit/c0278ab249ef1ad537d045483462bf9ca17dadc4))
+* add pull request head_sha to metric outputs ([dd02859](https://github.com/deven-org/telemetry-functions/commit/dd02859ea934e5205424ceae0684b8654735edef))
+* add status to metric data ([2dafffe](https://github.com/deven-org/telemetry-functions/commit/2dafffe5241611294853d6e2c04a3edf0277fd00))
+* add workflow job head_sha to output ([1e3bb95](https://github.com/deven-org/telemetry-functions/commit/1e3bb957be84731e0506c93116070b6b1b7fc4bf))
+* add workflow job id to output ([ea9c48a](https://github.com/deven-org/telemetry-functions/commit/ea9c48ac8bd46557b1aa30d64f919e6eb0bb8c9b))
+* align json file parsing for deployments and tooling-usage ([932ccb4](https://github.com/deven-org/telemetry-functions/commit/932ccb485a542b0e3806b5cff80a4ff63e0f634e))
+* change api dpenedent commits-per-pr and deployments metric output and handle status ([426ed42](https://github.com/deven-org/telemetry-functions/commit/426ed427fc35a3731ab530aa30e011a6b0899704))
+* change api-dependent data of documentation_updated ([ac73f16](https://github.com/deven-org/telemetry-functions/commit/ac73f162d6ab950ef50be31ed8bff942e81cffd3))
+* change release_versions to be based on tag creation events ([56bae79](https://github.com/deven-org/telemetry-functions/commit/56bae79d56d1329e91108ebb136deae7748f44c2))
+* check config file for documentation skeleton usage metric ([6a012f3](https://github.com/deven-org/telemetry-functions/commit/6a012f353bf901dd933e54e37de7a416dc92bf63))
+* improve api-dependent tooling_usage output ([f213526](https://github.com/deven-org/telemetry-functions/commit/f2135263922cc8bada8ab4d12457adf6f431425e))
+* improve naming and add more logs to store-data ([419971a](https://github.com/deven-org/telemetry-functions/commit/419971a5eeac69780bef0a5b1b99014c11cfdc97))
+* only record commits-per-pr for merged prs ([3a66883](https://github.com/deven-org/telemetry-functions/commit/3a6688354407fd025ef877191c7817da9afa1498))
+* refine test_coverage test detection and filter out jobs that don't mention tests ([d735639](https://github.com/deven-org/telemetry-functions/commit/d7356395389a4329b3aa1642a55b63c3342c4955))
+* remove redundant status and add/keep conclusion for workflow jobs and steps ([36a1f1d](https://github.com/deven-org/telemetry-functions/commit/36a1f1d73a6fe2f1639772264250ecf2654247a1))
+* report the existence of unhandled errors ([fe3685f](https://github.com/deven-org/telemetry-functions/commit/fe3685fa12913e3d30f3c13acf9927b826f5ef73))
+* skip any events coming from the data repo ([ad7c5e8](https://github.com/deven-org/telemetry-functions/commit/ad7c5e863ca45d5a387fe343eade550576579e1c))
+* store data using tree instead of single commits ([70f50c8](https://github.com/deven-org/telemetry-functions/commit/70f50c89ae1460fc1d5fb8f5abd6652882233d31))
+* update code-review-involvement metric to handle closed but not merged PRs ([7018250](https://github.com/deven-org/telemetry-functions/commit/7018250acd9dbb1e7f5bfb4c2a6c46d8d7066c72))
+* use namespaces for trigger signatures ([d129288](https://github.com/deven-org/telemetry-functions/commit/d12928839590365d150af4c0a07729349338d64c))
+* use PR ID as identifier instead of PR number ([50c2b43](https://github.com/deven-org/telemetry-functions/commit/50c2b432026c29043511ede6421a2a683c2d5cf9))
+* use separate token for data repo write access ([c8a2ca4](https://github.com/deven-org/telemetry-functions/commit/c8a2ca418e48c773cea6a9ace82a68cf829b5520))
+
+
+### Bug Fixes
+
+* add staggering timeout when storing data ([44e0826](https://github.com/deven-org/telemetry-functions/commit/44e08265b394e9c99127688ff8399a46c42b7a5c))
+* better representation of commit timestamps - don't default to now ([5d91c56](https://github.com/deven-org/telemetry-functions/commit/5d91c56c4c1d9538b95ff6739b7b1e56a8f0b6c9))
+* convert test_coverage step datetime to unix timestamp like in other metrics ([562c3f8](https://github.com/deven-org/telemetry-functions/commit/562c3f81ec304d74a472c70234ecb67d32e82e1c))
+* do not return created data in lambda handler ([211ed19](https://github.com/deven-org/telemetry-functions/commit/211ed1906b63a07f3d2fb393c5ea6a42adbec2ab))
+* improve error messages ([31e23a8](https://github.com/deven-org/telemetry-functions/commit/31e23a848084138af06e4c15df2fe7a1e79e623a))
+* remove check-suite duration ([0a6c138](https://github.com/deven-org/telemetry-functions/commit/0a6c1387fe3f09c5881c4a65d8f45622305e188b))
+* remove dependencies from tooling usage output ([7e855d5](https://github.com/deven-org/telemetry-functions/commit/7e855d5b7a6cbb21090809ce3c5850c2e14fc4a9))
+* remove duplicate data from documentation_updated ([22b8f8c](https://github.com/deven-org/telemetry-functions/commit/22b8f8c10a388eae71501b497787dadca7b1b30d))
+* remove packages from code-review-involvement metric output ([b0efc46](https://github.com/deven-org/telemetry-functions/commit/b0efc467950abb7b8730d180a585077504c826cb))
+* remove repo and owner from tooling usage output ([6e6568b](https://github.com/deven-org/telemetry-functions/commit/6e6568b49af63d1aace5cfcb2e5213779bc2c6b8))
+* remove unnecessary data from workflows output ([6e5a653](https://github.com/deven-org/telemetry-functions/commit/6e5a653a8102939c4bcefa2b481508343ca78e06))
+* request maximum number of files with one api call ([35ba945](https://github.com/deven-org/telemetry-functions/commit/35ba945cf4088e5ec95c580e17d6b77ab85d0d53))
+* resolve new linting warnings and errors ([aa81aac](https://github.com/deven-org/telemetry-functions/commit/aa81aac34a1c09549242af07924b7ef7cf1105cd))
+* save correct registry for deven-documentation-skeleton in lock ([48c5fa2](https://github.com/deven-org/telemetry-functions/commit/48c5fa269cd4a67af0faeb8070a505cc04d873e9))
+* set correct values for deployment metric output ([27f3991](https://github.com/deven-org/telemetry-functions/commit/27f39915ce4637d4a8e30cdf40abdea151bd0d55))
+* set proper fallback values if pr is not merged ([4c43c0c](https://github.com/deven-org/telemetry-functions/commit/4c43c0cdb72a31273ec063a70d12b49604efde23))
+* typo ([73cd2ae](https://github.com/deven-org/telemetry-functions/commit/73cd2ae4cd46a3a6c47371bb612ba3edece9ab34))
+* use correct commit for deployments metric package_json ([5f15bed](https://github.com/deven-org/telemetry-functions/commit/5f15bedd52777d3db095dfb1a890d9daca65a987))
+* use correct endpoint to get all files of a pr ([2e11c4d](https://github.com/deven-org/telemetry-functions/commit/2e11c4d950ca00ecdcfec1cc87f66b1457932f9f))
+* use status type and easier branching in documentation_updated ([aa83543](https://github.com/deven-org/telemetry-functions/commit/aa835438cc23e8cd00b94496cc4af6ab0c8872ac))
+
+## [1.10.0](https://github.com/deven-org/telemetry-functions/compare/v1.9.0...v1.10.0) (2024-03-14)
+
+
+### Features
+
 * add AWS stack and resources, add documentation ([ddf9e99](https://github.com/deven-org/telemetry-functions/commit/ddf9e99c88fe75614132f970eda9b4d9cdcf0782))
 * add dev mode to test function with actual github events ([21ddccb](https://github.com/deven-org/telemetry-functions/commit/21ddccbc58d8d10d6257de70b75029a942d661c9))
 * add ID and SHA to check-suite ([0a8d000](https://github.com/deven-org/telemetry-functions/commit/0a8d000257ce6d8cd26a1de10d74b298709e4a9d))
