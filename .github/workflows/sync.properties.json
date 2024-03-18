@@ -1,7 +1,0 @@
-{
-  "name": "Sync Develop / Main",
-  "description": "Sync develop branch with main when main is updated.",
-  "iconName": "octicon beaker",
-  "categories": ["Automation"],
-  "labels": ["Automation"]
-}

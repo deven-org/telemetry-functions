@@ -1,7 +1,0 @@
-{
-  "name": "Unit Test",
-  "description": "Runs the test",
-  "iconName": "octicon beaker",
-  "categories": ["Automation", "testing"],
-  "labels": ["Automation", "testing"]
-}
