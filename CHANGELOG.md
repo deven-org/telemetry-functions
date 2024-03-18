@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.10.1](https://github.com/deven-org/telemetry-functions/compare/v1.9.0...v1.10.1) (2024-03-18)
+
+
+### Features
+
+* no minor changes
+
+
+### Bug Fixes
+
+
 ## [1.10.0](https://github.com/deven-org/telemetry-functions/compare/v1.9.0...v1.10.0) (2024-03-14)
 
 
