@@ -3,7 +3,6 @@ on:
   pull_request:
     branches:
       - main
-      - develop
   release:
     types: [published]
 
@@ -18,6 +17,7 @@ env:
   REPO_OWNER: ${{ vars.REPO_OWNER }}
   REPO_PATH: ${{ vars.REPO_PATH }}
   TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
+  CONFLICT_RETRIES: ${{ vars.CONFLICT_RETRIES}}
   
 jobs:
   deploy:
@@ -39,12 +39,6 @@ jobs:
         with:
           path: ./node_modules
           key: modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Configure Github registry
-        run: |
-          npm config set @deven-org:registry=https://npm.pkg.github.com/
-          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN_GITHUB }}
-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
