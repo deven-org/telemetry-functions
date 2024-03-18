@@ -40,7 +40,7 @@ The function itself consists of several modules that work together to collect me
 
 The first module, "**handler**", is used as controller, to define and handle the whole process, included the error management and the logger.
 
-The second module, "**addSignature**", is responsible for identifing the events (_TriggerEvent_) coming from various sources: GitHub events, custom cron-jobs, manual requests, and other systems.
+The second module, "**addSignature**", is responsible for identifying the events (_TriggerEvent_) coming from various sources: GitHub events, custom cron-jobs, manual requests, and other systems.
 This module is designed to be flexible and can be customized to identify a various type of events.
 
 The "signed event" (_SignedTriggerEvent_) is then sent to the third module, the processing module, "**collectMetrics**", which is responsible for collecting the metrics, normalizing and transforming the data into a standardized format (_EnhancedTriggerEvent_).
