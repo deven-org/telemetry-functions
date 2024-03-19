@@ -10,6 +10,8 @@ This chapter will explain everything to know about deployments for telemetry-fun
   - [Release Management](#release-management)
   - [Deployment Schedule](#deployment-schedule)
   - [Support](#support)
+  - [GitHub configuration](#github-configuration)
+    - [Set Repository variables](#set-repository-variables)
   - [AWS Cloud Deployment](#aws-cloud-deployment)
     - [Synthesize](#synthesize)
     - [Deploy](#deploy)
@@ -46,6 +48,14 @@ Telemetry-functions does not have a set deployment schedule, but rather uses CI/
 ## Support
 For support, please reach out to any current DEVEN team member or Ola Gasidlo-Braendel at [ola.gasidlo-braendel@accenture.com](mailto:ola.gasidlo-braendel@accenture.com).
 
+## GitHub configuration
+
+### Set Repository variables
+
+Follow the [GitHub documentation](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository) to create repository variables.
+
+A list of variables that needs to be created can be found in the [README setup section](../README.md#setup). Please note that the tokens mentioned in the list should **not** be added as repository variables.
+
 ## AWS Cloud Deployment
 For deployment to AWS cloud, [AWS Cloud Development Kit (AWS CDK)](https://docs.aws.amazon.com/cdk/v2/guide/home.html) is used. CDK is part of dev dependencies and will be installed with `npm install`. An already globally installed CDK does not harm.
 
@@ -56,7 +66,7 @@ Multiple instances of Telemetry-functions can be installed side-by-side. Set env
 Deployment via CDK requires two steps: Synthesizing and deployment.
 
 ### Synthesize
-Run `npx aws-cdk synth` to synthesize a AWS CloudFormation template. This script uses the following environment variables, see [README](../README.md#setup) for details:
+Run `npx aws-cdk synth` to synthesize a AWS CloudFormation template. This script uses the following environment variables, see [README](../README.md#setup) [Please note that the secrets are excluded and not stored as environment variables] for details:
 
 Variable         | Required | Example
 ---------------- | -------- | ----------------------
