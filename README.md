@@ -61,17 +61,19 @@ In addition, you'll need to log in to Github in your browser.
 ### Setup
 
 1. Open the `env.template` file and copy the list of environment variables and their default values. These include:
-
-- REPO_NAME
-- REPO_OWNER
-- REPO_PATH
-- TARGET_BRANCH
-- GITHUB_ACCESS_TOKEN
-- COMMITTER_NAM
-- COMMITTER_EMAIL
-- AUTHOR_NAME
-- AUTHOR_EMAIL
-- CONFLICT_RETRIES
+Variable                  | Required | Note                   | Example
+------------------------- | -------- | ---------------------- | ----------------------
+REPO_NAME                 | yes      | name of the repository | telemetry-data
+REPO_OWNER                | yes      | owner/organization     | deven-org
+REPO_PATH                 | yes      | data repo              | raw-data
+TARGET_BRANCH             | yes      | branch to commit data  | main
+REPO_WRITE_ACCESS_TOKEN   | yes      | only used locally as env var | [token creation](./docs/ARCHITECTURE.md#repo_write_access_token)
+GITHUB_ACCESS_TOKEN       | yes      | only used locally as env var | [token creation](./docs/ARCHITECTURE.md#github_access_token)
+COMMITTER_NAME            | no       | User name of commit creator | Jay Doe
+COMMITTER_EMAIL           | no       | User email of commit creator | jay.doe@telemetry.xyz
+AUTHOR_NAME               | no       | User name of commit author | Jay Doe
+AUTHOR_EMAIL              | no       | User email of commit author | jay.doe@telemetry.xyz
+CONFLICT_RETRIES          | no       | Number of retries, minimum of 2 recommended | 2
 
 2. Create a new file in the root directory named `.env` and paste the list of environment variables in, exactly as it appears in the env.template file.
 
