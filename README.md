@@ -73,21 +73,28 @@ COMMITTER_NAME            | no       | User name of commit creator | Jay Doe
 COMMITTER_EMAIL           | no       | User email of commit creator | jay.doe@telemetry.xyz
 AUTHOR_NAME               | no       | User name of commit author | Jay Doe
 AUTHOR_EMAIL              | no       | User email of commit author | jay.doe@telemetry.xyz
-CONFLICT_RETRIES          | no       | Number of retries, minimum of 2 recommended | 2
+CONFLICT_RETRIES          | no       | Number of retries, minimum of 3 recommended | 3
 
 2. Create a new file in the root directory named `.env` and paste the list of environment variables in, exactly as it appears in the env.template file.
 
 ### Usage with manual triggering
 
-1. In the command line, start the Netlify function with:
+1. In the command line, deploy local changes to an AWS test environment with:
 
 ```sh
-npm run dev:netlify
+npm run dev
 ```
 
-This way you can test the netlify function and manually send events to the
-`http://localhost:9999/.netlify/functions/metrics`, e.g. using the provided
+This way you can test the lambda function and manually send events to the returned URL from the command above, e.g. using the provided
 Postman collection.
+
+Once the test environment is not needed anymore the following command needs to be called to delete the test environment:
+
+```sh
+npm run dev:destroy
+```
+
+To use the test environment the secrets also need to be configured for it, please follow the guide in the [deployment documentation](./docs/DEPLOYMENT.md#secrets).
 
 ### Usage with GitHub triggers
 

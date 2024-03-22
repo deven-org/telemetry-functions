@@ -15,7 +15,6 @@ Thank you for taking the time to contribute to **telemetry-functions**! We since
   - [Metrics Signatures](#metrics-signatures)
   - [Core Functions](#core-functions)
     - [Store Data](#store-data)
-  - [OAuth App](#oauth-app)
 - [Issues](#issues)
   - [Create a new issue](#create-a-new-issue)
   - [Solving an Issue](#solving-an-issue)
@@ -43,7 +42,6 @@ Our project has the following file structure:
 
     .
     └── .github                // GitLab CI/CD pipeline
-    └── .netlify               // Dist folder created by Netlify CLI
     └── aws
         └── lambda             // Amazon Lambda script
         └── lib                // Amazon CDK script
@@ -55,7 +53,6 @@ Our project has the following file structure:
         └── shared             // Global configuration and log messages
         └── trigger-signatures // Trigger identification modules
     └── postman                // Postman collections
-    └── netlify                // Netlify Serverless functions
     └── .env                   // Env variables
     └── CHANGELOG.md           // This file is automatically created by the release stage of the main    pipeline. Please don't touch it.
 
@@ -111,7 +108,7 @@ flowchart TB
 
 ### Data Events
 
-telemetry-functions operates on the basis of event objects. An event object (_TriggerEvent_) can be created either automatically by Github, manually, or by a Cronjob. Event objects represent a specific event that occurred, such as a pull request. Regardless of how it is created, event objects are sent to the endpoint URL provided by Netlify.
+telemetry-functions operates on the basis of event objects. An event object (_TriggerEvent_) can be created either automatically by Github, manually, or by a Cronjob. Event objects represent a specific event that occurred, such as a pull request. Regardless of how it is created, event objects are sent to the endpoint URL provided by AWS.
 
 ### Event Signatures
 
@@ -152,13 +149,9 @@ The storeData function is the final step in the telemetry-functions process. sto
 - `AUTHOR_NAME`
 - `AUTHOR_EMAIL`
 
-These variables are stored in Netlify for production, but when running the app locally, a `.env` file should be added to the root folder. The `.env` file should use the format established in the `/.env.template` file already in the repo.
+These variables are stored in GitHub repository variables for production, but when running the app locally, a `.env` file should be added to the root folder. The `.env` file should use the format established in the `/.env.template` file already in the repo.
 
 The variable `CONFLICT_RETRIES` is used to define the number of attempts to store the data in the github repository. If it's not set it defaults to 0, that means there is no retry if the data can't be stored with the first attempt. For testing purposes the variable could also be set to -1, so that the data isn't stored at all.
-
-### OAuth App
-
-In order to access Github data, telemetry-functions uses a Githup OAuth App. This app gets added to a Github repo or organization from which data will be collected, and passes an authorization token to telemetry-functions. The token is then used during REST API requests to Github in for authentication.
 
 ## Issues
 
