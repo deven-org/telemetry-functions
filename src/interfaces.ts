@@ -38,6 +38,11 @@ export enum DevenEvent {
   ToolingUsage = "tooling-usage",
 }
 
+export const headerSourceMap: Record<string, TriggerSource> = {
+  ["x-github-event"]: TriggerSource.Github,
+  ["x-deven-event"]: TriggerSource.Deven,
+};
+
 /* eslint-disable @typescript-eslint/prefer-literal-enum-member
    --------
    There is no good alternative for checking that the enum members satisfy the
