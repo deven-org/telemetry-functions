@@ -9,6 +9,7 @@ export type KnownEnvironmentVariable =
   | "CONFLICT_RETRIES"
   | "TARGET_BRANCH"
   | "REPO_WRITE_ACCESS_TOKEN"
+  | "WEBHOOK_SECRET"
   | "GITHUB_ACCESS_TOKEN"
   | "COMMITTER_NAME"
   | "COMMITTER_EMAIL"

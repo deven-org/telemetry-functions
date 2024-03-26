@@ -15,7 +15,6 @@ Thank you for taking the time to contribute to **telemetry-functions**! We since
   - [Metrics Signatures](#metrics-signatures)
   - [Core Functions](#core-functions)
     - [Store Data](#store-data)
-  - [OAuth App](#oauth-app)
 - [Issues](#issues)
   - [Create a new issue](#create-a-new-issue)
   - [Solving an Issue](#solving-an-issue)
@@ -111,7 +110,7 @@ flowchart TB
 
 ### Data Events
 
-telemetry-functions operates on the basis of event objects. An event object (_TriggerEvent_) can be created either automatically by Github, manually, or by a Cronjob. Event objects represent a specific event that occurred, such as a pull request. Regardless of how it is created, event objects are sent to the endpoint URL provided by Netlify.
+telemetry-functions operates on the basis of event objects. An event object (_TriggerEvent_) can be created either automatically by Github, manually, or by a Cronjob. Event objects represent a specific event that occurred, such as a pull request. Regardless of how it is created, event objects are sent to the endpoint URL provided by AWS.
 
 ### Event Signatures
 
@@ -152,13 +151,9 @@ The storeData function is the final step in the telemetry-functions process. sto
 - `AUTHOR_NAME`
 - `AUTHOR_EMAIL`
 
-These variables are stored in Netlify for production, but when running the app locally, a `.env` file should be added to the root folder. The `.env` file should use the format established in the `/.env.template` file already in the repo.
+These variables are stored in GitHub repository variables for production, but when running the app locally, a `.env` file should be added to the root folder. The `.env` file should use the format established in the `/.env.template` file already in the repo.
 
 The variable `CONFLICT_RETRIES` is used to define the number of attempts to store the data in the github repository. If it's not set it defaults to 0, that means there is no retry if the data can't be stored with the first attempt. For testing purposes the variable could also be set to -1, so that the data isn't stored at all.
-
-### OAuth App
-
-In order to access Github data, telemetry-functions uses a Githup OAuth App. This app gets added to a Github repo or organization from which data will be collected, and passes an authorization token to telemetry-functions. The token is then used during REST API requests to Github in for authentication.
 
 ## Issues
 
@@ -199,3 +194,8 @@ For contributions we are using [Gitflow as branching strategy](https://www.atlas
 ### Postman
 
 During the development process, it may be helpful to mock Github events. This is possible through the software program [Postman](https://www.postman.com/), which allows developers to create mock HTTP requests sent to the endpoint of their choice. Header and body parameters (where applicable) are fully customizable by the developer. In the `/postman` folder, telemetry-functions contains a file that can be imported into Postman to easily set up the mock HTTP requests.
+
+To use the requests two [global variables](https://learning.postman.com/docs/sending-requests/variables/variables/#defining-global-variables) need to be set.
+
+The first variable is `telemetry_function_url` which for local testing should be set to `http://127.0.0.1:9999/.netlify/functions/metrics`.
+The second variable `telemetry_test_secret` needs to be set to the same value as the secret configured in the [GitHub webhook](https://docs.github.com/en/webhooks/using-webhooks/creating-webhooks).

@@ -21,10 +21,10 @@ This chapter will explain everything to know about deployments for telemetry-fun
 ## Tooling
 Telemetry-functions uses [Github Actions](https://github.com/features/actions) and [Release Please](https://github.com/googleapis/release-please) to automate the release process. The team chose these tools in order to eliminate as many human touch points as possible in the process. This is important because telemetry-functions will be worked on by many different people, so automating as much as possible will reduce complexity and help to eliminate errors.  
 
-Telemetry-functions uses Netlify as part of its functional architecture. Whenever there is a push on the `develop` branch, Netlify is automatically updated with the latest code and the serverless function is  re-deployed.
+Telemetry-functions uses AWS as part of its functional architecture. Whenever there is a push on the `main` branch, AWS is automatically updated with the latest code and the serverless function is  re-deployed.
 
 ## How to deploy
-Telemetry-functions uses the [`Release & Publish`]('./../.github/workflows/release.yml) Github action to initiate the deployment process. `Release & Publish` can be triggered manually on Github, but it also runs automatically whenever there is a push to the `main` branch. 
+Telemetry-functions uses the [`Release`]('./../.github/workflows/release.yml) Github action to initiate the deployment process. `Release` can be triggered manually on Github, but it also runs automatically whenever there is a push to the `main` branch. 
 
 The workflow includes the following steps: 
 
@@ -66,7 +66,7 @@ Multiple instances of Telemetry-functions can be installed side-by-side. Set env
 Deployment via CDK requires two steps: Synthesizing and deployment.
 
 ### Synthesize
-Run `npx aws-cdk synth` to synthesize a AWS CloudFormation template. This script uses the following environment variables, see [README](../README.md#setup) [Please note that the secrets are excluded and not stored as environment variables] for details:
+Run `npx aws-cdk synth` to synthesize a AWS CloudFormation template. This script uses the following environment variables, see [README](../README.md#setup) for details  [Please note that the secrets are excluded and not stored as environment variables]:
 
 Variable         | Required | Example
 ---------------- | -------- | ----------------------
@@ -78,7 +78,7 @@ COMMITTER_NAME   | no       | John Doe
 COMMITTER_EMAIL  | no       | john.doe@telemetry.xyz
 AUTHOR_NAME      | no       | John Doe
 AUTHOR_EMAIL     | no       | john.doe@telemetry.xyz
-CONFLICT_RETRIES | no       | 2
+CONFLICT_RETRIES | no       | 5
 
 ### Deploy
 Run `npx aws-cdk deploy --all` to deploy the software to AWS cloud. Add parameter `--require-approval=never` to skip the approval confirmation.
