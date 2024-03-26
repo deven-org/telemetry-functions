@@ -34,7 +34,7 @@
 
 ## Overall Structure
 
-telemetry-functions is a Node.js application that is designed to be **serverless**. It is written in TypeScript, which allows for type checking and other features that can help catch errors early in the development process. The function is accessed through HTTP endpoints, which are exposed to the internet through a hosting provider (currently Netlify).
+telemetry-functions is a Node.js application that is designed to be **serverless**. It is written in TypeScript, which allows for type checking and other features that can help catch errors early in the development process. The function is accessed through HTTP endpoints, which are exposed to the internet through a hosting provider (currently AWS).
 
 The function itself consists of several modules that work together to collect metrics and store them in a database (currently Github has been used as DB).
 
@@ -45,7 +45,7 @@ This module is designed to be flexible and can be customized to identify a vario
 
 The "signed event" (_SignedTriggerEvent_) is then sent to the third module, the processing module, "**collectMetrics**", which is responsible for collecting the metrics, normalizing and transforming the data into a standardized format (_EnhancedTriggerEvent_).
 
-Once the event has been processed (_EnhancedTriggerEvent_), the fourth module stores it in a database (currently pushes it to a GitHub repo as JSON file.). _telemetry-functions_ is hosted on Netlify, but this is a temporary solution. In the future, the function will be hosted on a more robust and scalable platform that can handle large amounts of data.
+Once the event has been processed (_EnhancedTriggerEvent_), the fourth module stores it in a database (currently pushes it to a GitHub repo as JSON file.). _telemetry-functions_ is hosted on AWS.
 
 ### Code base
 

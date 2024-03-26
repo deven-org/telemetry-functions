@@ -1,12 +1,5 @@
-import {
-  APIGatewayProxyEventHeaders,
-  APIGatewayProxyEventV2,
-  APIGatewayProxyResultV2,
-} from "aws-lambda";
+import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import * as crypto from "crypto";
-import { handler as collectMetricsHandler } from "../../src/handler";
-import { RawEvent, TriggerSource } from "../../src/interfaces";
 import { LogErrors } from "../../src/shared/log-messages";
 import {
   GITHUB_ACCESS_TOKEN_DATA_PARAMETER_NAME,
@@ -14,26 +7,29 @@ import {
   GITHUB_WEBHOOK_SECRET_TOKEN_PARAMETER_NAME,
 } from "../shared/env-vars";
 import { EnvVarAccessError } from "../../src/shared/get-env-var";
-
-const SIGNATURE_HEADER = "x-hub-signature-256";
-const EVENT_NAME_HEADER = "x-github-event";
+import {
+  HTMLError,
+  handleEvent,
+  validateRequest,
+} from "../../src/shared/source-handling";
 
 const ssmClient = new SSMClient();
 
 export async function handler(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyResultV2> {
-  const githubEvent = event.headers[EVENT_NAME_HEADER];
-  if (!event.body || !githubEvent) {
+  if (!event.body) {
     return createResponse(400, LogErrors.badRequestError);
   }
 
   try {
-    const validationError = await validateRequest(event.headers, event.body);
-    if (validationError) {
-      // Validation failed => stop here
-      return validationError;
-    }
+    // Load webhook secret token from AWS Systems Manager
+    const githubWebhookSecretToken = await getSecretParameter(
+      GITHUB_WEBHOOK_SECRET_TOKEN_PARAMETER_NAME
+    );
+
+    // validation happens in each handler separated to avoid unnecessary calls to secret stores
+    validateRequest(event.headers, event.body, githubWebhookSecretToken);
 
     const githubAccessTokenSourceRepo = await getSecretParameter(
       GITHUB_ACCESS_TOKEN_SOURCE_PARAMETER_NAME
@@ -42,27 +38,23 @@ export async function handler(
       GITHUB_ACCESS_TOKEN_DATA_PARAMETER_NAME
     );
 
-    const rawEvent: RawEvent = {
-      payload: event.body ? JSON.parse(event.body) : null,
-      source: TriggerSource.Github,
-      sourceEventSignature: githubEvent,
-    };
-
-    await collectMetricsHandler(
-      rawEvent,
+    await handleEvent(
+      event.headers,
+      event.body,
       githubAccessTokenSourceRepo,
       githubAccessTokenDataRepo
     );
   } catch (e: unknown) {
     console.log(e);
+    if (e instanceof HTMLError) {
+      return createResponse(e.statusCode, e.message);
+    }
     // Responding with an error code here lets us easily resend events from GitHub
     return createResponse(500, LogErrors.genericServerError);
   }
 
   // Tell Github we accepted the webhook request
-  return {
-    statusCode: 204,
-  };
+  return createResponse(204);
 }
 
 class MissingParameterError extends Error {
@@ -71,33 +63,12 @@ class MissingParameterError extends Error {
 
 function createResponse(
   statusCode: number,
-  message: string
+  message?: string
 ): APIGatewayProxyResultV2 {
   return {
     statusCode: statusCode,
     body: message,
   };
-}
-
-async function validateRequest(
-  headers: APIGatewayProxyEventHeaders,
-  body: string
-): Promise<APIGatewayProxyResultV2 | undefined> {
-  // Github signature header must be present
-  if (!headers || !headers[SIGNATURE_HEADER]) {
-    return createResponse(400, LogErrors.badRequestError);
-  }
-  const githubSignature = headers[SIGNATURE_HEADER];
-
-  // Load webhook secret token from AWS Systems Manager
-  const githubWebhookSecretToken = await getSecretParameter(
-    GITHUB_WEBHOOK_SECRET_TOKEN_PARAMETER_NAME
-  );
-
-  // Verify this request by checking its signature
-  if (!verifyGithubSignature(githubSignature, body, githubWebhookSecretToken)) {
-    return createResponse(401, LogErrors.forbiddenRequestError);
-  }
 }
 
 /**
@@ -127,18 +98,4 @@ async function getSecretParameter(envVarName: string): Promise<string> {
   }
 
   return parameterValue;
-}
-
-function verifyGithubSignature(
-  githubSignature: string,
-  body: string,
-  webhookSecret: string
-): boolean {
-  const signature = crypto
-    .createHmac("sha256", webhookSecret)
-    .update(body)
-    .digest("hex");
-  const trusted = Buffer.from(`sha256=${signature}`, "ascii");
-  const untrusted = Buffer.from(githubSignature, "ascii");
-  return crypto.timingSafeEqual(trusted, untrusted);
 }
