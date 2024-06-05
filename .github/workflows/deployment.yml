@@ -17,7 +17,12 @@ env:
   REPO_NAME: ${{ vars.REPO_NAME }}
   REPO_OWNER: ${{ vars.REPO_OWNER }}
   REPO_PATH: ${{ vars.REPO_PATH }}
+  COMMITTER_EMAIL: ${{ vars.COMMITTER_EMAIL }}
+  COMMITTER_NAME: ${{ vars.COMMITTER_NAME }}
+  AUTHOR_EMAIL: ${{ vars.AUTHOR_EMAIL }}
+  AUTHOR_NAME: ${{ vars.AUTHOR_NAME }}
   TARGET_BRANCH: ${{ vars.TARGET_BRANCH }}
+  CONFLICT_RETRIES: ${{ vars.CONFLICT_RETRIES }}
   
 jobs:
   deploy:
