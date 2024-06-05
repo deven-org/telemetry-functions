@@ -1,4 +1,4 @@
-name: Cleanup
+name: Project Cleanup
 on:
   workflow_dispatch:
     inputs:
