@@ -67,7 +67,7 @@ In addition, you'll need to log in to Github in your browser.
 - REPO_PATH
 - TARGET_BRANCH
 - GITHUB_ACCESS_TOKEN
-- COMMITTER_NAM
+- COMMITTER_NAME
 - COMMITTER_EMAIL
 - AUTHOR_NAME
 - AUTHOR_EMAIL
