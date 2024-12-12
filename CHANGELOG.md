@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.11.0](https://github.com/deven-org/telemetry-functions/compare/v1.10.1...v1.11.0) (2024-06-06)
+
+
+### Features
+
+* add workflow to cleanup project specific instance ([22aeb6a](https://github.com/deven-org/telemetry-functions/commit/22aeb6a26a09542693dc2ccf8b52f285bc395889))
+* add workflow to deploy project specific instance ([60d0507](https://github.com/deven-org/telemetry-functions/commit/60d05078d24b3923b4341fdf41b5e11a71fedeb8))
+
+
+### Bug Fixes
+
+* add missing env vars to deployment workflows ([7f6844b](https://github.com/deven-org/telemetry-functions/commit/7f6844b091faef394d9be92fc82f14d2cc120210))
+* improve name of project cleanup workflow ([d072898](https://github.com/deven-org/telemetry-functions/commit/d072898a2aab9a97fbec1b3d3802abb1eb18e0be))
+
 ## [1.10.1](https://github.com/deven-org/telemetry-functions/compare/v1.9.0...v1.10.1) (2024-03-18)
 
 
